@@ -5,6 +5,7 @@ public class Test {
 		int h = 5;
 =======
 		int v = 20;
+		v=3;
 		System.out.println(v);
 >>>>>>> a9411e395eaac6755dbde1baa19d4f3ca9b44c3a
 	}
