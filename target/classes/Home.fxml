@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+   prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.controller.HomeXMLControler">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="-Infinity" prefWidth="-Infinity"
+         style="-fx-background-color:#181818;" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fx:id="user_image" fill="#ee9f5e12" radius="18.0" stroke="TRANSPARENT"
+               strokeType="INSIDE">
+               <HBox.margin>
+                  <Insets bottom="8.0" left="15.0" right="10.0" top="8.0" />
+               </HBox.margin>
+            </Circle>
+
+            <Text fx:id="user_name" fill="#ffff" strokeType="OUTSIDE" strokeWidth="0.0"
+               text="mohamed gomaa" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Text>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <ScrollPane fx:id="scrollPane" prefHeight="-Infinity" prefWidth="-Infinity"
+         styleClass="rounded-scroll-pane" xmlns:fx="http://javafx.com/fxml/1"
+         xmlns="http://javafx.com/javafx/8">
+         <content>
+            <VBox fx:id="chat_area" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="25.0" right="50.0" top="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+   <bottom>
+      <TextField fx:id="message_edx" prefHeight="37.0" prefWidth="401.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </TextField>
+   </bottom>
+</BorderPane>

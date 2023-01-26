@@ -1,0 +1,38 @@
+#submit_btn:hover { 
+    -fx-min-width:150;
+    -fx-min-height:30;
+    -fx-background-radius:0;
+    -fx-background-color: #FF7844;
+    -fx-effect: dropshadow( three-pass-box , #FF7844 , 5, 0.0 , 0 , 1 );
+}
+#submit_btn {
+    
+    -fx-font-size: 16px;
+    -fx-font-family: "sample";
+    -fx-text-fill: white;
+    -fx-font-weight: normal;
+    -fx-font-style: normal;
+    -fx-min-width:150;
+    -fx-min-height:30;
+    -fx-background-radius:0;
+    -fx-background-color: #FF7844;
+}
+
+#name_edx {
+    -fx-background-image:url('name.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left 10 center;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 5 5 5 50;
+    -fx-border-color: #ff79447f ;  
+    -fx-border-width: 3px ; 
+    -fx-border-radius: 8;
+    -fx-background-color: #ff794400;
+
+} 
+
+#imageSelector:hover {
+    -fx-background-radius: 100;
+    -fx-effect: dropshadow( three-pass-box , #FF7844 , 5, 0.0 , 0 , 1 );
+}
