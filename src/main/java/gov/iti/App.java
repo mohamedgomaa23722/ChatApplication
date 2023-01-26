@@ -1,6 +1,5 @@
 package gov.iti;
 
-import gov.iti.utils.Intent;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,11 +16,10 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Chat Application");
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getClassLoader().getResource("ChatFXML.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("chatPage.fxml"));
         Scene scene = new Scene(root);
         
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("chatStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

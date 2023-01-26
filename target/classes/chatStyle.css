@@ -1,3 +1,37 @@
+#top_bar {
+    -fx-background-radius: 10; 
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-color: linear-gradient(to top left,#ff8882e3, #F84D43);   
+    -fx-effect: dropshadow(three-pass-box, rgb(211, 211, 211), 30, 0.5, 0, 0); 
+}
+
+#scrollBar {
+    -fx-background-color: transparent;
+}
+
+#search_edx, #message_edx_container{
+    -fx-background-color: WHITE; 
+    -fx-border-radius: 10; 
+    -fx-background-radius: 10; 
+    -fx-border-color: #CDCDCD;
+}
+
+ #message_edx {
+    -fx-min-width:30;
+    -fx-min-height:30;
+    -fx-background-radius: 10; 
+    -fx-background-color: transparent;
+}
+
+#notification:hover, #settings:hover {
+    -fx-effect: dropshadow( three-pass-box , #ffc7c4e3 , 10, 5 , 0 , 1 );
+}
+
+#add_group:hover, #add_contact:hover, #attach_file:hover {
+    -fx-effect: dropshadow( three-pass-box , #ffc7c45d , 10, 5 , 0 , 1 );
+}
+
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
     -fx-background-color :transparent;

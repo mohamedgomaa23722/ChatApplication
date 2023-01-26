@@ -1,18 +1,18 @@
-package gov.iti.utils;
+package gov.iti.business.services;
 
 
-public class Intent {
+public class SceneManager {
 
-    private static Intent instance;
+    private static SceneManager instance;
     private String name;
     private String imagePath;
 
-    private Intent() {
+    private SceneManager() {
     }
 
-    public static Intent getInent() {
+    public static SceneManager getInent() {
         if (instance == null)
-            instance = new Intent();
+            instance = new SceneManager();
         return instance;
     }
 
