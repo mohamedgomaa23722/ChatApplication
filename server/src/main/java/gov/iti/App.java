@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-
+import gov.iti.presistance.connection.ClientServerConnection;
 import gov.iti.presistance.dao.ServerImpl;
 import gov.iti.model.User;
 import javafx.application.Application;
@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     public static void main(String[] args) throws SQLException, IOException {
-        ServerImpl serverImpl = new ServerImpl();
+        
+        ClientServerConnection.getConnectionInstance();
+        //ServerImpl serverImpl = new ServerImpl();
         //Test Registeration
         File file = new File("D:\\textEditor\\travis_scott.jpg");
         byte[] image = new byte[(int)file.length()];
@@ -28,9 +30,9 @@ public class App extends Application {
         fileInputStream.close();
         //boolean result = serverImpl.register(new User("203040", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
         
-        boolean result3 = serverImpl.login("015678987", "2626");
+        //boolean result3 = serverImpl.login("015678987", "2626");
 
-        System.out.println(" : " +result3);
+        //System.out.println(" : " +result3);
     }
 
     @Override

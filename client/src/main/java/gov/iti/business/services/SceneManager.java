@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import gov.iti.presentation.controller.LoginPasswdController;
-import gov.iti.presentation.controller.LoginPhoneController;
 import gov.iti.presentation.dtos.LoggedUser;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -88,7 +86,7 @@ public class SceneManager {
                 scenes.put(name, loginScene);
                 primaryStage.setScene(loginScene);
             } catch (IOException e) {
-                System.out.println("IO Exception: Couldn't load %s FXML file");
+                System.out.println("IO Exception: Couldn't load FXML file");
                 e.printStackTrace();
             }
         } else {

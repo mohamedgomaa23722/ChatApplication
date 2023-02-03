@@ -1,4 +1,4 @@
-#nextBtn:hover { 
+#nextBtn:hover,#signUpLbl:hover,#signInBtn:hover { 
     -fx-min-width:155;
     -fx-min-height:35;
     -fx-background-radius:10px;
@@ -33,7 +33,7 @@
 } 
 
 #phoneTextField {
-    -fx-background-image:url('"phone-icon.png"');
+    -fx-background-image:url('phone-icon.png"');
 }
 
 #passwdTextField {
@@ -61,6 +61,4 @@
     -fx-font-size: 17px;
 }
 
-#signUpLbl:hover {
-    -fx-effect: dropshadow( three-pass-box , #a7a7a756 , 5, 0.0 , 0 , 1 );
-}
+

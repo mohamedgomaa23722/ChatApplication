@@ -52,5 +52,10 @@ public class LoginPhoneController implements Initializable{
         userValidator=UserValidator.getUserValidator();
         phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
     }
+
+    @FXML
+    public void handelSignUp(){
+        SceneManager.getSceneManagerInstance().switchToSignUpScreen();
+    }
     
 }
