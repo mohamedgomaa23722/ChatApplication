@@ -2,3 +2,4 @@
 .vscode
 target/
 db.properties
+test/

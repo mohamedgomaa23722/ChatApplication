@@ -8,12 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import gov.iti.presentation.dto.Group;
 import gov.iti.presistance.DataBase.ConnectionManager;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
 
-public class ServerImpl extends UnicastRemoteObject implements ServerDao{
+public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
     private Connection connection;
 
@@ -24,7 +23,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao{
 
     @Override
     public boolean login(String phoneNumber, String password) throws RemoteException, SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("select phoneNumber, password from user where phoneNumber = ? AND password = ?");
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("select phoneNumber, password from user where phoneNumber = ? AND password = ?");
         preparedStatement.setString(1, phoneNumber);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -33,7 +33,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao{
 
     @Override
     public boolean register(User user, String Password) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into user(PhoneNumber, Name, age, status, mode, image, password, email, country, bio, gender) values(?,?,?,?,?,?,?,?,?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "insert into user(PhoneNumber, Name, age, status, mode, image, password, email, country, bio, gender) values(?,?,?,?,?,?,?,?,?,?,?)");
         preparedStatement.setString(1, user.getPhoneNumber());
         preparedStatement.setString(2, user.getName());
         preparedStatement.setInt(3, user.getAge());
@@ -59,12 +60,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao{
     }
 
     @Override
-    public boolean updateStatues(int userId) throws RemoteException, SQLException {
+    public boolean updateStatues(int userId) {
         return false;
     }
 
     @Override
-    public boolean updateMode(int userId) throws RemoteException, SQLException {
+    public boolean updateMode(int userId) {
         return false;
     }
 
@@ -82,5 +83,5 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao{
     public boolean ChangeStatus(String phoneNumber, int status) {
         return false;
     }
-    
+
 }

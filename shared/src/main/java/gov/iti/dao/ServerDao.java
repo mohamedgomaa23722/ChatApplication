@@ -8,7 +8,7 @@ import java.util.List;
 import gov.iti.model.Group;
 import gov.iti.model.User;
 
-public interface ServerDao extends Remote,SettingInt{
+public interface ServerDao extends Remote, SettingInt{
     
     public boolean login(String PhoneNumber, String Password) throws RemoteException, SQLException;
 
@@ -21,5 +21,4 @@ public interface ServerDao extends Remote,SettingInt{
     public boolean updateStatues(int userId) throws RemoteException, SQLException;
 
     public boolean updateMode(int userId) throws RemoteException, SQLException;
-
 }
