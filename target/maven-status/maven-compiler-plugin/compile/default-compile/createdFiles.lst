@@ -1,5 +1,0 @@
-gov\iti\App.class
-gov\iti\controller\HomeXMLControler.class
-gov\iti\controller\ChatFXMLController.class
-gov\iti\controller\MessageItem.class
-gov\iti\utils\Intent.class
