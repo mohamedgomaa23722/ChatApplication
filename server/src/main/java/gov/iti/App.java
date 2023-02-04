@@ -3,13 +3,10 @@ package gov.iti;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-
-import gov.iti.presistance.dao.ServerImpl;
 import gov.iti.model.User;
+import gov.iti.presistance.dao.ServerImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,11 +23,14 @@ public class App extends Application {
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(image);
         fileInputStream.close();
-        //boolean result = serverImpl.register(new User("203040", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
-        
-        boolean result3 = serverImpl.login("015678987", "2626");
+       
+        /*serverImpl.register(new User("567", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
+        serverImpl.register(new User("578", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
+        serverImpl.register(new User("579", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
+*/
+        boolean result3 = serverImpl.changeStatus("567", 1);
 
-        System.out.println(" : " +result3);
+        System.out.println(" : " + result3);
     }
 
     @Override

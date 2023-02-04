@@ -5,19 +5,18 @@ import gov.iti.model.User;
 
 public class SettingRepository implements SettingInt{
 
-
     @Override
-    public boolean UpdateProfile(User user) {
+    public boolean updateProfile(User user) {
         return false;
     }
 
     @Override
-    public boolean ChangePassword(String phoneNumber, String newPassword) {
+    public boolean changePassword(String phoneNumber, String newPassword) {
         return false;
     }
 
     @Override
-    public boolean ChangeStatus(String phoneNumber, int status) {
+    public boolean changeStatus(String phoneNumber, int status) {
         return false;
     }
 }

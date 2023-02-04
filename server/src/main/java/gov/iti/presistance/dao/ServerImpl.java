@@ -70,18 +70,25 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public boolean UpdateProfile(User user) {
+    public boolean updateProfile(User user) {
         return false;
     }
 
     @Override
-    public boolean ChangePassword(String phoneNumber, String newPassword) {
+    public boolean changePassword(String phoneNumber, String newPassword) {
         return false;
     }
 
     @Override
-    public boolean ChangeStatus(String phoneNumber, int status) {
-        return false;
+    public boolean changeStatus(String phoneNumber, int status) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("update user set status = ? where PhoneNumber = ?")) {
+            preparedStatement.setInt(1, status);
+            preparedStatement.setString(2, phoneNumber);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
