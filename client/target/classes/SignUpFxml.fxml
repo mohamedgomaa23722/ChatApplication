@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="SignUpStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.SignUpController">
+    <children>
+       <ImageView fx:id="img" fitHeight="600.0" fitWidth="265.0" layoutY="-1.0">
+            <image>
+                <Image url="@Rectangle.png" />
+            </image>
+        </ImageView>
+        <fx:define>
+        <ToggleGroup fx:id="RB_Group" />
+        </fx:define>
+        <RadioButton layoutX="25.0" layoutY="322.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="male" textAlignment="CENTER">
+         <toggleGroup>
+            <ToggleGroup fx:id="RB_Group" />
+         </toggleGroup>
+         <font>
+            <Font size="16.0" />
+         </font></RadioButton>
+        <RadioButton layoutX="113.0" layoutY="321.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="female" textAlignment="CENTER" toggleGroup="$RB_Group">
+         <font>
+            <Font size="16.0" />
+         </font></RadioButton>
+        <Label layoutX="35.0" layoutY="258.0" prefHeight="48.0" prefWidth="121.0" text="Gender" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font></Label>
+        <Label alignment="CENTER" layoutX="18.0" layoutY="45.0" prefHeight="48.0" prefWidth="112.0" text="Sign Up" textFill="#f84d43">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Label>
+      <Circle fx:id="circa" fill="#2197ff00" layoutX="96.0" layoutY="156.0" radius="43.0" stroke="#ff8780" strokeType="INSIDE" />
+      <ImageView fx:id="imgContainer" fitHeight="38.0" fitWidth="34.0" layoutX="79.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="back" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" onAction="#handelBack" prefHeight="32.0" prefWidth="28.0" />
+      <Pane layoutX="348.0" prefHeight="600.0" prefWidth="550.0">
+         <children>
+              <Button fx:id="signUp" layoutX="130.0" layoutY="503.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="299.0" text="SignUp" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+              
+              <TextField fx:id="phoneNumber" layoutX="79.0" layoutY="28.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter phone number" />
+              <PasswordField fx:id="passwordField" layoutX="79.0" layoutY="86.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter password" />
+              <PasswordField fx:id="confirmField" layoutX="79.0" layoutY="146.0" prefHeight="38.0" prefWidth="371.0" promptText="  Confirm password" />
+              <TextField fx:id="nameField" layoutX="79.0" layoutY="207.0" prefHeight="38.0" prefWidth="371.0" promptText="   Enter Your Name" />
+              <TextField fx:id="emailField" layoutX="79.0" layoutY="269.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter your Email" />
+              <TextField fx:id="textArea" layoutX="79.0" layoutY="386.0" prefHeight="97.0" prefWidth="371.0" promptText="                                   Short Bio" />
+            <ComboBox fx:id="combo" editable="true" layoutX="79.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="   Country" />
+            <DatePicker fx:id="birthDayField" editable="false" layoutX="279.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="Enter your birthdate" />
+         </children>
+      </Pane>
+      
+    </children>
+</Pane>

@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     public static void main(String[] args) throws SQLException, IOException {
-        ServerImpl serverImpl = new ServerImpl();
+        
+        ClientServerConnection.getConnectionInstance();
+        //ServerImpl serverImpl = new ServerImpl();
         //Test Registeration
         File file = new File("D:\\textEditor\\travis_scott.jpg");
         byte[] image = new byte[(int)file.length()];
