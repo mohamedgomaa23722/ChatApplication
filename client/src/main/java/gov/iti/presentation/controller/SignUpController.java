@@ -405,6 +405,7 @@ public class SignUpController implements Initializable {
         }
         
     }
+    
     @FXML
     private void handelBack(){
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();

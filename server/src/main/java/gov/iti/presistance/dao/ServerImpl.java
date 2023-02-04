@@ -81,6 +81,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
     @Override
     public boolean changeStatus(String phoneNumber, int status) {
+        System.out.println(" changeStatus called");
         try (PreparedStatement preparedStatement = connection.prepareStatement("update user set status = ? where PhoneNumber = ?")) {
             preparedStatement.setInt(1, status);
             preparedStatement.setString(2, phoneNumber);

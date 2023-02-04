@@ -4,12 +4,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import gov.iti.dao.ServerDao;
+import gov.iti.presistance.dao.ServerImpl;
 
 public class ClientServerConnection {
 
     Registry reg;
     ServerDao chatRef;
-    private static ClientServerConnection connectionInstance = new ClientServerConnection();
+    private static final ClientServerConnection connectionInstance = new ClientServerConnection();
 
     public static ClientServerConnection getConnectionInstance() {
         return connectionInstance;
@@ -17,9 +18,9 @@ public class ClientServerConnection {
 
     private ClientServerConnection() {
         try{
-            reg = LocateRegistry.getRegistry();
-            chatRef =(ServerDao) reg.lookup("ChatService");
-           
+            ServerImpl obj = new ServerImpl();
+            Registry reg = LocateRegistry.createRegistry(8889);
+            reg.rebind("ChatService", obj);
             } catch(Exception ex) { 
                 ex.printStackTrace();
             }

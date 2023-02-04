@@ -36,6 +36,6 @@ public class StatusSettingController implements Initializable{
             status = 3;
         }
         //TODO: GET PHONE NUMBER
-        settingsService.changeStatus(null, status);
+        settingsService.changeStatus("567", status);
     }
 }

@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import gov.iti.model.User;
+import gov.iti.presistance.connection.ClientServerConnection;
 import gov.iti.presistance.dao.ServerImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +32,13 @@ public class App extends Application {
         serverImpl.register(new User("578", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
         serverImpl.register(new User("579", "khkhkhkhkhkhhk", 25, "m", image, "a@yahoo.com", "asgasgasg", "egypt", 0, 0), "5268219");
 */
-        boolean result3 = serverImpl.changeStatus("567", 1);
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            if(scanner.nextLine() == "c"){
+                break;
+            }
+        }
 
-        System.out.println(" : " + result3);
     }
 
     @Override

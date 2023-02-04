@@ -7,9 +7,9 @@ import gov.iti.dao.ServerDao;
 
 public class ClientServerConnection {
 
-    Registry reg;
-    ServerDao chatRef;
-    private static ClientServerConnection connectionInstance = new ClientServerConnection();
+    private Registry reg;
+    private ServerDao chatRef;
+    private final static ClientServerConnection connectionInstance = new ClientServerConnection();
 
     public static ClientServerConnection getConnectionInstance() {
         return connectionInstance;
@@ -17,7 +17,7 @@ public class ClientServerConnection {
 
     private ClientServerConnection() {
         try{
-            reg = LocateRegistry.getRegistry();
+            reg = LocateRegistry.getRegistry("localhost", 8889);
             chatRef =(ServerDao) reg.lookup("ChatService");
            
             } catch(Exception ex) { 

@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="500.0" maxWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="500.0" maxWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller = "gov.iti.presentation.controller.settingsController.StatusSettingController">
    <children>
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="55.0" prefWidth="227.0" style="-fx-border-color: TRANSPARENT;" text="Status" textFill="#f84d43">
          <font>
@@ -38,7 +38,7 @@
             <Insets left="30.0" right="50.0" />
          </VBox.margin>
       </Label>
-      <RadioButton mnemonicParsing="false" selected="true" text="Available">
+      <RadioButton fx:id="availableRadioButton" mnemonicParsing="false" selected="true" text="Available">
          <font>
             <Font size="16.0" />
          </font>
@@ -49,7 +49,7 @@
             <Insets bottom="10.0" left="40.0" top="30.0" />
          </VBox.margin>
       </RadioButton>
-      <RadioButton mnemonicParsing="false" text="Busy" toggleGroup="$statusGroup">
+      <RadioButton fx:id="busyRadioButton" mnemonicParsing="false" text="Busy" toggleGroup="$statusGroup">
          <font>
             <Font size="16.0" />
          </font>
@@ -57,7 +57,7 @@
             <Insets bottom="10.0" left="40.0" />
          </VBox.margin>
       </RadioButton>
-      <RadioButton mnemonicParsing="false" text="Away" toggleGroup="$statusGroup">
+      <RadioButton fx:id="awayRadioButton" mnemonicParsing="false" text="Away" toggleGroup="$statusGroup">
          <font>
             <Font size="16.0" />
          </font>
@@ -67,7 +67,7 @@
       </RadioButton>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="updateButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="221.0" style="-fx-background-radius: 20; -fx-background-color: F84D43;" text="Update" textFill="WHITE">
+            <Button fx:id="updateButton" onAction = "#changeStatus" mnemonicParsing="false" prefHeight="40.0" prefWidth="221.0" style="-fx-background-radius: 20; -fx-background-color: F84D43;" text="Update" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
