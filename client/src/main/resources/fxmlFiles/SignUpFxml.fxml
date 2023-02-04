@@ -24,18 +24,15 @@
         <fx:define>
         <ToggleGroup fx:id="RB_Group" />
         </fx:define>
-        <RadioButton layoutX="25.0" layoutY="322.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="male" textAlignment="CENTER">
-         <toggleGroup>
-            <ToggleGroup fx:id="RB_Group" />
-         </toggleGroup>
+        <RadioButton fx:id="male" layoutX="25.0" layoutY="322.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="male" textAlignment="CENTER" toggleGroup="$RB_Group">
          <font>
             <Font size="16.0" />
          </font></RadioButton>
-        <RadioButton layoutX="113.0" layoutY="321.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="female" textAlignment="CENTER" toggleGroup="$RB_Group">
+        <RadioButton fx:id="female" layoutX="113.0" layoutY="321.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="female" textAlignment="CENTER" toggleGroup="$RB_Group">
          <font>
             <Font size="16.0" />
          </font></RadioButton>
-        <Label layoutX="35.0" layoutY="258.0" prefHeight="48.0" prefWidth="121.0" text="Gender" textAlignment="CENTER">
+        <Label layoutX="35.0" layoutY="258.0" prefHeight="48.0" prefWidth="121.0" text="Gender" textAlignment="CENTER" >
          <font>
             <Font name="System Bold" size="26.0" />
          </font></Label>
@@ -60,7 +57,7 @@
               <PasswordField fx:id="confirmField" layoutX="79.0" layoutY="146.0" prefHeight="38.0" prefWidth="371.0" promptText="  Confirm password" />
               <TextField fx:id="nameField" layoutX="79.0" layoutY="207.0" prefHeight="38.0" prefWidth="371.0" promptText="   Enter Your Name" />
               <TextField fx:id="emailField" layoutX="79.0" layoutY="269.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter your Email" />
-              <TextField fx:id="textArea" layoutX="79.0" layoutY="386.0" prefHeight="97.0" prefWidth="371.0" promptText="                                   Short Bio" />
+              <TextField fx:id="textArea" layoutX="79.0" layoutY="386.0" prefHeight="97.0" prefWidth="371.0" promptText="                                         Short Bio" />
             <ComboBox fx:id="combo" editable="true" layoutX="79.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="   Country" />
             <DatePicker fx:id="birthDayField" editable="false" layoutX="279.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="Enter your birthdate" />
          </children>

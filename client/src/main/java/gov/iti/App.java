@@ -17,17 +17,17 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         
-        primaryStage.setTitle("Chat Application");
+        /*primaryStage.setTitle("Chat Application");
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("chatPage.fxml"));
         Scene scene = new Scene(root);
         
         scene.getStylesheets().add(getClass().getClassLoader().getResource("chatStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
-        
-        /*SceneManager sceneManager = SceneManager.getSceneManagerInstance();
+        */
+        SceneManager sceneManager = SceneManager.getSceneManagerInstance();
         sceneManager.initStage(primaryStage);
         sceneManager.switchToPhoneLoginScreen();
-        primaryStage.show();*/
+        primaryStage.show();
     }
 }

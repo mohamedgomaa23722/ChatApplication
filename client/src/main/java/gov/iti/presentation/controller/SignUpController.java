@@ -15,8 +15,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,9 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import javax.swing.*;
+//import javax.swing.*;
 
 public class SignUpController implements Initializable {
 
@@ -64,29 +66,21 @@ public class SignUpController implements Initializable {
     private ToggleGroup RB_Group;
     @FXML
     private ComboBox combo;
-
+    @FXML
+    private RadioButton female;
+    @FXML
+    private RadioButton male;
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
     UserValidator userValidator;
     User registeredUser;
-
-    private String phone;
-    private String name;
-    private int age;
-    private String gender;
-    private byte[] image;
-    private String email;
-    private String bio;
-    private String country;
-    private int status;
-    private int mode;
 
     public SignUpController() {
         userValidator = UserValidator.getUserValidator();
     }
 
     public void initialize(URL arg0, ResourceBundle arg1) {
-        List country_list = List.of(
+        List<String> country_list = List.of(
                 "Afghanistan",
                 "Albania",
                 "Algeria",
@@ -356,8 +350,8 @@ public class SignUpController implements Initializable {
             nameField.setStyle(error);
         }
         if (!isValid)
-            JOptionPane.showMessageDialog(null,
-                    "your input formate wrong\n password must contain atleast 8 charchter with  \natleast one special charcter and atleast one uper-case litter\n Name must be english litters only");
+           // JOptionPane.showMessageDialog(null,
+                //    "your input formate wrong\n password must contain atleast 8 charchter with  \natleast one special charcter and atleast one uper-case litter\n Name must be english litters only");
         if (phoneNumber.getText().trim().isEmpty()) {
             isValid = false;
             phoneNumber.setStyle(error);
@@ -394,16 +388,38 @@ public class SignUpController implements Initializable {
 
     private void signUpAction() {
         if(validateAllFields()) {
-            System.out.println(validateAllFields());
-            registeredUser=new User(phoneNumber.getText().trim(), nameField.getText().trim(),25 , "male", image
-            ,emailField.getText().trim(), textArea.getText().trim(), combo.getValue().toString(), 0, 0);
+            Image image= imgContainer.getImage();
+            int w=(int)image.getWidth();
+            int h=(int)image.getHeight();
+            byte[] buf = new byte[w*h*4];
+            String gender;
+            image.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buf, 0, w * 4); 
+            if(female.isSelected()){
+                gender="female";
+            }
+            else{
+                gender="male";
+            }
+            registeredUser=new User(phoneNumber.getText().trim(), nameField.getText().trim(),25
+            ,gender, buf,emailField.getText().trim()
+            , textArea.getText().trim(), combo.getValue().toString(), 0, 0);
             if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
                 //go to chat 
             } else {
                 // stay
             }
+            
         }
+        //System.out.println(birthDayField.getEditor().getText());
         
+    }
+    private int calculateAge(String strBirthDate){
+        LocalDate birthDate = LocalDate.parse(strBirthDate.replaceAll("/", "-")); 
+        LocalDate currentDate = LocalDate.now();
+        /*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+        LocalDate dt = dtf.parseLocalDate(yourinput);*/
+       return Integer.parseInt(Period.between(birthDate, currentDate).toString()); 
+       
     }
     
     @FXML
