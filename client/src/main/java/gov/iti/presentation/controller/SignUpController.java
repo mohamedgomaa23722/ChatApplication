@@ -395,10 +395,10 @@ public class SignUpController implements Initializable {
             String gender;
             image.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buf, 0, w * 4); 
             if(female.isSelected()){
-                gender="female";
+                gender="f";
             }
             else{
-                gender="male";
+                gender="m";
             }
             registeredUser=new User(phoneNumber.getText().trim(), nameField.getText().trim(),25
             ,gender, buf,emailField.getText().trim()
