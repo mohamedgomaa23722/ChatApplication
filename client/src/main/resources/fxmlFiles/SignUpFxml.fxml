@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -8,60 +9,159 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="SignUpStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.SignUpController">
-    <children>
-       <ImageView fx:id="img" fitHeight="600.0" fitWidth="265.0" layoutY="-1.0">
-            <image>
-                <Image url="@Rectangle.png" />
-            </image>
-        </ImageView>
-        <fx:define>
-        <ToggleGroup fx:id="RB_Group" />
-        </fx:define>
-        <RadioButton fx:id="male" layoutX="25.0" layoutY="322.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="male" textAlignment="CENTER" toggleGroup="$RB_Group">
-         <font>
-            <Font size="16.0" />
-         </font></RadioButton>
-        <RadioButton fx:id="female" layoutX="113.0" layoutY="321.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="female" textAlignment="CENTER" toggleGroup="$RB_Group">
-         <font>
-            <Font size="16.0" />
-         </font></RadioButton>
-        <Label layoutX="35.0" layoutY="258.0" prefHeight="48.0" prefWidth="121.0" text="Gender" textAlignment="CENTER" >
-         <font>
-            <Font name="System Bold" size="26.0" />
-         </font></Label>
-        <Label alignment="CENTER" layoutX="18.0" layoutY="45.0" prefHeight="48.0" prefWidth="112.0" text="Sign Up" textFill="#f84d43">
-            <font>
-                <Font name="System Bold" size="30.0" />
-            </font>
-        </Label>
-      <Circle fx:id="circa" fill="#2197ff00" layoutX="96.0" layoutY="156.0" radius="43.0" stroke="#ff8780" strokeType="INSIDE" />
-      <ImageView fx:id="imgContainer" fitHeight="38.0" fitWidth="34.0" layoutX="79.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="back" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" onAction="#handelBack" prefHeight="32.0" prefWidth="28.0" />
-      <Pane layoutX="348.0" prefHeight="600.0" prefWidth="550.0">
+<GridPane prefHeight="600.0" prefWidth="900.0" stylesheets="SignUpStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.SignUpController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="105.60000610351562" prefWidth="263.2" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="636.8" prefWidth="636.8" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-image: url('Rectangle.png'); -fx-background-size: 100% 100%; -fx-background-position: center center;">
          <children>
-              <Button fx:id="signUp" layoutX="130.0" layoutY="503.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="299.0" text="SignUp" textFill="WHITE">
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" onAction="#handelBack" prefHeight="32.0" prefWidth="28.0" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets left="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label alignment="CENTER" prefHeight="48.0" prefWidth="112.0" text="Sign Up" textFill="#f84d43">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Circle fx:id="circa" fill="#2197ff00" radius="43.0" stroke="#ff8780" strokeType="INSIDE" />
+                        <ImageView fx:id="imgContainer" fitHeight="38.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </StackPane>
+                  <Label maxWidth="1.7976931348623157E308" text="Gender" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <RadioButton fx:id="male" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" selected="true" text="male" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="RB_Group" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="female" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="female" textAlignment="CENTER" toggleGroup="$RB_Group">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </RadioButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="550.0" style="-fx-background-color: #f7f7f7;" GridPane.columnIndex="1">
+         <children>
+            <VBox fx:id="form" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="550.0" style="-fx-background-color: #f7f7f7;">
+               <children>
+                  <TextField fx:id="phoneNumber" prefHeight="38.0" prefWidth="371.0" promptText="  Enter phone number">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="30.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="phoneErrorLabel" text="Label" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <PasswordField fx:id="passwordField" prefHeight="38.0" prefWidth="371.0" promptText="  Enter password">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <Label fx:id="passwordErrorLabel" text="Label" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <PasswordField fx:id="confirmField" prefHeight="38.0" prefWidth="371.0" promptText="  Confirm password">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <Label fx:id="cPasswordErrorLabel" text="Label" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="nameField" prefHeight="38.0" prefWidth="371.0" promptText="   Enter Your Name">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="nameErrorLabel" text="Label" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="emailField" prefHeight="38.0" prefWidth="371.0" promptText="  Enter your Email">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="emailErrorLabel" text="Label" visible="false">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="7.0">
+                     <children>
+                        <ComboBox fx:id="combo" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="   Country" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="birthDayField" editable="false" maxWidth="1.7976931348623157E308" prefHeight="38.0" promptText="Enter your birthdate" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TextField fx:id="textArea" alignment="CENTER" prefHeight="97.0" prefWidth="371.0" promptText="Short Bio">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <Button fx:id="signUp" mnemonicParsing="false" onAction="#signUpAction" prefHeight="38.0" prefWidth="299.0" text="SignUp" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
+               <VBox.margin>
+                  <Insets bottom="40.0" right="10.0" top="20.0" />
+               </VBox.margin>
             </Button>
-              
-              <TextField fx:id="phoneNumber" layoutX="79.0" layoutY="28.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter phone number" />
-              <PasswordField fx:id="passwordField" layoutX="79.0" layoutY="86.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter password" />
-              <PasswordField fx:id="confirmField" layoutX="79.0" layoutY="146.0" prefHeight="38.0" prefWidth="371.0" promptText="  Confirm password" />
-              <TextField fx:id="nameField" layoutX="79.0" layoutY="207.0" prefHeight="38.0" prefWidth="371.0" promptText="   Enter Your Name" />
-              <TextField fx:id="emailField" layoutX="79.0" layoutY="269.0" prefHeight="38.0" prefWidth="371.0" promptText="  Enter your Email" />
-              <TextField fx:id="textArea" layoutX="79.0" layoutY="386.0" prefHeight="97.0" prefWidth="371.0" promptText="                                         Short Bio" />
-            <ComboBox fx:id="combo" editable="true" layoutX="79.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="   Country" />
-            <DatePicker fx:id="birthDayField" editable="false" layoutX="279.0" layoutY="328.0" prefHeight="38.0" prefWidth="174.0" promptText="Enter your birthdate" />
          </children>
-      </Pane>
-      
-    </children>
-</Pane>
+      </VBox>
+   </children>
+</GridPane>

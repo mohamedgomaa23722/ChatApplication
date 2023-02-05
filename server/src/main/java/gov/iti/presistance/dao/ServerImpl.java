@@ -46,7 +46,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
         preparedStatement.setString(9, user.getCountry());
         preparedStatement.setString(10, user.getBio());
         preparedStatement.setString(11, user.getGender());
-        return preparedStatement.execute();
+        return preparedStatement.executeUpdate() > 0;
     }
 
     @Override

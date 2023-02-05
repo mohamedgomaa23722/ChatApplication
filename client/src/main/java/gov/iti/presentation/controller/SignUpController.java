@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -70,6 +71,18 @@ public class SignUpController implements Initializable {
     private RadioButton female;
     @FXML
     private RadioButton male;
+
+    @FXML
+    private Label phoneErrorLabel;
+    @FXML
+    private Label passwordErrorLabel;
+    @FXML
+    private Label cPasswordErrorLabel;
+    @FXML
+    private Label nameErrorLabel;
+    @FXML
+    private Label emailErrorLabel;
+    
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
     UserValidator userValidator;
@@ -310,15 +323,6 @@ public class SignUpController implements Initializable {
         signUp.setOnAction(e -> signUpAction());
         phoneNumber.setOnKeyTyped(e -> userValidator.validateUserNameNumber(phoneNumber));
         phoneNumber.setOnKeyReleased(e -> userValidator.validateUserNameNumber(phoneNumber));
-        // confirmField.setOnMouseDragExited(e->validatePassword());
-        /*
-         * confirmField.focusedProperty().addListener((obs, wasFocused, isNowFocused) ->
-         * {
-         * if (!isNowFocused) {
-         * userValidator.validatePassword();
-         * }
-         * });
-         */
         combo.setOnMouseClicked(e -> combo.setStyle(ideal));
         nameField.setOnMouseClicked(e -> nameField.setStyle(ideal));
         passwordField.setOnMouseClicked(e -> passwordField.setStyle(ideal));
@@ -340,53 +344,77 @@ public class SignUpController implements Initializable {
         if (!userValidator.validateEmail(emailField.getText())) {
             isValid = false;
             emailField.setStyle(error);
-        }
+            System.out.println("emailField error");
+            showError("Please Enter Valid Email", emailErrorLabel);
+        } else emailErrorLabel.setVisible(false);
+
         if (!validatePassword()) {
             isValid = false;
             passwordField.setStyle(error);
+            System.out.println("password error");
+            showError("Please Enter Password again", passwordErrorLabel);
+            showError("Please Enter Password again", cPasswordErrorLabel);
+
+        } else {
+            passwordErrorLabel.setVisible(false);
+            cPasswordErrorLabel.setVisible(false);
         }
+
         if (!userValidator.validateName(nameField.getText())) {
             isValid = false;
             nameField.setStyle(error);
-        }
+            System.out.println("nameField error");
+            showError("Please Enter name without spaces", nameErrorLabel);
+        } else nameErrorLabel.setVisible(false);
+
         if (!isValid)
            // JOptionPane.showMessageDialog(null,
                 //    "your input formate wrong\n password must contain atleast 8 charchter with  \natleast one special charcter and atleast one uper-case litter\n Name must be english litters only");
         if (phoneNumber.getText().trim().isEmpty()) {
             isValid = false;
             phoneNumber.setStyle(error);
+            
+            System.out.println("phoneNumber error");
+            showError("Please Enter phoneNumber", phoneErrorLabel);
+        } else phoneErrorLabel.setVisible(false);
 
-        }
         if (passwordField.getText().trim().isEmpty()) {
             isValid = false;
             passwordField.setStyle(error);
+            System.out.println("passwordField error");
+            showError("Please Enter password", passwordErrorLabel);
         }
         if (confirmField.getText().trim().isEmpty()) {
             isValid = false;
             confirmField.setStyle(error);
+            System.out.println("confirmField error");
+            showError("Please Enter password", cPasswordErrorLabel);
         }
         if (nameField.getText().trim().isEmpty()) {
             isValid = false;
             nameField.setStyle(error);
+            System.out.println("nameField error");
+            showError("Please Enter Name", nameErrorLabel);
         }
         if (emailField.getText().trim().isEmpty()) {
             isValid = false;
             emailField.setStyle(error);
+            System.out.println("emailField error");
+            showError("Please Enter email", emailErrorLabel);
         }
         if (combo.getSelectionModel().isEmpty()) {
             isValid = false;
             // System.out.println("combo");
             combo.setStyle(error);
+            System.out.println("combo error");
         }
-        if (RB_Group.getSelectedToggle() == null) {
-            isValid = false;
-            // System.out.println("radio");
 
-        }
         return isValid;
     }
 
+    @FXML
     private void signUpAction() {
+        System.out.println("check play");
         if(validateAllFields()) {
             Image image= imgContainer.getImage();
             int w=(int)image.getWidth();
@@ -400,26 +428,27 @@ public class SignUpController implements Initializable {
             else{
                 gender="m";
             }
-            registeredUser=new User(phoneNumber.getText().trim(), nameField.getText().trim(),25
+            registeredUser=new User(phoneNumber.getText().trim(), nameField.getText().trim(),calculateAge()
             ,gender, buf,emailField.getText().trim()
             , textArea.getText().trim(), combo.getValue().toString(), 0, 0);
             if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
                 //go to chat 
+                //TODO:
+                SceneManager.getSceneManagerInstance().switchToChatScreen();
+                System.out.println("correct chat page");
             } else {
                 // stay
             }
             
+        } else {
+            System.out.println("is not valid yet");
         }
-        //System.out.println(birthDayField.getEditor().getText());
         
     }
-    private int calculateAge(String strBirthDate){
-        LocalDate birthDate = LocalDate.parse(strBirthDate.replaceAll("/", "-")); 
+
+    private int calculateAge(){
         LocalDate currentDate = LocalDate.now();
-        /*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-        LocalDate dt = dtf.parseLocalDate(yourinput);*/
-       return Integer.parseInt(Period.between(birthDate, currentDate).toString()); 
-       
+       return Period.between(birthDayField.getValue(), currentDate).getYears(); 
     }
     
     @FXML
@@ -427,4 +456,8 @@ public class SignUpController implements Initializable {
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
     }
 
+    public void showError(String message, Label vBox){
+        vBox.setVisible(true);
+        vBox.setText(message);
+    }
 }

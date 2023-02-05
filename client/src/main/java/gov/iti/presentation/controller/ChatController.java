@@ -1,5 +1,6 @@
 package gov.iti.presentation.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import gov.iti.business.services.SceneManager;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
@@ -96,6 +98,7 @@ public class ChatController implements Initializable {
             }
         });
 
+        Platform.runLater(() ->{
         List<Contact> contacts = new ArrayList<>();
         for (int index = 0; index < 14; index++) {
             contacts.add(new Contact(String.valueOf(index), "gomaa" + index, index, "m", "",
@@ -114,7 +117,7 @@ public class ChatController implements Initializable {
 
         ObservableList<Chat> observableList1 = FXCollections.observableArrayList(groups);
         group_list.setItems(observableList1);
-        group_list.setCellFactory(p -> new ContactCell());
+        group_list.setCellFactory(p -> new ContactCell());});
     }
 
     private void addMessage(Message message, boolean status) {
@@ -144,6 +147,13 @@ public class ChatController implements Initializable {
         if(SettingContainer.isVisible()){
             SettingContainer.setVisible(false);
         }
+    }
+
+    @FXML
+    private void signOut() {
+         //TODO : Sign Out from server
+        //TODO : switch to login page
+        SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
     }
 }
 

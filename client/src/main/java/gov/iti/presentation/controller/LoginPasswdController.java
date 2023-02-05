@@ -39,6 +39,7 @@ public class LoginPasswdController implements Initializable{
             if(LoginService.getLoginService().loginUser(loggedUser)) {
                 //go to chat
                 System.out.println("login sucessful");
+                SceneManager.getSceneManagerInstance().switchToChatScreen();
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password

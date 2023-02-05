@@ -1,11 +1,11 @@
 .root {
-  -fx-background-color: #f7f7f7;
+  -fx-background-color: #f7f7fa;
 }
 #phoneNumber {
   -fx-background-image: url('phone.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left 5 center;
-  -fx-text-box-border: #FF8780;
+  -fx-text-box-border: #383838;
   -fx-border-width: 1;
   -fx-border-radius: 2;
   -fx-background-size: 28;
@@ -13,22 +13,30 @@
   /*-fx-background-size: contain;
   -fx-padding: 10px;*/
 }
-#textArea{
-  -fx-text-box-border: #FF8780;
-  -fx-border-width: 1;
-  -fx-border-radius: 2;
-}
 
+#textArea, #phoneNumber, #passwordField #confirmField,
+#nameField, #emailField{
+  -fx-background-color: #efefef8a;
+  -fx-border-insets: 0; 
+  -fx-border-width: 2px; 
+  -fx-border-color: #FF8780; 
+  -fx-border-style: hidden hidden solid hidden;
+}
 
 #passwordField {
   -fx-background-image: url('lock.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left 5 center;
-  -fx-text-box-border: #FF8780;
+  -fx-text-box-border: #383838;
   -fx-border-width: 1;
   -fx-border-radius: 6;
   -fx-background-size: 30;
   -fx-padding: 0 0 0 30;
+  -fx-background-color: #efefef8a;
+  -fx-border-insets: 0; 
+  -fx-border-width: 2px; 
+  -fx-border-color: #FF8780; 
+  -fx-border-style: hidden hidden solid hidden;
 }
 
 #confirmField {
@@ -41,13 +49,19 @@
 /*  -fx-padding: 12px;*/
   -fx-background-size: 30;
     -fx-padding: 0 0 0 30;
+    -fx-background-color: #efefef8a;
+    -fx-border-insets: 0; 
+    -fx-border-width: 2px; 
+    -fx-border-color: #FF8780; 
+    -fx-border-style: hidden hidden solid hidden;
 }
+
 
 #nameField {
   -fx-background-image: url('person.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left 10 center;
-  -fx-text-box-border: #FF8780;
+  -fx-text-box-border: #383838;
   -fx-border-width: 1;
   -fx-border-radius: 2;
   -fx-background-size: 18;
@@ -58,23 +72,28 @@
   -fx-background-image: url('email.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left 5 center;
-  -fx-text-box-border: #FF8780;
+  -fx-text-box-border: #383838;
   -fx-border-width: 1;
   -fx-border-radius: 2;
   -fx-background-size: 30;
   -fx-padding: 0 0 0 30;
 }
 
+
 #birthDayField {
   -fx-background-image: url('birth.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position:left center;
-  -fx-border-color: #FF8780 ;
-  -fx-background-color: white;
+  -fx-border-color: #383838 ;
   -fx-border-width: 1;
   -fx-border-radius: 2;
   -fx-background-size: 30;
   -fx-padding: 0 0 0 30;
+  -fx-background-color: #efefef8a;
+  -fx-border-insets: 0; 
+  -fx-border-width: 2px; 
+  -fx-border-color: #FF8780; 
+  -fx-border-style: hidden hidden solid hidden;
 }
 .date-picker > .arrow-button > .arrow {
    -fx-opacity:0;
@@ -94,7 +113,8 @@
   -fx-background-color: transparent;
   -fx-background-image: url('arrow.png');
   -fx-background-repeat: no-repeat;
-  -fx-background-size: 30;
+  -fx-background-position: center center;
+  -fx-background-size: 20;
   -fx-padding: 0 0 0 30;
 }
 .button {
@@ -108,7 +128,7 @@
   -fx-background-color: #F84D43;
 }
 #imgContainer:hover { 
-	-fx-effect: dropshadow( three-pass-box , gray , 20, 0.0 , 5 , 3 );
+	-fx-effect: dropshadow( three-pass-box , gray , 10, 0.0 , 5 , 3 );
 }
 #combo{
   -fx-background-image: url('flag.png');
@@ -120,8 +140,13 @@
    -fx-border-radius: 2;
    -fx-background-size: 30;
    -fx-padding: 0 0 0 30;
+   -fx-background-color: #efefef8a;
+   -fx-border-insets: 0; 
+   -fx-border-width: 2px; 
+   -fx-border-color: #FF8780; 
+   -fx-border-style: hidden hidden solid hidden;
 
 }
 .arrow-button {
-	-fx-background-color: white;
+	-fx-background-color: #efefef8a;
 }

@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.ChatController">
+<StackPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" stylesheets="chatStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.ChatController">
    <children>
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="900.0">
          <children>
@@ -114,7 +114,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <ImageView fx:id="signout" fitHeight="25.0" fitWidth="25.0" layoutX="23.0" layoutY="70.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="signout" fitHeight="25.0" fitWidth="25.0" onMouseClicked = "#signOut" layoutX="23.0" layoutY="70.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="signout.png" />
                            </image>

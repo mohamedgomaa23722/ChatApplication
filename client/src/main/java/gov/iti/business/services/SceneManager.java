@@ -70,6 +70,11 @@ public class SceneManager {
         loadView(sceneName);
     }
 
+    public void switchToChatScreen() {
+        sceneName = "chatPage";
+        primaryStage.setTitle(sceneName);
+        loadView(sceneName);
+    }
 
     public void loadView(String name) {
         if (primaryStage == null) {
