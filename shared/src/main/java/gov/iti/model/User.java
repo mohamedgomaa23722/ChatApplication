@@ -28,6 +28,19 @@ public class User implements Serializable{
         this.mode = mode;
     }
 
+    public User(User user) {
+        this.PhoneNumber = user.getPhoneNumber();
+        this.name = user.getName();
+        this.age = user.getAge();
+        this.gender = user.getGender();
+        this.image = user.getImage();
+        this.email = user.getEmail();
+        this.bio = user.getBio();
+        this.country = user.getCountry();
+        this.status = user.getStatus();
+        this.mode = user.getMode();
+    }
+
     public String getPhoneNumber() {
         return PhoneNumber;
     }

@@ -16,7 +16,12 @@ public class SettingsService implements SettingInt{
 
     @Override
     public boolean updateProfile(User user) {
-        return false;
+        try {
+            return settingRepository.updateProfile(user);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
         
     }
 

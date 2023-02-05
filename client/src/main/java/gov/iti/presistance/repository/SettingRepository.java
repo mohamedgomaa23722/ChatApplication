@@ -9,8 +9,8 @@ import gov.iti.presistance.connection.ClientServerConnection;
 public class SettingRepository implements SettingInt{
 
     @Override
-    public boolean updateProfile(User user) {
-        return false;
+    public boolean updateProfile(User user) throws RemoteException {
+        return ClientServerConnection.getConnectionInstance().getRegistry().updateProfile(user);
     }
 
     @Override

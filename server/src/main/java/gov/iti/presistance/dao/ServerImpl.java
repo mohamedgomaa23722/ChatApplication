@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import gov.iti.presistance.DataBase.ConnectionManager;
+import gov.iti.Utilities;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
 
@@ -41,12 +42,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
         preparedStatement.setInt(4, user.getStatus());
         preparedStatement.setInt(5, user.getMode());
         preparedStatement.setBytes(6, user.getImage());
-        preparedStatement.setString(7, Password);
+        preparedStatement.setString(7, Utilities.Hash(Password));
         preparedStatement.setString(8, user.getEmail());
         preparedStatement.setString(9, user.getCountry());
         preparedStatement.setString(10, user.getBio());
         preparedStatement.setString(11, user.getGender());
         return preparedStatement.executeUpdate() > 0;
+        
     }
 
     @Override

@@ -20,5 +20,4 @@ public class LoggedUser {
         this.passwd = passwd;
     }
     
-    
 }
