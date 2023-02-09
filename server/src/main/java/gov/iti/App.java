@@ -22,7 +22,7 @@ public class App extends Application {
         ClientServerConnection.getConnectionInstance();
         //ServerImpl serverImpl = new ServerImpl();
         //Test Registeration
-        File file = new File("C:/Users/LENOVO/Desktop/File/3579045.png");
+        File file = new File("C:/Users/LENOVO/OneDrive/Desktop/dafault.png");
         byte[] image = new byte[(int)file.length()];
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(image);
