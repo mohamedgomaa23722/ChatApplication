@@ -19,8 +19,8 @@ public class User implements Serializable{
 
     public User(){}
     
-    public User(String phoneNumber, String name, int age, String gender, byte[] image, String email, String bio,
-            String country, int status, int mode) {
+    public User(String phoneNumber, String name, int age, int status, int mode, byte[] image, String email, String country ,
+     String bio, String gender) {
         PhoneNumber = phoneNumber;
         this.name = name;
         this.age = age;

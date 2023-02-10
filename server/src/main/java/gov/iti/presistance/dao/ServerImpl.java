@@ -6,14 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.sound.midi.Receiver;
-
-import com.mysql.cj.xdevapi.Client;
-
+import gov.iti.presistance.UsersInfo;
 import gov.iti.presistance.DataBase.ConnectionManager;
 import java.util.*;
 import gov.iti.Utilities;
@@ -41,6 +37,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             clients.put(phoneNumber, client);
+
+            UsersInfo.updateList();
+
             return UserFactory.createUser(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +63,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(10, user.getBio());
             preparedStatement.setString(11, user.getGender());
             clients.put(user.getPhoneNumber(), client);
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result ;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +94,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(4, user.getCountry());
             preparedStatement.setString(5, user.getBio());
             preparedStatement.setString(6, user.getPhoneNumber());
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
         } catch (SQLException e) {
             System.out.println("update Failed ");
              e.printStackTrace();
@@ -110,7 +117,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement("update user set status = ? where PhoneNumber = ?")) {
             preparedStatement.setInt(1, status);
             preparedStatement.setString(2, phoneNumber);
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -120,8 +131,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public boolean sendInvitation(User sender, User reciever) throws RemoteException, SQLException {
         // TODO Add invitation to database
-        //TODO send invitation to target receiver
-        User recTest = new User("01111567897","Gomaa mohamed",25,"m",null,null,null,null,1,0);
+        // TODO send invitation to target receiver
+        User recTest = new User("01111567897","Gomaa mohamed",25,1,0,null,null,null,null,null);
         Invitation invitation = new Invitation(1, sender, recTest);
         if(clients.containsKey(reciever.getPhoneNumber())){
             clients.get(reciever.getPhoneNumber()).recievedContactInvitation(invitation);

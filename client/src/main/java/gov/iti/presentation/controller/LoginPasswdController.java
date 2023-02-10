@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 
-public class LoginPasswdController implements Initializable{
+public class LoginPasswdController implements Initializable {
 
     UserValidator userValidator;
 
@@ -30,18 +30,21 @@ public class LoginPasswdController implements Initializable{
 
         boolean isPasswdValid;
 
-        passwd=passwdTextField.getText();
+        passwd = passwdTextField.getText();
 
-        isPasswdValid=userValidator.validateUserPassWd(passwd);
+        isPasswdValid = userValidator.validateUserPassWd(passwd);
 
-        if(isPasswdValid) {
+        // if (isPasswdValid) {
             // go to password sign in
             CurrentUser.getCurrentUser().setPassword(passwd);
             User user;
-            if(( user = LoginService.getLoginService().loginUser()) != null) {
-                //go to chat
-                System.out.println("login sucessful  : " + user.getStatus() + " : "+ user.getPhoneNumber());
+            if ((user = LoginService.getLoginService().loginUser()) != null) {
+                // go to chat
+                System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
+                System.out.println(user.getCountry());
                 CurrentUser.getCurrentUser().setUser(user);
+                System.out.println(CurrentUser.getInstance().getCountry().get());
+                System.out.println(CurrentUser.getInstance().getBio().get());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
             } else {
                 // go to sign in page
@@ -49,28 +52,28 @@ public class LoginPasswdController implements Initializable{
                 System.out.println("login failed" + passwd);
                 SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
             }
-            
-            // tranfer this object to server
-            // not null load chat screen
-            // null go to login phone screen 
 
-        } else {
-            // password not valid
-            passwdTextField.setStyle(error);
-            System.out.println("password not valid");
-        } 
+        //     // tranfer this object to server
+        //     // not null load chat screen
+        //     // null go to login phone screen
+
+        // } else {
+        //     // password not valid
+        //     passwdTextField.setStyle(error);
+        //     System.out.println("password not valid");
+        // }
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-       
-        userValidator=UserValidator.getUserValidator();
-        passwdTextField.setOnMouseClicked(e->passwdTextField.setStyle(ideal));
+
+        userValidator = UserValidator.getUserValidator();
+        passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
     }
 
     @FXML
-    public void handelSignUp(){
+    public void handelSignUp() {
         SceneManager.getSceneManagerInstance().switchToSignUpScreen();
     }
-    
+
 }

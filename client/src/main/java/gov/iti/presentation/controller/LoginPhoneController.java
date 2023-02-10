@@ -34,16 +34,16 @@ public class LoginPhoneController implements Initializable{
 
         isPhoneValid=userValidator.validateUserPhoneNumber(phoneNumber);
 
-        if(isPhoneValid) {
+        // if(isPhoneValid) {
             // go to password sign in
 
             CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
             SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
-        } else {
-            // show error message
-            // stay in this page
-            phoneTextField.setStyle(error);
-        }
+        // } else {
+        //     // show error message
+        //     // stay in this page
+        //     phoneTextField.setStyle(error);
+        // }
 
     }
 

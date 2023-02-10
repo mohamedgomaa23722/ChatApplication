@@ -31,7 +31,7 @@ public class CurrentUser {
         country = new SimpleStringProperty();
     }
 
-    public static CurrentUser getCurrentUser(){
+    public static CurrentUser getCurrentUser() {
         return instance;
     }
 
@@ -52,20 +52,22 @@ public class CurrentUser {
         email.set(user.getEmail());
         bio.set(user.getBio());
         status.set(user.getStatus());
+        country.set(user.getCountry());
         System.out.println("Updates");
+
     }
 
     public User getUser() {
         return new User(getPhoneNumber().get(),
-        getName().get(), 
-        getAge().get(),
-        getGender().get(),
-        getImage(),
-        getEmail().get(),
-        getBio().get(),
-        getCountry().get(),
-        getStatus().get(),
-        0);
+                getName().get(),
+                getAge().get(),
+                getStatus().get(),
+                0,
+                getImage(),
+                getEmail().get(),
+                getCountry().get(),
+                getBio().get(),
+                getGender().get());
     }
 
     public static CurrentUser getInstance() {
@@ -93,7 +95,8 @@ public class CurrentUser {
     }
 
     public void setAge(int age) {
-        this.age.set(age);;
+        this.age.set(age);
+        ;
     }
 
     public StringProperty getGender() {
@@ -144,5 +147,4 @@ public class CurrentUser {
         this.status.set(status);
     }
 
-    
 }

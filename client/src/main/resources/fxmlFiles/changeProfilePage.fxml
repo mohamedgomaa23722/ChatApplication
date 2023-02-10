@@ -97,9 +97,9 @@
                   <Insets bottom="5.0" left="20.0" top="5.0" />
                </HBox.margin>
             </ImageView>
-            <ComboBox fx:id="comboBoxCountry" prefHeight="30.0" prefWidth="174.0">
+            <ComboBox fx:id="comboBoxCountry" prefHeight="30.0" prefWidth="263.0" style="-fx-background-color: white;">
                <HBox.margin>
-                  <Insets left="30.0" top="8.0" />
+                  <Insets left="30.0" top="5.0" />
                </HBox.margin>
             </ComboBox>
          </children>

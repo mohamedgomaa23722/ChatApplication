@@ -233,9 +233,10 @@ public class SignUpController implements Initializable {
             else{
                 gender="m";
             }
+            System.out.println(combo.getValue().toString());
             registeredUser = new User(phoneNumber.getText().trim(), nameField.getText().trim(),calculateAge()
-            ,gender, buf,emailField.getText().trim()
-            , textArea.getText().trim(), combo.getValue().toString(), 0, 0);
+            , 0, 0, buf,emailField.getText().trim()
+            , combo.getValue().toString(), textArea.getText().trim(),gender);
             if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
                 //go to chat 
                 CurrentUser.getCurrentUser().setUser(registeredUser);
