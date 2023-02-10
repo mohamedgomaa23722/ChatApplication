@@ -1,4 +1,4 @@
-package gov.iti.business.services;
+package gov.iti.presentation.utils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,39 +14,16 @@ import javafx.stage.Stage;
 
 public class SceneManager {
 
-    private static SceneManager instance;
-    private Stage primaryStage;
+    private final static SceneManager instance = new SceneManager();
+    private static Stage primaryStage;
     private final Map<String, Scene> scenes = new HashMap<>();
-    private String name;
-    private String imagePath;
     String sceneName;
-    LoggedUser loggedUser;
-
-    public static User currentUser;
 
     private SceneManager() {
     }
 
     public static SceneManager getSceneManagerInstance() {
-        if (instance == null)
-            instance = new SceneManager();
         return instance;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImagePath() {
-        return imagePath;
     }
 
     public void initStage(Stage stage) {
@@ -62,9 +39,8 @@ public class SceneManager {
         loadView(sceneName);
     }
 
-    public void switchToPasswdLoginScreen(LoggedUser user) {
+    public void switchToPasswdLoginScreen() {
         sceneName = "LoginPasswd";
-        loggedUser=user;
         primaryStage.setTitle(sceneName);
         loadView(sceneName);
     }
@@ -106,8 +82,6 @@ public class SceneManager {
         System.out.println("loaded " + name);
     }
 
-    public LoggedUser getLoggedUser() {
-        return loggedUser;
-    }
+
 
 }

@@ -8,8 +8,8 @@ import gov.iti.presistance.dao.ServerImpl;
 
 public class ClientServerConnection {
 
-    Registry reg;
-    ServerDao chatRef;
+    private ServerDao chatRef;
+
     private static final ClientServerConnection connectionInstance = new ClientServerConnection();
 
     public static ClientServerConnection getConnectionInstance() {

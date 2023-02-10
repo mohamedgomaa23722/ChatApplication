@@ -19,14 +19,17 @@ public class ClientServerConnection {
         try{
             reg = LocateRegistry.getRegistry("localhost", 8889);
             chatRef =(ServerDao) reg.lookup("ChatService");
-           
             } catch(Exception ex) { 
                 ex.printStackTrace();
             }
     }
 
-    public ServerDao getRegistry() {
+    public ServerDao getServerDao() {
         return chatRef;
+    }
+
+    public Registry getRegistry() {
+        return reg;
     }
     
 }

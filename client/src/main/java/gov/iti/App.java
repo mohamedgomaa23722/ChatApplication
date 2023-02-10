@@ -1,10 +1,9 @@
 package gov.iti;
 
-import gov.iti.business.services.SceneManager;
+import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -15,19 +14,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        
-        /*primaryStage.setTitle("Chat Application");
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("chatPage.fxml"));
-        Scene scene = new Scene(root);
-        
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("chatStyle.css").toExternalForm());
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        */
         SceneManager sceneManager = SceneManager.getSceneManagerInstance();
         sceneManager.initStage(primaryStage);
         sceneManager.switchToPhoneLoginScreen();
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        System.out.println("service unbinded");
     }
 }

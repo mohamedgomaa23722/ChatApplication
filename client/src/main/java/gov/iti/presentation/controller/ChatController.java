@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import gov.iti.business.services.SceneManager;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.Contact;
 import gov.iti.presentation.dtos.Group;
 import gov.iti.presentation.dtos.Message;
+import gov.iti.presentation.utils.SceneManager;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -153,6 +153,7 @@ public class ChatController implements Initializable {
     private void signOut() {
          //TODO : Sign Out from server
         //TODO : switch to login page
+        
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
     }
 }

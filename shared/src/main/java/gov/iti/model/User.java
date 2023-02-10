@@ -13,6 +13,8 @@ public class User implements Serializable{
     private String country;
     private int status;
     private int mode;
+
+    public User(){}
     
     public User(String phoneNumber, String name, int age, String gender, byte[] image, String email, String bio,
             String country, int status, int mode) {
@@ -26,19 +28,6 @@ public class User implements Serializable{
         this.country = country;
         this.status = status;
         this.mode = mode;
-    }
-
-    public User(User user) {
-        this.PhoneNumber = user.getPhoneNumber();
-        this.name = user.getName();
-        this.age = user.getAge();
-        this.gender = user.getGender();
-        this.image = user.getImage();
-        this.email = user.getEmail();
-        this.bio = user.getBio();
-        this.country = user.getCountry();
-        this.status = user.getStatus();
-        this.mode = user.getMode();
     }
 
     public String getPhoneNumber() {

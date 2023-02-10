@@ -1,9 +1,11 @@
 package gov.iti.presentation.controller;
 
-import gov.iti.presentation.validation.UserValidator;
 import gov.iti.business.services.RegisterService;
-import gov.iti.business.services.SceneManager;
 import gov.iti.model.User;
+import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.Constant;
+import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserValidator;
 
 import java.io.File;
 
@@ -20,12 +22,10 @@ import javafx.scene.image.PixelFormat;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -93,7 +93,7 @@ public class SignUpController implements Initializable {
     }
 
     public void initialize(URL arg0, ResourceBundle arg1) {
-        combo.setItems(FXCollections.observableArrayList(UserValidator.country_list));
+        combo.setItems(FXCollections.observableArrayList(Constant.country_list));
         styleFrame();
         actionHandlingIntialization();
     }
@@ -239,7 +239,7 @@ public class SignUpController implements Initializable {
             , textArea.getText().trim(), combo.getValue().toString(), 0, 0);
             if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
                 //go to chat 
-                SceneManager.currentUser = registeredUser;
+                CurrentUser.getCurrentUser().setUser(registeredUser);
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
                 System.out.println("correct chat page");
             } else {

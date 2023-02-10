@@ -4,12 +4,12 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 import gov.iti.dao.ServerDao;
-import gov.iti.presentation.dtos.LoggedUser;
+import gov.iti.model.User;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
 public class LoginService {
 
-    LoggedUser loggedUser;
     ServerDao chatReg;
     static LoginService loginservice = new LoginService();
 
@@ -18,12 +18,15 @@ public class LoginService {
     }
 
     private LoginService() {
-        chatReg=ClientServerConnection.getConnectionInstance().getRegistry();
+        chatReg=ClientServerConnection.getConnectionInstance().getServerDao();
     }
 
-    public boolean loginUser(LoggedUser loggedUser) {
+    public User loginUser() {
+        String Password = CurrentUser.getCurrentUser().getPassword();
+        String phoneNumber = CurrentUser.getCurrentUser().getUser().getPhoneNumber();
+        System.out.println(phoneNumber + " : " + Password);
         try {
-            return chatReg.login(loggedUser.getPhone(), loggedUser.getPasswd());
+            return chatReg.login(phoneNumber, Password);
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -31,6 +34,6 @@ public class LoginService {
             
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }

@@ -19,17 +19,15 @@ public class RegisterService {
     }
 
     private RegisterService() {
-        chatReg=ClientServerConnection.getConnectionInstance().getRegistry();
+        chatReg=ClientServerConnection.getConnectionInstance().getServerDao();
     }
 
     public boolean registerNewUser(User user, String Password) {
         try {
             return chatReg.register(user, Password);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;

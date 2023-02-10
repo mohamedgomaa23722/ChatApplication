@@ -3,10 +3,12 @@ package gov.iti.presentation.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.LoggedUser;
-import gov.iti.presentation.validation.UserValidator;
+import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.LoginService;
-import gov.iti.business.services.SceneManager;
+import gov.iti.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
@@ -34,22 +36,24 @@ public class LoginPasswdController implements Initializable{
 
         if(isPasswdValid) {
             // go to password sign in
-            LoggedUser loggedUser=SceneManager.getSceneManagerInstance().getLoggedUser();
-            loggedUser.setPasswd(passwd);
-            if(LoginService.getLoginService().loginUser(loggedUser)) {
+            CurrentUser.getCurrentUser().setPassword(passwd);
+            User user;
+            if(( user = LoginService.getLoginService().loginUser()) != null) {
                 //go to chat
-                System.out.println("login sucessful");
+                System.out.println("login sucessful  : " + user.getStatus() + " : "+ user.getPhoneNumber());
+                CurrentUser.getCurrentUser().setUser(user);
+                CurrentUser.getCurrentUser().setStatus(user.getStatus());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password
-                System.out.println("login failed");
+                System.out.println("login failed" + passwd);
                 SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
             }
             
             // tranfer this object to server
             // not null load chat screen
-            // null go to login phone screen
+            // null go to login phone screen 
 
         } else {
             // password not valid

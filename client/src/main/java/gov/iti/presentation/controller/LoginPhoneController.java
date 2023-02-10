@@ -3,9 +3,10 @@ package gov.iti.presentation.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.LoggedUser;
-import gov.iti.presentation.validation.UserValidator;
-import gov.iti.business.services.SceneManager;
+import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -35,9 +36,9 @@ public class LoginPhoneController implements Initializable{
 
         if(isPhoneValid) {
             // go to password sign in
-            user = new LoggedUser();
-            user.setPhone(phoneNumber);
-            SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen(user);
+
+            CurrentUser.getCurrentUser().getUser().setPhoneNumber(phoneNumber);
+            SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
         } else {
             // show error message
             // stay in this page
@@ -48,7 +49,6 @@ public class LoginPhoneController implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
         userValidator=UserValidator.getUserValidator();
         phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
     }
