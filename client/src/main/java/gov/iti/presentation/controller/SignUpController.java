@@ -96,6 +96,8 @@ public class SignUpController implements Initializable {
         combo.setItems(FXCollections.observableArrayList(Constant.country_list));
         styleFrame();
         actionHandlingIntialization();
+
+        
     }
 
     @FXML
@@ -108,11 +110,9 @@ public class SignUpController implements Initializable {
         if (file != null) {
             try {
                 URL url = file.toURI().toURL();
-
                 circa.setFill(new ImagePattern(new Image(url.toString())));
                 imgContainer.setVisible(false);
                 circa.setOnMouseClicked(e1 -> handleImageContainer(e1));
-
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
             }
@@ -122,7 +122,6 @@ public class SignUpController implements Initializable {
     public void styleFrame() {
         imgContainer.setImage(new Image(getClass().getResource("/image.png").toString()));
         imgContainer.setOnMouseClicked(e -> handleImageContainer(e));
-
     }
 
     public void actionHandlingIntialization() {
@@ -221,7 +220,7 @@ public class SignUpController implements Initializable {
     @FXML
     private void signUpAction() {
         System.out.println("check play");
-        if(validateAllFields()) {
+        // if(validateAllFields()) {
             Image image= imgContainer.getImage();
             int w=(int)image.getWidth();
             int h=(int)image.getHeight();
@@ -246,9 +245,9 @@ public class SignUpController implements Initializable {
                 // stay
             }
             
-        } else {
-            System.out.println("is not valid yet");
-        }
+        // } else {
+        //     System.out.println("is not valid yet");
+        // }
         
     }
 

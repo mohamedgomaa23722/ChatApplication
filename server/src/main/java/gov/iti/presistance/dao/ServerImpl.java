@@ -70,7 +70,20 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
     @Override
     public boolean updateProfile(User user) {
-        return false;
+        System.out.println("serverImpl updating user profile at DataBase ");
+        try (PreparedStatement preparedStatement = connection.prepareStatement("update user set Name = ? , image = ? , email = ? , country = ? , bio = ? where PhoneNumber = ?")) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setBytes(2, user.getImage());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getCountry());
+            preparedStatement.setString(5, user.getBio());
+            preparedStatement.setString(6, user.getPhoneNumber());
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("update Failed ");
+            // e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
