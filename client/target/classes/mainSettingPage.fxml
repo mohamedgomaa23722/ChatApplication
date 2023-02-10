@@ -109,7 +109,4 @@
       </VBox>
       <VBox fx:id="settingContainer" maxHeight="500.0" maxWidth="1.7976931348623157E308" minHeight="500.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
    </children>
-   <effect>
-      <DropShadow color="#dddddd" radius="7.6675" width="11.67" />
-   </effect>
 </GridPane>

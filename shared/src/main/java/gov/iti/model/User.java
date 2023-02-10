@@ -2,7 +2,6 @@ package gov.iti.model;
 
 import java.io.Serializable;
 
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import javafx.beans.value.ObservableValue;
 

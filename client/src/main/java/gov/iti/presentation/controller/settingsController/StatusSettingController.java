@@ -26,24 +26,46 @@ public class StatusSettingController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         // TODO Set current status
         CurrentUser currentUser = CurrentUser.getCurrentUser();
-        System.out.println(currentUser.getStatus().get());
-        currentUser.getStatus().addListener((o, old, newValue)->{
-            System.out.println(old.intValue() +" : "+ newValue.intValue());
-            switch(newValue.intValue()){
+        System.out.println("StatusSettingController : " + currentUser.getStatus().get());
+        currentUser.getStatus().addListener((o,old, n) ->{
+            System.out.println(old.intValue() + ":" + n.intValue());
+            switch(n.intValue()){
                 case 1:
                 availableRadioButton.setSelected(true);
+                availableRadioButton.setToggleGroup(statusGroup);
                 System.out.println("availableRadioButton");
                 break;
                 case 2:
                 busyRadioButton.setSelected(true);
+                busyRadioButton.setToggleGroup(statusGroup);
                 System.out.println("busyRadioButton");
                 break;
                 case 3:
                 awayRadioButton.setSelected(true);
+                awayRadioButton.setToggleGroup(statusGroup);
                 break;
             }
-         });
+        });
+        switch(currentUser.getStatus().get()){
+            case 1:
+            availableRadioButton.setSelected(true);
+            availableRadioButton.setToggleGroup(statusGroup);
+            System.out.println("availableRadioButton");
+            break;
+            case 2:
+            busyRadioButton.setSelected(true);
+            busyRadioButton.setToggleGroup(statusGroup);
+            System.out.println("busyRadioButton");
+            break;
+            case 3:
+            awayRadioButton.setSelected(true);
+            awayRadioButton.setToggleGroup(statusGroup);
+            break;
+        }
+
     }
+
+    
 
     @FXML
     private void changeStatus() throws RemoteException{

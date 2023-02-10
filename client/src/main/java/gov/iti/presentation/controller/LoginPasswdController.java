@@ -42,7 +42,6 @@ public class LoginPasswdController implements Initializable{
                 //go to chat
                 System.out.println("login sucessful  : " + user.getStatus() + " : "+ user.getPhoneNumber());
                 CurrentUser.getCurrentUser().setUser(user);
-                CurrentUser.getCurrentUser().setStatus(user.getStatus());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
             } else {
                 // go to sign in page

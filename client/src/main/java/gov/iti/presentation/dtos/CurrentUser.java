@@ -2,7 +2,6 @@ package gov.iti.presentation.dtos;
 
 import gov.iti.model.User;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -53,6 +52,7 @@ public class CurrentUser {
         email.set(user.getEmail());
         bio.set(user.getBio());
         status.set(user.getStatus());
+        System.out.println("Updates");
     }
 
     public User getUser() {
@@ -76,24 +76,24 @@ public class CurrentUser {
         return PhoneNumber;
     }
 
-    public void setPhoneNumber(StringProperty phoneNumber) {
-        PhoneNumber = phoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber.set(phoneNumber);
     }
 
     public StringProperty getName() {
         return name;
     }
 
-    public void setName(StringProperty name) {
-        this.name = name;
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     public IntegerProperty getAge() {
         return age;
     }
 
-    public void setAge(IntegerProperty age) {
-        this.age = age;
+    public void setAge(int age) {
+        this.age.set(age);;
     }
 
     public StringProperty getGender() {
@@ -116,31 +116,31 @@ public class CurrentUser {
         return email;
     }
 
-    public void setEmail(StringProperty email) {
-        this.email = email;
+    public void setEmail(String email) {
+        this.email.set(email);
     }
 
     public StringProperty getBio() {
         return bio;
     }
 
-    public void setBio(StringProperty bio) {
-        this.bio = bio;
+    public void setBio(String bio) {
+        this.bio.set(bio);
     }
 
     public StringProperty getCountry() {
         return country;
     }
 
-    public void setCountry(StringProperty country) {
-        this.country = country;
+    public void setCountry(String country) {
+        this.country.set(country);
     }
 
     public IntegerProperty getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status.set(status);
     }
 

@@ -3,6 +3,7 @@ package gov.iti.dao;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.User;
 
@@ -12,6 +13,6 @@ public interface ClientDao extends Remote {
 
     public void recievedGroupMessage(Message message) throws RemoteException;
 
-    public void recievedContactInvitation(User sender) throws RemoteException;
+    public void recievedContactInvitation(Invitation invitation) throws RemoteException;
     
 }

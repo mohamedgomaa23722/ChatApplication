@@ -37,7 +37,7 @@ public class LoginPhoneController implements Initializable{
         if(isPhoneValid) {
             // go to password sign in
 
-            CurrentUser.getCurrentUser().getUser().setPhoneNumber(phoneNumber);
+            CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
             SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
         } else {
             // show error message

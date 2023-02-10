@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 
 import gov.iti.business.services.SettingsService;
 import gov.iti.model.User;
-import gov.iti.presentation.validation.UserValidator;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.Utilities;
 import gov.iti.Utilities;
 
@@ -54,14 +54,18 @@ public class ProfileSettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        settingsService = new SettingsService();
-        comboBoxCountry.setItems(FXCollections.observableArrayList(UserValidator.country_list));
+        CurrentUser currentUser = CurrentUser.getCurrentUser();
+        newBio.textProperty().bindBidirectional(currentUser.getBio());
+        newName.textProperty().bindBidirectional(currentUser.getName());
+        newEmail.textProperty().bindBidirectional(currentUser.getEmail());
+
+        comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
         // newName.textProperty().bind(SceneManager.currentUser.getName());
     }
 
     @FXML
-    void updateProfile(ActionEvent event) {
-        User updatedUser = new User(SceneManager.currentUser);
+    void updateProfile(ActionEvent event) throws RemoteException {
+        User updatedUser = CurrentUser.getCurrentUser().getUser();
         // if (validateAll()) {
             updatedUser.setName(newName.getText());
             updatedUser.setEmail(newEmail.getText());
@@ -69,8 +73,8 @@ public class ProfileSettingsController implements Initializable {
             updatedUser.setCountry(comboBoxCountry.getValue());
         // }
 
-        if (settingsService.updateProfile(updatedUser))
-            SceneManager.currentUser = updatedUser;
+        if (SettingsService.getInstance().updateProfile(updatedUser))
+            CurrentUser.getCurrentUser().setUser(updatedUser);
     }
 
     public boolean validateAll() {

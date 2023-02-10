@@ -8,14 +8,21 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import gov.iti.business.services.ChatService;
+import gov.iti.model.Invitation;
+import gov.iti.model.User;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
+import gov.iti.presentation.controller.subItemController.InvitationItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.Contact;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.Group;
 import gov.iti.presentation.dtos.Message;
 import gov.iti.presentation.utils.SceneManager;
@@ -98,26 +105,32 @@ public class ChatController implements Initializable {
             }
         });
 
-        Platform.runLater(() ->{
-        List<Contact> contacts = new ArrayList<>();
-        for (int index = 0; index < 14; index++) {
-            contacts.add(new Contact(String.valueOf(index), "gomaa" + index, index, "m", "",
-                    new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm()), null, null, 1));
-        }
+        Platform.runLater(() -> {
+            List<Contact> contacts = new ArrayList<>();
+            for (int index = 0; index < 14; index++) {
+                contacts.add(new Contact(String.valueOf(index), "gomaa" + index, index, "m", "",
+                        new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm()), null, null,
+                        1));
+            }
 
-        ObservableList<Chat> observableList = FXCollections.observableArrayList(contacts);
-        contact_list.setItems(observableList);
-        contact_list.setCellFactory(p -> new ContactCell());
+            ObservableList<Chat> observableList = FXCollections.observableArrayList(contacts);
+            contact_list.setItems(observableList);
+            contact_list.setCellFactory(p -> new ContactCell());
+        });
+        
+        Platform.runLater(() -> {
+            List<Group> groups = new ArrayList<>();
+            for (int index = 0; index < 14; index++) {
+                groups.add(new Group(String.valueOf(index), "Team" + index,
+                        new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm())));
+            }
 
-        List<Group> groups = new ArrayList<>();
-        for (int index = 0; index < 14; index++) {
-            groups.add(new Group(String.valueOf(index), "Team" + index,
-                    new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm())));
-        }
+            ObservableList<Chat> observableList1 = FXCollections.observableArrayList(groups);
+            group_list.setItems(observableList1);
+            group_list.setCellFactory(p -> new ContactCell());
+        });
 
-        ObservableList<Chat> observableList1 = FXCollections.observableArrayList(groups);
-        group_list.setItems(observableList1);
-        group_list.setCellFactory(p -> new ContactCell());});
+        
     }
 
     private void addMessage(Message message, boolean status) {
@@ -135,26 +148,50 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    private void openSetting() throws IOException{
+    private void openSetting() throws IOException {
         SettingContainer.setVisible(true);
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainSettingPage.fxml"));
-        SettingContainer.getChildren().removeAll();
+        SettingContainer.getChildren().removeAll(SettingContainer.getChildren());
         SettingContainer.getChildren().add(root);
     }
 
     @FXML
     private void closeSetting() {
-        if(SettingContainer.isVisible()){
+        if (SettingContainer.isVisible()) {
             SettingContainer.setVisible(false);
         }
     }
 
     @FXML
     private void signOut() {
-         //TODO : Sign Out from server
-        //TODO : switch to login page
-        
+        // TODO : Sign Out from server
+        // TODO : REMOVE SAVED FILE
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
+    }
+
+    @FXML
+    private void openNotification() throws RemoteException, SQLException {
+
+        ChatService.getInstance().getInvitation().addListener((o, old,newV) ->{
+            SettingContainer.setVisible(true);
+            Parent root;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                InvitationItemController invitationItemController = new InvitationItemController(newV);
+                fxmlLoader.setController(invitationItemController);
+                root = fxmlLoader.load(getClass().getClassLoader().getResource("InvitationItemFXML.fxml"));
+                SettingContainer.getChildren().add(root);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+
+        ChatService.getInstance().sendInvitation(CurrentUser.getCurrentUser().getUser());
+        //TODO : Open Notification VIEW
+        //TODO : Get all notification 
+        SettingContainer.getChildren().removeAll(SettingContainer.getChildren());
+
     }
 }
 

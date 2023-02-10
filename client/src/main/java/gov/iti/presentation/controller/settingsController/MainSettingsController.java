@@ -42,7 +42,6 @@ public class MainSettingsController implements Initializable {
         settingContainer.getChildren().removeAll(settingContainer.getChildren());
         settingContainer.getChildren().add(p);
         System.out.println("show Status Setting");
-
     }
 
     @FXML
