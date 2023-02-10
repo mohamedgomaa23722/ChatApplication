@@ -154,7 +154,7 @@
                                     <Font name="System Bold" size="28.0" />
                                  </font>
                               </Text>
-                              <ImageView fx:id="add_contact" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                              <ImageView fx:id="add_contact" fitHeight="50.0" fitWidth="50.0" onMouseClicked='#addContact' pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT" >
                                  <image>
                                     <Image url="add.png" />
                                  </image>
@@ -217,6 +217,14 @@
          </rowConstraints>
       </GridPane>
       <VBox fx:id="SettingContainer" maxHeight="500.0" maxWidth="400.0" minHeight="500.0" minWidth="400.0" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets left="60.0" />
+         </StackPane.margin>
+         <effect>
+            <DropShadow height="16.34" radius="6.5024999999999995" width="11.67" />
+         </effect>
+      </VBox>
+      <VBox fx:id="AddingContentContainer" maxHeight="500.0" maxWidth="400.0" minHeight="500.0" minWidth="400.0" StackPane.alignment="CENTER">
          <StackPane.margin>
             <Insets left="60.0" />
          </StackPane.margin>

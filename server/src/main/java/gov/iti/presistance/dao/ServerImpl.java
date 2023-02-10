@@ -28,9 +28,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
     private Connection connection;
 
+    List <String> invitedContactList;
+
     public ServerImpl() throws RemoteException, SQLException {
         super();
         connection = ConnectionManager.getInstance().getStatement();
+        invitedContactList=new ArrayList<>();
     }
 
     @Override
@@ -134,6 +137,42 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public void signOut(User user) throws RemoteException, SQLException{
         clients.remove(user.getPhoneNumber());
+    }
+
+    @Override
+    public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
+        invitedContactList.clear();
+        List <String> contact = new ArrayList<>(); // search if this contact register or not
+        contact.add("01012546874");
+        contact.add("01112546874");
+        contact.add("01212546874"); 
+        contact.add("01012345678");
+        List <String> friends = new ArrayList<>(); // search if aleardy friends
+        friends.add("01212546874");
+        List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 2 friend // 3 sucess
+
+        // don't forget handle aleardy send invitation 
+        for (String contactNo:contactList) { //String
+
+            if(!contact.contains(contactNo)) {
+                invitationStatus.add(0);
+                System.out.println("not register");
+            } else if (friends.contains(contactNo)) {
+                invitationStatus.add(2);
+                System.out.println("already friend");
+            } else {
+                invitationStatus.add(3);
+                invitedContactList.add(contactNo);
+                System.out.println("sucessfully");
+            }
+        }
+
+            //resultSet.beforeFirst();
+            //isExist.add(isContactRegisteration(resultSet,contact)); // check this number exist or not
+            // check if this number friend or not
+            // save in the database invitation
+            // send invitation to users which is online
+        return invitationStatus;
     }
 
 }

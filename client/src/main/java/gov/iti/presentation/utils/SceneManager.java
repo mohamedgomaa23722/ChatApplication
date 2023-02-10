@@ -15,6 +15,7 @@ public class SceneManager {
     private static Stage primaryStage;
     private final Map<String, Scene> scenes = new HashMap<>();
     String sceneName;
+    boolean loginFaild = false;
 
     private SceneManager() {
     }
@@ -54,6 +55,12 @@ public class SceneManager {
         loadView(sceneName);
     }
 
+    public void switchToaddContactScreen() {
+        sceneName = "AddContactPage";
+        primaryStage.setTitle(sceneName);
+        loadView(sceneName);
+    }
+
     public void loadView(String name) {
         if (primaryStage == null) {
             throw new RuntimeException("Stage Coordinator should be initialized with a Stage before it could be used");
@@ -79,6 +86,12 @@ public class SceneManager {
         System.out.println("loaded " + name);
     }
 
+    public void setLoginFaild(boolean loginFaildStatus) {
+        loginFaild = loginFaildStatus;
+    }
 
+    public boolean isLoginFaild() {
+        return loginFaild;
+    }
 
 }

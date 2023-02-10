@@ -1,7 +1,6 @@
 package gov.iti;
 
 import gov.iti.presentation.utils.SceneManager;
-import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.application.Application;
 
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ public class App extends Application {
         SceneManager sceneManager = SceneManager.getSceneManagerInstance();
         sceneManager.initStage(primaryStage);
         sceneManager.switchToPhoneLoginScreen();
+        //sceneManager.switchToaddContactScreen();
         primaryStage.show();
     }
 

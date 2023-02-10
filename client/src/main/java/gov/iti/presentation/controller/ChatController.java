@@ -89,6 +89,8 @@ public class ChatController implements Initializable {
     private ScrollPane scrollPane;
     @FXML
     private VBox SettingContainer;
+    @FXML
+    private VBox AddingContentContainer;
     /**
      * Initializes the controller class.
      */
@@ -130,7 +132,7 @@ public class ChatController implements Initializable {
             group_list.setCellFactory(p -> new ContactCell());
         });
 
-        
+        //addContact();
     }
 
     private void addMessage(Message message, boolean status) {
@@ -160,6 +162,7 @@ public class ChatController implements Initializable {
         if (SettingContainer.isVisible()) {
             SettingContainer.setVisible(false);
         }
+
     }
 
     @FXML
@@ -192,6 +195,29 @@ public class ChatController implements Initializable {
         //TODO : Get all notification 
         SettingContainer.getChildren().removeAll(SettingContainer.getChildren());
 
+    }
+
+    @FXML
+    private void addContact() {
+        Parent root;
+        try {
+            AddingContentContainer.setVisible(true);
+            Image exitImg=new Image(getClass().getClassLoader().getResource("closeIcon.png").openStream());
+            ImageView exitImageView = new ImageView(exitImg);
+            exitImageView.setFitWidth(25);
+            exitImageView.setFitHeight(25);
+            exitImageView.setLayoutX(350);
+            exitImageView.setOnMouseClicked(e->AddingContentContainer.setVisible(false));
+            root = FXMLLoader.load(getClass().getClassLoader().getResource("AddContactPageFxml.fxml"));
+            AddingContentContainer.getChildren().removeAll(AddingContentContainer.getChildren());
+            AddingContentContainer.getChildren().add(exitImageView);
+            AddingContentContainer.getChildren().add(root);
+            System.out.println("adding new contact");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
     }
 }
 

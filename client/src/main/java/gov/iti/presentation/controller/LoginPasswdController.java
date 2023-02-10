@@ -4,13 +4,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.LoginService;
 import gov.iti.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
 public class LoginPasswdController implements Initializable{
@@ -21,9 +21,13 @@ public class LoginPasswdController implements Initializable{
 
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
+    String loggedError = "-fx-text-fill: black; -fx-font-size: 15px; -fx-font-family: Arial;";
 
     @FXML
     PasswordField passwdTextField;
+
+    @FXML
+    Label wrongPassLbl; 
 
     @FXML
     public void getUserPasswd() {
@@ -47,6 +51,8 @@ public class LoginPasswdController implements Initializable{
                 // go to sign in page
                 // show message some thing is wrong phone or password
                 System.out.println("login failed" + passwd);
+                //SceneManager.getSceneManagerInstance().setLoginFaild(true);
+                
                 SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
             }
             
@@ -58,6 +64,7 @@ public class LoginPasswdController implements Initializable{
             // password not valid
             passwdTextField.setStyle(error);
             System.out.println("password not valid");
+            showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
         } 
     }
 
@@ -71,6 +78,12 @@ public class LoginPasswdController implements Initializable{
     @FXML
     public void handelSignUp(){
         SceneManager.getSceneManagerInstance().switchToSignUpScreen();
+    }
+
+    public void showError(String message, Label vBox){
+        vBox.setVisible(true);
+        vBox.setText(message);
+        vBox.setStyle(loggedError);
     }
     
 }

@@ -15,11 +15,8 @@ public class UserValidator {
 
     public boolean validateUserPhoneNumber(String phoneNumber) {
 
-        String phoneRegex = "[0-9]+";
+        String phoneRegex = "^(011|012|015|010)([0-9]){8}$"; //"[0-9]+";
 
-        if(phoneNumber.length()!=11) {
-            return false;
-        }
         boolean isPhoneValid =phoneNumber.matches(phoneRegex);
         if(!isPhoneValid) {
             return false;

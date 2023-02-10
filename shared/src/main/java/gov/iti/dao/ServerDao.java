@@ -20,4 +20,6 @@ public interface ServerDao extends SettingInt{
     public boolean sendInvitation(User sender, User reciever) throws RemoteException, SQLException;
 
     public void signOut(User user) throws RemoteException, SQLException;
+
+    public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException;
 }
