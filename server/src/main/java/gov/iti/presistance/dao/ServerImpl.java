@@ -17,6 +17,7 @@ import java.util.*;
 import gov.iti.Utilities;
 import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
+import gov.iti.model.Group;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.model.UserContact;
@@ -272,6 +273,23 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             e.printStackTrace();
         }
         return contactList;
+    }
+    public List<Group> selectGroups(String userPhoneNumber){
+        System.out.println("selectGroups");
+        List<Group> GroupList = new ArrayList<Group>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "SELECT * from chatgroup where id in (SELECT group_id from contactgroup where contact_id=?)")) {
+            preparedStatement.setString(1, userPhoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return GroupList;
     }
 
 }

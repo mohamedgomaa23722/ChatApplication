@@ -3,8 +3,11 @@ package gov.iti.business.services;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import gov.iti.dao.ServerDao;
+import gov.iti.model.Group;
 import gov.iti.presistance.connection.ClientServerConnection;
 
 public class GroupService {
@@ -52,6 +55,18 @@ public class GroupService {
             e.printStackTrace();
         }
         return false;
+    }
+    public List<Group> getContactGroups (String UserPhoneNumber) {
+        try {
+            return chatReg.selectGroups(UserPhoneNumber);
+        } catch (RemoteException e) {
+            
+            e.printStackTrace();
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+        }
+        return new ArrayList<Group>();
     }
     
 }

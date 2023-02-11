@@ -34,4 +34,7 @@ public interface ServerDao extends SettingInt{
     public boolean addGroupMember(int groupId, String memberPhoneNumber)throws RemoteException, SQLException;
 
     public List<UserContact> selectUserContacts(String userPhoneNumber) throws RemoteException, SQLException;
+
+    public List<Group> selectGroups(String userPhoneNumber) throws RemoteException, SQLException;
+
 }
