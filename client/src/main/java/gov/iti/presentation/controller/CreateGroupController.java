@@ -14,6 +14,7 @@ import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.GroupService;
 import gov.iti.model.Group;
 import gov.iti.model.UserContact;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.UserValidator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -50,7 +51,7 @@ public class CreateGroupController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //System.out.println("jksdnvjnkdsnv");
-        List<UserContact> userContacts = ContactsService.getcontactsService().getContacts("01286338362");
+        List<UserContact> userContacts = ContactsService.getcontactsService().getContacts(CurrentUser.getInstance().getPhoneNumber().get());
         List<String> userContactsMerged = new ArrayList<String>();
         for (var contact : userContacts) {
             userContactsMerged.add(contact.getPhoneNumber() + "   " + contact.getName());
