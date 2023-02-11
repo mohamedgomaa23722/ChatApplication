@@ -41,7 +41,7 @@ public class LoginPhoneController implements Initializable{
 
         isPhoneValid=userValidator.validateUserPhoneNumber(phoneNumber);
 
-        if(isPhoneValid) {
+         if(isPhoneValid) {
             // go to password sign in
 
             CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
@@ -57,7 +57,6 @@ public class LoginPhoneController implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        phoneTextField.setText("01512345687");
         userValidator=UserValidator.getUserValidator();
         phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
     }

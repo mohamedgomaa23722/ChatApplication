@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import gov.iti.presistance.UsersInfo;
 import gov.iti.presistance.DataBase.ConnectionManager;
 import java.util.*;
 import gov.iti.Utilities;
@@ -41,6 +42,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             clients.put(phoneNumber, client);
+
+            UsersInfo.updateList();
+
             return UserFactory.createUser(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +68,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(10, user.getBio());
             preparedStatement.setString(11, user.getGender());
             clients.put(user.getPhoneNumber(), client);
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result ;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,7 +100,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(4, user.getCountry());
             preparedStatement.setString(5, user.getBio());
             preparedStatement.setString(6, user.getPhoneNumber());
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
         } catch (SQLException e) {
             System.out.println("update Failed ");
             e.printStackTrace();
@@ -112,7 +124,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
                 .prepareStatement("update user set status = ? where PhoneNumber = ?")) {
             preparedStatement.setInt(1, status);
             preparedStatement.setString(2, phoneNumber);
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

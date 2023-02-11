@@ -12,13 +12,14 @@ public class UserFactory {
             user = new User(resultSet.getString("PhoneNumber"),
                     resultSet.getString("Name"),
                     resultSet.getInt("age"),
-                    resultSet.getString("gender"),
+                    resultSet.getInt("status"),
+                    resultSet.getInt("mode"),
                     resultSet.getBytes("image"),
                     resultSet.getString("email"),
-                    resultSet.getString("bio"),
                     resultSet.getString("country"),
-                    resultSet.getInt("status"),
-                    resultSet.getInt("status"));
+                    resultSet.getString("bio"),
+                    resultSet.getString("gender")
+                    );
         }
         resultSet.close();
         return user;

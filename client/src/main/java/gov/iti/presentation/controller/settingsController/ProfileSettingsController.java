@@ -47,24 +47,24 @@ public class ProfileSettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
+
         CurrentUser currentUser = CurrentUser.getCurrentUser();
         newBio.textProperty().bindBidirectional(currentUser.getBio());
         newName.textProperty().bindBidirectional(currentUser.getName());
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
-
-        comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
-        // newName.textProperty().bind(SceneManager.currentUser.getName());
+        System.out.println(currentUser.getCountry().get());
+        comboBoxCountry.setValue(currentUser.getCountry().get());
     }
 
     @FXML
     void updateProfile(ActionEvent event) throws RemoteException {
         User updatedUser = CurrentUser.getCurrentUser().getUser();
         // if (validateAll()) {
-            updatedUser.setName(newName.getText());
-            updatedUser.setEmail(newEmail.getText());
-            updatedUser.setBio(newBio.getText());
-            updatedUser.setCountry(comboBoxCountry.getValue());
-        // }
+        updatedUser.setName(newName.getText());
+        updatedUser.setEmail(newEmail.getText());
+        updatedUser.setBio(newBio.getText());
+        updatedUser.setCountry(comboBoxCountry.getValue());
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
             CurrentUser.getCurrentUser().setUser(updatedUser);
