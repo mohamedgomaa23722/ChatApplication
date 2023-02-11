@@ -25,7 +25,13 @@ public class SettingsService implements SettingInt{
     }
 
     @Override
-    public boolean changePassword(String phoneNumber, String newPassword) {
+    public boolean changePassword(String phoneNumber,String oldPassword, String newPassword) {
+        try {
+            return ClientServerConnection.getConnectionInstance().getServerDao().changePassword(phoneNumber,oldPassword,newPassword);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return false;
     }
 

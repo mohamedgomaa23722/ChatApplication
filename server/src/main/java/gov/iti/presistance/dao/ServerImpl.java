@@ -113,9 +113,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public boolean changePassword(String phoneNumber, String newPassword) {
-        return false;
+    public boolean changePassword(String phoneNumber,String oldPassword ,  String newPassword) {
+        System.out.println("change password called");
+        try(PreparedStatement preparedStatement = connection.prepareStatement("update user set password = ? where PhoneNumber = ? and password = ?")){
+            preparedStatement.setString(1,Utilities.Hash(newPassword));
+            preparedStatement.setString(2,phoneNumber);
+            preparedStatement.setString(3,Utilities.Hash(oldPassword));
+            return preparedStatement.executeUpdate() > 0;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
+
 
     @Override
     public boolean changeStatus(String phoneNumber, int status) {
