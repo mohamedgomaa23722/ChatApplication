@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,22 +122,26 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public boolean sendInvitation(String senderPhoneNumber, String recieverPhoneNumber)
             throws RemoteException, SQLException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO invitation(senderPhone, receiverPhone) values(?,?)")){
+        try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO invitation(senderPhone, receiverPhone) values(?,?)", Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1, senderPhoneNumber);
-            preparedStatement.setString(2, senderPhoneNumber);
+            preparedStatement.setString(2, recieverPhoneNumber);
             preparedStatement.executeUpdate();
+
+            if (clients.containsKey(recieverPhoneNumber)) {
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                    resultSet.next();
+                    clients.get(recieverPhoneNumber)
+                    .recievedContactInvitation(new Invitation(resultSet.getInt(1), senderPhoneNumber, recieverPhoneNumber));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        if (clients.containsKey(recieverPhoneNumber)) {
-            clients.get(recieverPhoneNumber)
-                    .recievedContactInvitation(new Invitation(0, senderPhoneNumber, recieverPhoneNumber));
-            return true;
-        }
-
         return false;
-
     }
 
     @Override
@@ -148,7 +153,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     public List<Invitation> getInvitations(String userPhoneNumber) throws RemoteException, SQLException {
         List<Invitation> invitations = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection
-                .prepareStatement("select * From invitation where senderPhone = ?")) {
+                .prepareStatement("select * From invitation where receiverPhone = ?")) {
             preparedStatement.setString(1, userPhoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -163,17 +168,15 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
         invitedContactList.clear();
-        List <String> contact = new ArrayList<>(); // search if this contact register or not
-        contact.add("01012546874");
-        contact.add("01112546874");
-        contact.add("01212546874"); 
-        contact.add("01012345678");
-        List <String> friends = new ArrayList<>(); // search if aleardy friends
-        friends.add("01212546874");
+        /*List <String> contact = new ArrayList<>(); // search if this contact register or not
+        contact.add("01111567897");
+        contact.add("01111567898");
+        contact.add("01512345687"); */
+
         List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 2 friend // 3 sucess
 
         // don't forget handle aleardy send invitation 
-        for (String contactNo:contactList) { //String
+       /*  for (String contactNo:contactList) { //String
 
             if(!contact.contains(contactNo)) {
                 invitationStatus.add(0);
@@ -186,12 +189,15 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
                 invitedContactList.add(contactNo);
                 System.out.println("sucessfully");
             }
-        }
+        }*/
 
             //resultSet.beforeFirst();
             //isExist.add(isContactRegisteration(resultSet,contact)); // check this number exist or not
             // check if this number friend or not
             // save in the database invitation
+            for (String contactPhoneNumber : contactList) {
+                sendInvitation(sender, contactPhoneNumber);
+            }
             // send invitation to users which is online
         return invitationStatus;
     }
