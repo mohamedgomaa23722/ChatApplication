@@ -16,6 +16,7 @@ public class App extends Application {
         SceneManager sceneManager = SceneManager.getSceneManagerInstance();
         sceneManager.initStage(primaryStage);
         sceneManager.switchToPhoneLoginScreen();
+        //sceneManager.switchToaddContactScreen();
         primaryStage.show();
     }
 

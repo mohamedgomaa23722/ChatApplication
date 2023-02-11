@@ -8,6 +8,7 @@ import gov.iti.model.Invitation;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ModelFactory;
 import gov.iti.presistance.connection.ClientServerConnection;
+import javafx.application.Platform;
 
 public class InvitationService {
     private static final InvitationService instance = new InvitationService();
@@ -29,6 +30,8 @@ public class InvitationService {
 
     public void receiveInvitation(Invitation invitation) {
         System.out.println("receiveInvitation");
-        ModelFactory.getInstance().getReceivedInvitation().setInvitationProp(invitation);
+        Platform.runLater(() -> {
+            ModelFactory.getInstance().getReceivedInvitation().setInvitationProp(invitation);
+        });
     } 
 }

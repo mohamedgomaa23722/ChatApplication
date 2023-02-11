@@ -154,7 +154,7 @@
                                     <Font name="System Bold" size="28.0" />
                                  </font>
                               </Text>
-                              <ImageView fx:id="add_contact" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                              <ImageView fx:id="add_contact" fitHeight="50.0" fitWidth="50.0" onMouseClicked='#addContact' pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT" >
                                  <image>
                                     <Image url="add.png" />
                                  </image>

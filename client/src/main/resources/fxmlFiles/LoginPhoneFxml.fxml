@@ -72,7 +72,7 @@
                   <Font name="Dubai Regular" size="13.0" />
                </font>
             </TextField>
-            <Label fx:id="wrongPasswdLbl">
+            <Label fx:id="wrongLogedLbl">
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>

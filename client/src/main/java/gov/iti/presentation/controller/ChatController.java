@@ -25,6 +25,7 @@ import gov.iti.presentation.dtos.Message;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.WindowManger;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -88,6 +89,7 @@ public class ChatController implements Initializable {
     private VBox windowContainer;
     @FXML
     private VBox viewContainer;
+
     /**
      * Initializes the controller class.
      */
@@ -171,6 +173,11 @@ public class ChatController implements Initializable {
     @FXML
     private void openNotification() throws RemoteException, SQLException {
         WindowManger.getInstance().openNotificationWindow();
+    }
+
+    @FXML
+    private void addContact() {
+        WindowManger.getInstance().openAddContactWindow();
     }
 }
 
