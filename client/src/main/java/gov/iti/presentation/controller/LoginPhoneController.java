@@ -7,7 +7,6 @@ import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
-import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

@@ -185,7 +185,7 @@
                                     <Insets />
                                  </StackPane.margin>
                               </Text>
-                              <ImageView fx:id="add_group" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                              <ImageView fx:id="add_group" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handelCreateGroup">
                                  <image>
                                     <Image url="add.png" />
                                  </image>

@@ -19,6 +19,7 @@ import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import gov.iti.model.UserContact;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
@@ -216,6 +217,61 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             }
             // send invitation to users which is online
         return invitationStatus;
+    }
+    public boolean creatGroup(String groupName) {
+        System.out.println("create group");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into chatgroup  (group_name) VALUES(?)")) {
+            preparedStatement.setString(1, groupName);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getGroupLastId() {
+        System.out.println(" getGroupLastId");
+        try (Statement statement = connection.createStatement()) {
+           ResultSet rs=statement.executeQuery("select max(id) from chatGroup");
+           rs.next();
+            return rs.getInt("max(id)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean addGroupMember(int groupId, String memberPhoneNumber) {
+        System.out.println(" addGroupMember");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into contactgroup  (group_id ,contact_id) VALUES(?,?)")) {
+            preparedStatement.setInt(1, groupId);
+            preparedStatement.setString(2, memberPhoneNumber);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<UserContact> selectUserContacts(String userPhoneNumber) {
+        System.out.println("selectUserContacts");
+        List<UserContact> contactList = new ArrayList<UserContact>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "SELECT phoneNumber ,name from user where phonenumber in (SELECT contact_id from usercontacts where user_id=?)")) {
+            preparedStatement.setString(1, userPhoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                contactList.add(new UserContact(resultSet.getString(1), resultSet.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactList;
     }
 
 }

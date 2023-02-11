@@ -95,6 +95,12 @@ public class UserValidator {
         }
         return true;
     }
+    public boolean validateGroupName(String groupName){
 
+        String groupNameRegx = "^.{2,25}$";
+        boolean isValidName = groupName.matches(groupNameRegx);
+        
+        return isValidName;
+        } 
    
 }

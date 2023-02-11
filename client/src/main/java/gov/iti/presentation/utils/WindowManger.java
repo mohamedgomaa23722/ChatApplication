@@ -40,8 +40,8 @@ public class WindowManger {
 
     }
 
-    public void openAddGroupWindow() {
-        
+    public void openCreatGroupWindow() {
+        loadView("createGroupFxml"); 
     }
 
     public void loadView(String viewName){
