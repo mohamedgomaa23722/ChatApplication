@@ -4,41 +4,31 @@ import java.io.Serializable;
 
 public class Invitation implements Serializable{
     private int id;
-    private User sender;
-    private User receiver;
+    private String senderPhoneNumber;
+    private String receiverPhoneNumber;
 
-    public Invitation(int id, User sender, User receiver) {
+    public Invitation(int id, String senderPhoneNumber, String receiverPhoneNumber) {
         this.id = id;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.senderPhoneNumber = senderPhoneNumber;
+        this.receiverPhoneNumber = receiverPhoneNumber;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getSenderPhoneNumber() {
+        return senderPhoneNumber;
     }
 
-    public User getSender() {
-        return sender;
+    public String getReceiverPhoneNumber() {
+        return receiverPhoneNumber;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
 
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
 
     @Override
     public String toString() {
-        return "sender name" + sender.getName() + "\n recieverName" + receiver.getName();
+        return "sender name" + senderPhoneNumber + "\n recieverName" + receiverPhoneNumber;
     }
 }

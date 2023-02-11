@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 public class InvitationItemController implements Initializable {
     @FXML
     private Label senderName;
+    
     private Invitation invitation;
 
     
@@ -20,8 +21,7 @@ public class InvitationItemController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-            //TODO : set sender name
-            senderName.setText(invitation.getSender().getName());
+            senderName.setText(invitation.getSenderPhoneNumber());
     }
 
     @FXML
@@ -32,7 +32,6 @@ public class InvitationItemController implements Initializable {
     @FXML
     private void reject() {
         //TODO : reject inviation
-
     }
     
 }

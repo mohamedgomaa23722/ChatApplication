@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.LoginService;
@@ -63,7 +62,7 @@ public class LoginPasswdController implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-       
+        passwdTextField.setText("Aa23722652@");
         userValidator=UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e->passwdTextField.setStyle(ideal));
     }

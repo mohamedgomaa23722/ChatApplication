@@ -3,7 +3,6 @@ package gov.iti.model;
 import java.io.Serializable;
 
 
-import javafx.beans.value.ObservableValue;
 
 public class User implements Serializable{
     private String PhoneNumber;

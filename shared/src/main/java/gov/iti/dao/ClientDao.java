@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
-import gov.iti.model.User;
 
 public interface ClientDao extends Remote {
     
