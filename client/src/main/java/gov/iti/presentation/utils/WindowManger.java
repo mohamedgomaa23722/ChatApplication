@@ -39,8 +39,8 @@ public class WindowManger {
         loadView("AddContactPageFxml");
     }
 
-    public void openAddGroupWindow() {
-
+    public void openCreatGroupWindow() {
+        loadView("createGroupFxml"); 
     }
 
     public void loadView(String viewName){

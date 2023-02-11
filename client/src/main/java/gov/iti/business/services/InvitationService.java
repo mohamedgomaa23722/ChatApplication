@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import gov.iti.model.Invitation;
+import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ModelFactory;
 import gov.iti.presistance.connection.ClientServerConnection;
@@ -35,20 +36,21 @@ public class InvitationService {
         });
     } 
 
-    public void acceptInvitation(Invitation invitation) {
+    public User acceptInvitation(Invitation invitation) {
         try {
-            ClientServerConnection.getConnectionInstance().getServerDao().acceptInvitation(invitation);
-        } catch (RemoteException | SQLException e) {
-            // TODO Auto-generated catch block
+            return ClientServerConnection.getConnectionInstance().getServerDao().acceptInvitation(invitation);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch(SQLException e){
             e.printStackTrace();
         }
+        return null;
     }
 
     public void rejectInvitation(int id) {
         try {
             ClientServerConnection.getConnectionInstance().getServerDao().rejectInvitation(id);
         } catch (RemoteException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

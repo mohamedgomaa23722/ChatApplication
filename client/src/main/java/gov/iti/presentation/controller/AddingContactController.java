@@ -119,6 +119,8 @@ public class AddingContactController implements Initializable {
         invitationStatus=AddingContactService.getAddingNewContactService().addNewContact(CurrentUser.getCurrentUser().getPhoneNumber().get()
         , contact);
         showInvitationStatus();
+        contact.clear();
+        vbox.getChildren().clear();
     }
 
     void showInvitationStatus() {

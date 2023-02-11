@@ -24,6 +24,7 @@ public class CurrentUser {
     private IntegerProperty status;
     private IntegerProperty age;
     private String password;
+
     private ObservableList<Invitation> invitations;
     private ObservableList<User> contacts;
     private ObservableList<Group> groups;
@@ -159,19 +160,19 @@ public class CurrentUser {
         this.status.set(status);
     }
 
-    public void setInvitations(List<Invitation> invitations){
+    public void setInvitations(List<Invitation> invitations) {
         this.invitations.addAll(invitations);
     }
 
-    public void setContacts(List<User> contacts){
+    public void setContacts(List<User> contacts) {
         this.contacts.addAll(contacts);
     }
-    
-    public void addInvitations(Invitation invitation){
+
+    public void addInvitations(Invitation invitation) {
         this.invitations.add(invitation);
     }
 
-    public void addContact(User contact){
+    public void addContact(User contact) {
         this.contacts.add(contact);
     }
 
@@ -187,5 +188,9 @@ public class CurrentUser {
         return groups;
     }
 
-    
+    public void clearAll() {
+        invitations.clear();
+        groups.clear();
+        contacts.clear();
+    }
 }

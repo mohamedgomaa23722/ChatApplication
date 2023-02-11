@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import gov.iti.Utilities;
 import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
+import gov.iti.model.UserContact;
 
 public class ServerImpl extends InvitationImp implements ServerDao {
 
@@ -169,6 +171,58 @@ public class ServerImpl extends InvitationImp implements ServerDao {
             }
             // send invitation to users which is online
         return invitationStatus;
+    }
+    public boolean creatGroup(String groupName) {
+        System.out.println("create group");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into chatgroup  (group_name) VALUES(?)")) {
+            preparedStatement.setString(1, groupName);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getGroupLastId() {
+        System.out.println(" getGroupLastId");
+        try (Statement statement = connection.createStatement()) {
+           ResultSet rs=statement.executeQuery("select max(id) from chatGroup");
+           rs.next();
+            return rs.getInt("max(id)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean addGroupMember(int groupId, String memberPhoneNumber) {
+        System.out.println(" addGroupMember");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into contactgroup  (group_id ,contact_id) VALUES(?,?)")) {
+            preparedStatement.setInt(1, groupId);
+            preparedStatement.setString(2, memberPhoneNumber);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<User> selectUserContacts(String userPhoneNumber) {
+        List<User> contactList = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "SELECT user.* FROM user user, usercontacts contact where user.PhoneNumber = contact.contact_id And  contact.user_id = ?")) {
+            preparedStatement.setString(1, userPhoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            contactList.addAll(UserFactory.createUserList(resultSet));
+            System.out.println("selectUserContacts" + contactList.size());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactList;
     }
 
 }

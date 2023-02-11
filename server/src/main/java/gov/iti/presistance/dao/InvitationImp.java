@@ -75,16 +75,21 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
     }
 
     @Override
-    public void acceptInvitation(Invitation invitation) throws RemoteException, SQLException {
+    public User acceptInvitation(Invitation invitation) throws RemoteException, SQLException {
         // TODO : add contact to database
         addToContact(invitation.getSenderPhoneNumber(), invitation.getReceiverPhoneNumber());
         rejectInvitation(invitation.getId());
-        ServerImpl.clients.get(invitation.getSenderPhoneNumber()).UpdateOnContact(getUserByID(invitation.getReceiverPhoneNumber()));
+        User receiver =getUserByID(invitation.getReceiverPhoneNumber());
+        User sender =getUserByID(invitation.getSenderPhoneNumber());
+
+        if(ServerImpl.clients != null && !ServerImpl.clients.isEmpty() && ServerImpl.clients.containsKey(invitation.getSenderPhoneNumber()))
+            ServerImpl.clients.get(invitation.getSenderPhoneNumber()).UpdateOnContact(receiver);
+        return sender;    
     }
 
     @Override
     public void rejectInvitation(int id) throws RemoteException, SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("DElETE FrOM invitation where id = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("delete From invitation where id = ?")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
