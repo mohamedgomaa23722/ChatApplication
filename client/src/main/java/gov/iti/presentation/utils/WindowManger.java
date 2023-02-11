@@ -37,11 +37,10 @@ public class WindowManger {
 
     public void openAddContactWindow() {
         loadView("AddContactPageFxml");
-
     }
 
     public void openAddGroupWindow() {
-        
+
     }
 
     public void loadView(String viewName){

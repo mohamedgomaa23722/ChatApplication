@@ -31,7 +31,25 @@ public class InvitationService {
     public void receiveInvitation(Invitation invitation) {
         System.out.println("receiveInvitation");
         Platform.runLater(() -> {
-            ModelFactory.getInstance().getReceivedInvitation().setInvitationProp(invitation);
+            CurrentUser.getCurrentUser().addInvitations(invitation);
         });
     } 
+
+    public void acceptInvitation(Invitation invitation) {
+        try {
+            ClientServerConnection.getConnectionInstance().getServerDao().acceptInvitation(invitation);
+        } catch (RemoteException | SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void rejectInvitation(int id) {
+        try {
+            ClientServerConnection.getConnectionInstance().getServerDao().rejectInvitation(id);
+        } catch (RemoteException | SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

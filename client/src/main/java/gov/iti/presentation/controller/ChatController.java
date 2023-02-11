@@ -89,7 +89,6 @@ public class ChatController implements Initializable {
     private VBox windowContainer;
     @FXML
     private VBox viewContainer;
-
     /**
      * Initializes the controller class.
      */
@@ -161,7 +160,7 @@ public class ChatController implements Initializable {
     @FXML
     private void signOut() {
         try {
-            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getName().get());
+            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import gov.iti.business.services.InvitationService;
 import gov.iti.model.Invitation;
 import gov.iti.presentation.controller.subItemController.InvitationItemController;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ModelFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,20 +27,12 @@ public class NotificationController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<Invitation> invitations = InvitationService.getInstance().getInvitations();
-        ObservableList<Invitation> invitaitonObservableList = FXCollections.observableArrayList(invitations);
-
+        CurrentUser.getCurrentUser().setInvitations(invitations);
+        
         if (invitations != null) {
-            notificationList.setItems(invitaitonObservableList);
+            notificationList.setItems(CurrentUser.getCurrentUser().getInvitations());
             notificationList.setCellFactory(p -> new InvitationCell());
         }
-        ModelFactory.getInstance().getReceivedInvitation().getInvitationProp().addListener((observer, oldValue, newValue) -> {
-            if (newValue != null) {
-                System.out.println("Not null: ");
-                invitaitonObservableList.add(newValue);
-            } else {
-                System.out.println(" null: ");
-            }
-        });
     }
 
 }
