@@ -1,39 +1,33 @@
 package gov.iti.presistance.dao;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.sound.midi.Receiver;
-
-import com.mysql.cj.xdevapi.Client;
-
+import gov.iti.presistance.UsersInfo;
 import gov.iti.presistance.DataBase.ConnectionManager;
 import java.util.*;
 import gov.iti.Utilities;
 import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
-import gov.iti.model.Invitation;
 import gov.iti.model.User;
 
-public class ServerImpl extends UnicastRemoteObject implements ServerDao {
+public class ServerImpl extends InvitationImp implements ServerDao {
 
-    Map<String,ClientDao> clients = new HashMap<>();
+    protected static Map<String, ClientDao> clients = new HashMap<>();
 
     private Connection connection;
 
-    List <String> invitedContactList;
 
     public ServerImpl() throws RemoteException, SQLException {
         super();
         connection = ConnectionManager.getInstance().getStatement();
-        invitedContactList=new ArrayList<>();
     }
 
     @Override
@@ -44,6 +38,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             clients.put(phoneNumber, client);
+
+            UsersInfo.updateList();
+
             return UserFactory.createUser(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +49,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public boolean register(ClientDao client, User user, String Password){
+    public boolean register(ClientDao client, User user, String Password) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "insert into user(PhoneNumber, Name, age, status, mode, image, password, email, country, bio, gender) values(?,?,?,?,?,?,?,?,?,?,?)")) {
             preparedStatement.setString(1, user.getPhoneNumber());
@@ -67,37 +64,46 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(10, user.getBio());
             preparedStatement.setString(11, user.getGender());
             clients.put(user.getPhoneNumber(), client);
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result ;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;  
+        return false;
     }
 
     @Override
-    public List<User> getContact(int userId) {
+    public List<User> getContact(String userPhoneNumber) {
         return null;
     }
 
     @Override
-    public List<gov.iti.model.Group> getGroup(int userId) {
+    public List<gov.iti.model.Group> getGroup(String userPhoneNumber) {
         return null;
     }
 
     @Override
     public boolean updateProfile(User user) {
         System.out.println("serverImpl updating user profile at DataBase ");
-        try (PreparedStatement preparedStatement = connection.prepareStatement("update user set Name = ? , image = ? , email = ? , country = ? , bio = ? where PhoneNumber = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "update user set Name = ? , image = ? , email = ? , country = ? , bio = ? where PhoneNumber = ?")) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setBytes(2, user.getImage());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getCountry());
             preparedStatement.setString(5, user.getBio());
             preparedStatement.setString(6, user.getPhoneNumber());
-            return preparedStatement.executeUpdate() > 0;
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
         } catch (SQLException e) {
             System.out.println("update Failed ");
-             e.printStackTrace();
+            e.printStackTrace();
             return false;
         }
     }
@@ -110,9 +116,84 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public boolean changeStatus(String phoneNumber, int status) {
         System.out.println(" changeStatus called");
-        try (PreparedStatement preparedStatement = connection.prepareStatement("update user set status = ? where PhoneNumber = ?")) {
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("update user set status = ? where PhoneNumber = ?")) {
             preparedStatement.setInt(1, status);
             preparedStatement.setString(2, phoneNumber);
+            boolean result = preparedStatement.executeUpdate() > 0 ;
+
+            UsersInfo.updateList();
+
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public void signOut(String phoneNumber) throws RemoteException, SQLException {
+        clients.remove(phoneNumber);
+    }
+
+    @Override
+    public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
+        List <User> users = UsersInfo.getAllUsersfromDB();  // all registration users
+        List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 1 sucess // 2 already invited
+        List <String> contacts=new ArrayList<>();            // all registration users phonenumber
+        for (User user : users) {
+            contacts.add(user.getPhoneNumber());
+        }
+
+        for(String contactPhoneNumber: contactList) {
+
+            if(!contacts.contains(contactPhoneNumber)) {
+                invitationStatus.add(0);
+                System.out.println("not register");
+            } else {
+                boolean isSending=sendInvitation(sender, contactPhoneNumber);
+                if(isSending) {
+                    invitationStatus.add(1); 
+                    System.out.println("invited successfully");
+                } else {
+                    invitationStatus.add(2); 
+                    System.out.println("aleardy sending invitation");
+                }
+            }
+        }
+        return invitationStatus;
+    }
+
+    public boolean creatGroup(String groupName) {
+        System.out.println("create group");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into chatgroup  (group_name) VALUES(?)")) {
+            preparedStatement.setString(1, groupName);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getGroupLastId() {
+        System.out.println(" getGroupLastId");
+        try (Statement statement = connection.createStatement()) {
+           ResultSet rs=statement.executeQuery("select max(id) from chatGroup");
+           rs.next();
+            return rs.getInt("max(id)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean addGroupMember(int groupId, String memberPhoneNumber) {
+        System.out.println(" addGroupMember");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into contactgroup  (group_id ,contact_id) VALUES(?,?)")) {
+            preparedStatement.setInt(1, groupId);
+            preparedStatement.setString(2, memberPhoneNumber);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,58 +202,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public boolean sendInvitation(User sender, User reciever) throws RemoteException, SQLException {
-        // TODO Add invitation to database
-        //TODO send invitation to target receiver
-        User recTest = new User("01111567897","Gomaa mohamed",25,"m",null,null,null,null,1,0);
-        Invitation invitation = new Invitation(1, sender, recTest);
-        if(clients.containsKey(reciever.getPhoneNumber())){
-            clients.get(reciever.getPhoneNumber()).recievedContactInvitation(invitation);
-            return true;
+    public List<User> selectUserContacts(String userPhoneNumber) {
+        List<User> contactList = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "SELECT user.* FROM user user, usercontacts contact where user.PhoneNumber = contact.contact_id And  contact.user_id = ?")) {
+            preparedStatement.setString(1, userPhoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            contactList.addAll(UserFactory.createUserList(resultSet));
+            System.out.println("selectUserContacts" + contactList.size());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
-
-    }
-
-    @Override
-    public void signOut(User user) throws RemoteException, SQLException{
-        clients.remove(user.getPhoneNumber());
-    }
-
-    @Override
-    public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
-        invitedContactList.clear();
-        List <String> contact = new ArrayList<>(); // search if this contact register or not
-        contact.add("01012546874");
-        contact.add("01112546874");
-        contact.add("01212546874"); 
-        contact.add("01012345678");
-        List <String> friends = new ArrayList<>(); // search if aleardy friends
-        friends.add("01212546874");
-        List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 2 friend // 3 sucess
-
-        // don't forget handle aleardy send invitation 
-        for (String contactNo:contactList) { //String
-
-            if(!contact.contains(contactNo)) {
-                invitationStatus.add(0);
-                System.out.println("not register");
-            } else if (friends.contains(contactNo)) {
-                invitationStatus.add(2);
-                System.out.println("already friend");
-            } else {
-                invitationStatus.add(3);
-                invitedContactList.add(contactNo);
-                System.out.println("sucessfully");
-            }
-        }
-
-            //resultSet.beforeFirst();
-            //isExist.add(isContactRegisteration(resultSet,contact)); // check this number exist or not
-            // check if this number friend or not
-            // save in the database invitation
-            // send invitation to users which is online
-        return invitationStatus;
+        return contactList;
     }
 
 }

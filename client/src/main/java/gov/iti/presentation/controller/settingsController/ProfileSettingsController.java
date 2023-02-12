@@ -1,7 +1,6 @@
 package gov.iti.presentation.controller.settingsController;
 
-import java.io.File;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -9,7 +8,6 @@ import java.util.ResourceBundle;
 import gov.iti.business.services.SettingsService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.Utilities;
 import gov.iti.Utilities;
 
 import javafx.collections.FXCollections;
@@ -19,12 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
 
 public class ProfileSettingsController implements Initializable {
 
@@ -50,41 +44,40 @@ public class ProfileSettingsController implements Initializable {
 
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
-    private CurrentUser currentUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
+
         CurrentUser currentUser = CurrentUser.getCurrentUser();
         newBio.textProperty().bindBidirectional(currentUser.getBio());
         newName.textProperty().bindBidirectional(currentUser.getName());
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
-
-        comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
-        // newName.textProperty().bind(SceneManager.currentUser.getName());
+        System.out.println(currentUser.getCountry().get());
+        comboBoxCountry.setValue(currentUser.getCountry().get());
     }
 
     @FXML
     void updateProfile(ActionEvent event) throws RemoteException {
         User updatedUser = CurrentUser.getCurrentUser().getUser();
         // if (validateAll()) {
-            updatedUser.setName(newName.getText());
-            updatedUser.setEmail(newEmail.getText());
-            updatedUser.setBio(newBio.getText());
-            updatedUser.setCountry(comboBoxCountry.getValue());
-        // }
+        updatedUser.setName(newName.getText().trim());
+        updatedUser.setEmail(newEmail.getText().trim());
+        updatedUser.setBio(newBio.getText().trim());
+        updatedUser.setCountry(comboBoxCountry.getValue());
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
             CurrentUser.getCurrentUser().setUser(updatedUser);
     }
 
     public boolean validateAll() {
-        if (!Utilities.validateName(newName.getText())) {
+        if (!Utilities.validateName(newName.getText().trim())) {
             System.out.println("not valid user name ");
             return false;
         } else {
             System.out.println("valid name");
         }
-        if (!Utilities.validateEmail(newEmail.getText())) {
+        if (!Utilities.validateEmail(newEmail.getText().trim())) {
             System.out.println("not valid user name ");
             return false;
         } else {

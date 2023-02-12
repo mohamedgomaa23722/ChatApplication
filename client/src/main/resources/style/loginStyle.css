@@ -6,7 +6,7 @@
     -fx-effect: dropshadow( three-pass-box , #F84D43 , 5, 0.0 , 0 , 1 );
 }
 #nextBtn,#signInBtn {
-    
+
     -fx-font-size: 17px;
     -fx-font-family: "Arial";
     -fx-text-fill: white;

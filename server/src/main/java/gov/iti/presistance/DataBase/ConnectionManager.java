@@ -7,11 +7,11 @@ import javax.sql.DataSource;
 
 public class ConnectionManager {
     private static ConnectionManager instance;
-    private final Connection connection;
+    public static Connection connection = null ;
 
     private ConnectionManager() throws SQLException {
-        DataSource dataSource = DataSourceFactory.getDataSource();
-        connection = dataSource.getConnection();
+            DataSource dataSource = DataSourceFactory.getDataSource();
+            connection = dataSource.getConnection();
     }
 
     public static ConnectionManager getInstance() throws SQLException{

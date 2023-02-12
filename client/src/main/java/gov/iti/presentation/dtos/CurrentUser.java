@@ -1,10 +1,16 @@
 package gov.iti.presentation.dtos;
 
+import java.util.List;
+
+import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class CurrentUser {
     private final static CurrentUser instance = new CurrentUser();
@@ -19,6 +25,10 @@ public class CurrentUser {
     private IntegerProperty age;
     private String password;
 
+    private ObservableList<Invitation> invitations;
+    private ObservableList<User> contacts;
+    private ObservableList<Group> groups;
+
     private CurrentUser() {
         password = "";
         status = new SimpleIntegerProperty();
@@ -29,9 +39,12 @@ public class CurrentUser {
         email = new SimpleStringProperty();
         bio = new SimpleStringProperty();
         country = new SimpleStringProperty();
+        invitations = FXCollections.observableArrayList();
+        contacts = FXCollections.observableArrayList();
+        groups = FXCollections.observableArrayList();
     }
 
-    public static CurrentUser getCurrentUser(){
+    public static CurrentUser getCurrentUser() {
         return instance;
     }
 
@@ -52,20 +65,22 @@ public class CurrentUser {
         email.set(user.getEmail());
         bio.set(user.getBio());
         status.set(user.getStatus());
+        country.set(user.getCountry());
         System.out.println("Updates");
+
     }
 
     public User getUser() {
         return new User(getPhoneNumber().get(),
-        getName().get(), 
-        getAge().get(),
-        getGender().get(),
-        getImage(),
-        getEmail().get(),
-        getBio().get(),
-        getCountry().get(),
-        getStatus().get(),
-        0);
+                getName().get(),
+                getAge().get(),
+                getStatus().get(),
+                0,
+                getImage(),
+                getEmail().get(),
+                getCountry().get(),
+                getBio().get(),
+                getGender().get());
     }
 
     public static CurrentUser getInstance() {
@@ -93,7 +108,8 @@ public class CurrentUser {
     }
 
     public void setAge(int age) {
-        this.age.set(age);;
+        this.age.set(age);
+        ;
     }
 
     public StringProperty getGender() {
@@ -144,5 +160,37 @@ public class CurrentUser {
         this.status.set(status);
     }
 
-    
+    public void setInvitations(List<Invitation> invitations) {
+        this.invitations.addAll(invitations);
+    }
+
+    public void setContacts(List<User> contacts) {
+        this.contacts.addAll(contacts);
+    }
+
+    public void addInvitations(Invitation invitation) {
+        this.invitations.add(invitation);
+    }
+
+    public void addContact(User contact) {
+        this.contacts.add(contact);
+    }
+
+    public ObservableList<Invitation> getInvitations() {
+        return invitations;
+    }
+
+    public ObservableList<User> getContacts() {
+        return contacts;
+    }
+
+    public ObservableList<Group> getGroups() {
+        return groups;
+    }
+
+    public void clearAll() {
+        invitations.clear();
+        groups.clear();
+        contacts.clear();
+    }
 }

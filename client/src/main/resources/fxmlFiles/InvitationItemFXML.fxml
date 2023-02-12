@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" style="-fx-background-color: #F7F7Fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="senderName" text="Mohamed Gomaa">
          <font>
@@ -31,12 +31,12 @@
       </Label>
       <HBox spacing="10.0">
          <children>
-            <ImageView fx:id="accept" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView  fitHeight="30.0" fitWidth="30.0" onMouseClicked = "#acceptInvitation" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="accept.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="reject" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked = "#reject" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="reject.png" />
                </image>

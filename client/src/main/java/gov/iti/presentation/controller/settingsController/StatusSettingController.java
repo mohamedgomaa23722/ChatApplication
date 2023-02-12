@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import gov.iti.business.services.SettingsService;
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
@@ -24,7 +23,6 @@ public class StatusSettingController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO Set current status
         CurrentUser currentUser = CurrentUser.getCurrentUser();
         System.out.println("StatusSettingController : " + currentUser.getStatus().get());
         currentUser.getStatus().addListener((o,old, n) ->{

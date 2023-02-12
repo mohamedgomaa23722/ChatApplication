@@ -15,10 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.ChatService;
-import gov.iti.model.Invitation;
-import gov.iti.model.User;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
-import gov.iti.presentation.controller.subItemController.InvitationItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.Contact;
@@ -26,8 +23,8 @@ import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.Group;
 import gov.iti.presentation.dtos.Message;
 import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.WindowManger;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -88,9 +85,9 @@ public class ChatController implements Initializable {
     @FXML
     private ScrollPane scrollPane;
     @FXML
-    private VBox SettingContainer;
+    private VBox windowContainer;
     @FXML
-    private VBox AddingContentContainer;
+    private VBox viewContainer;
     /**
      * Initializes the controller class.
      */
@@ -132,7 +129,7 @@ public class ChatController implements Initializable {
             group_list.setCellFactory(p -> new ContactCell());
         });
 
-        //addContact();
+        WindowManger.getInstance().initializeView(windowContainer, viewContainer);
     }
 
     private void addMessage(Message message, boolean status) {
@@ -151,73 +148,40 @@ public class ChatController implements Initializable {
 
     @FXML
     private void openSetting() throws IOException {
-        SettingContainer.setVisible(true);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainSettingPage.fxml"));
-        SettingContainer.getChildren().removeAll(SettingContainer.getChildren());
-        SettingContainer.getChildren().add(root);
+        WindowManger.getInstance().openSettingWindow();
     }
 
     @FXML
-    private void closeSetting() {
-        if (SettingContainer.isVisible()) {
-            SettingContainer.setVisible(false);
-        }
-
+    private void closeWindow() {
+        WindowManger.getInstance().closeWindow();
     }
 
     @FXML
     private void signOut() {
-        // TODO : Sign Out from server
+        try {
+            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
+        } catch (RemoteException | SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // TODO : REMOVE SAVED FILE
+        LoginPhoneController.setFail(false);
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
+        CurrentUser.getCurrentUser().clearAll();
     }
 
     @FXML
     private void openNotification() throws RemoteException, SQLException {
-
-        ChatService.getInstance().getInvitation().addListener((o, old,newV) ->{
-            SettingContainer.setVisible(true);
-            Parent root;
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                InvitationItemController invitationItemController = new InvitationItemController(newV);
-                fxmlLoader.setController(invitationItemController);
-                root = fxmlLoader.load(getClass().getClassLoader().getResource("InvitationItemFXML.fxml"));
-                SettingContainer.getChildren().add(root);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
-
-        ChatService.getInstance().sendInvitation(CurrentUser.getCurrentUser().getUser());
-        //TODO : Open Notification VIEW
-        //TODO : Get all notification 
-        SettingContainer.getChildren().removeAll(SettingContainer.getChildren());
-
+        WindowManger.getInstance().openNotificationWindow();
     }
 
     @FXML
     private void addContact() {
-        Parent root;
-        try {
-            AddingContentContainer.setVisible(true);
-            Image exitImg=new Image(getClass().getClassLoader().getResource("closeIcon.png").openStream());
-            ImageView exitImageView = new ImageView(exitImg);
-            exitImageView.setFitWidth(25);
-            exitImageView.setFitHeight(25);
-            exitImageView.setLayoutX(350);
-            exitImageView.setOnMouseClicked(e->AddingContentContainer.setVisible(false));
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("AddContactPageFxml.fxml"));
-            AddingContentContainer.getChildren().removeAll(AddingContentContainer.getChildren());
-            AddingContentContainer.getChildren().add(exitImageView);
-            AddingContentContainer.getChildren().add(root);
-            System.out.println("adding new contact");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-       
+        WindowManger.getInstance().openAddContactWindow();
+    }
+    @FXML
+    private void handelCreateGroup() {
+        WindowManger.getInstance().openCreatGroupWindow();;
     }
 }
 

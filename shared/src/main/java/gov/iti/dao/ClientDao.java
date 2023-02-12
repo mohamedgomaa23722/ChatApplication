@@ -13,6 +13,8 @@ public interface ClientDao extends Remote {
 
     public void recievedGroupMessage(Message message) throws RemoteException;
 
+    public void UpdateOnContact(User user) throws RemoteException;
+
     public void recievedContactInvitation(Invitation invitation) throws RemoteException;
     
 }

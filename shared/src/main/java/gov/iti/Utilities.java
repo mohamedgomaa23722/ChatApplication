@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class Utilities {
