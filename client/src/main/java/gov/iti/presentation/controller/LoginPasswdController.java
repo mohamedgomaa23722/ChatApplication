@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.ContactsService;
@@ -60,7 +61,13 @@ public class LoginPasswdController implements Initializable {
                 CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
 
                 //change status
-
+                ChatManager.getInstance().addContacts();
+                try {
+                    SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             } else {
                 // go to sign in page

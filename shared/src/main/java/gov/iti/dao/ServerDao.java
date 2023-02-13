@@ -2,6 +2,7 @@ package gov.iti.dao;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import gov.iti.model.Group;
@@ -36,4 +37,5 @@ public interface ServerDao extends SettingInt, InvitationInt{
     
     public void SendGroupMessage(Message message) throws RemoteException, SQLException;
 
+    public void notifyChanges(User user) throws RemoteException;
 }
