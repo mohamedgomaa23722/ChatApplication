@@ -17,7 +17,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao{
 
     @Override
     public void recievedContactMessage(Message message) throws RemoteException {
-        
+        ChatService.getInstance().receivedMessage(message);
+        System.out.println(message.getMessage());
     }
 
     @Override

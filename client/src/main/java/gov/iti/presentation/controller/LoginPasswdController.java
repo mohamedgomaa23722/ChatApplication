@@ -1,6 +1,7 @@
 package gov.iti.presentation.controller;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
@@ -9,6 +10,7 @@ import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.business.services.LoginService;
+import gov.iti.business.services.SettingsService;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import javafx.fxml.FXML;
@@ -57,6 +59,9 @@ public class LoginPasswdController implements Initializable {
                 CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
                 CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
 
+                //change status
+
+
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password
@@ -80,6 +85,7 @@ public class LoginPasswdController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        passwdTextField.setText("Aa23722652@");
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
     }

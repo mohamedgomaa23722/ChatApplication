@@ -1,8 +1,12 @@
 package gov.iti.presentation.controller.subItemController;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import gov.iti.model.User;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.Message;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,31 +35,46 @@ public class MessageItemController implements Initializable {
 
     @FXML
     private Circle userImageCircle;
-    
-    private Message message;
+
+    private gov.iti.model.Message message;
     private boolean isReceived;
 
-    public MessageItemController(Message message, boolean isReceived) {
+    public MessageItemController(gov.iti.model.Message message, boolean isReceived) {
         this.message = message;
         this.isReceived = isReceived;
     }
 
+    User user = null;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (isReceived) {
+            System.out.println(
+                    "Receiver : " + message.getReceiverPhoneNumber() + "\nSender : " + message.getSenderPhoneNumber()
+                            + "\nCurrent User : " + CurrentUser.getCurrentUser().getPhoneNumber().get());
+
+            CurrentUser.getCurrentUser().getContacts().forEach((u) -> {
+                if (u.getPhoneNumber().equals(message.getSenderPhoneNumber())) {
+                    user = u;
+                    System.out.println("find user");
+                }
+            });
+        } else {
+            user = CurrentUser.getCurrentUser().getUser();
+        }
         messageLabel.setText(message.getMessage());
-        userNameLabel.setText(message.getSenderPhone());
-        userImageCircle.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm())));
+        userNameLabel.setText(message.getSenderPhoneNumber());
+        userImageCircle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
 
-        if(isReceived){
+        if (isReceived) {
             messageBox.setAlignment(Pos.CENTER_LEFT);
-            setMessageStyle("recivedMessageBox","reciverName", "recivedMessageLabel", "recivedMessageTimeLabel");
+            setMessageStyle("recivedMessageBox", "reciverName", "recivedMessageLabel", "recivedMessageTimeLabel");
 
-        }else{
+        } else {
             messageBox.setAlignment(Pos.CENTER_RIGHT);
-            setMessageStyle("sendMessageBox","senderName", "sendMessageLabel", "sendMessageTimeLabel");
+            setMessageStyle("sendMessageBox", "senderName", "sendMessageLabel", "sendMessageTimeLabel");
         }
     }
-    
 
     private void setMessageStyle(String containerStyle, String nameStle, String messageStyle, String messageTimeStyle) {
         messageContainer.getStyleClass().add(containerStyle);

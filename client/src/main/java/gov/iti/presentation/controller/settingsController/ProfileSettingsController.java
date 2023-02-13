@@ -1,9 +1,13 @@
 package gov.iti.presentation.controller.settingsController;
 
-
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import gov.iti.business.services.SettingsService;
 import gov.iti.model.User;
@@ -17,7 +21,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 public class ProfileSettingsController implements Initializable {
@@ -55,6 +61,20 @@ public class ProfileSettingsController implements Initializable {
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
         System.out.println(currentUser.getCountry().get());
         comboBoxCountry.setValue(currentUser.getCountry().get());
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage());
+        Image image = new Image(bis);
+        if (image != null)
+            System.out.println("image is not null");
+        else
+            System.out.println("image is null");
+
+        try {
+            bis.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @FXML
