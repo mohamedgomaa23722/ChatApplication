@@ -116,7 +116,6 @@ public class SignUpController implements Initializable {
                 imagebytes = new byte[(int)file.length()];
                 fileInputStream.read(imagebytes);
             } catch (IOException e2) {
-                // TODO Auto-generated catch block
                 e2.printStackTrace();
             }
 
