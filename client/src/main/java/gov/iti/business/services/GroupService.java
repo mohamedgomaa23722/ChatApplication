@@ -8,6 +8,7 @@ import java.util.List;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.Group;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
 public class GroupService {
@@ -56,9 +57,9 @@ public class GroupService {
         }
         return false;
     }
-    public List<Group> getContactGroups (String UserPhoneNumber) {
+    public List<Group> getContactGroups () {
         try {
-            return chatReg.selectGroups(UserPhoneNumber);
+            return chatReg.selectGroups(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException e) {
             
             e.printStackTrace();

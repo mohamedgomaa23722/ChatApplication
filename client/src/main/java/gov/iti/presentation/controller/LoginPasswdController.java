@@ -6,8 +6,13 @@ import java.util.ResourceBundle;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
+import gov.iti.business.services.ContactsService;
+import gov.iti.business.services.GroupService;
+import gov.iti.business.services.InvitationService;
 import gov.iti.business.services.LoginService;
+import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import gov.iti.model.Group;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -50,6 +55,12 @@ public class LoginPasswdController implements Initializable {
                 System.out.println(CurrentUser.getInstance().getCountry().get());
                 System.out.println(CurrentUser.getInstance().getBio().get());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+
+                CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
+                CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
+                CurrentUser.getCurrentUser().setgroups(GroupService.getGroupService().getContactGroups());
+
+
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password

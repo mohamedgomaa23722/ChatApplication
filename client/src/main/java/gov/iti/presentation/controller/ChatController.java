@@ -88,7 +88,6 @@ public class ChatController implements Initializable {
     private VBox windowContainer;
     @FXML
     private VBox viewContainer;
-
     /**
      * Initializes the controller class.
      */
@@ -119,9 +118,19 @@ public class ChatController implements Initializable {
         });
         
         Platform.runLater(() -> {
+            List<gov.iti.model.Group> ListOfgroups= CurrentUser.getCurrentUser().getGroups();
+            /*List<Chat> groups= new ArrayList<Chat>();
+           for (int index = 0; index < ListOfgroups.size(); index++) {
+                groups.add(new Chat(ListOfgroups.get(index).getGroupName(), false, new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm()))
+                        );
+            }
+            ObservableList<Chat> observableList1 = FXCollections.observableArrayList(groups);
+            group_list.setItems(observableList1);
+            group_list.setCellFactory(p -> new ContactCell());
+            */
             List<Group> groups = new ArrayList<>();
-            for (int index = 0; index < 14; index++) {
-                groups.add(new Group(String.valueOf(index), "Team" + index,
+            for (int index = 0; index < ListOfgroups.size(); index++) {
+                groups.add(new Group(String.valueOf(ListOfgroups.get(index).getGroupId()),ListOfgroups.get(index).getGroupName(),
                         new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm())));
             }
 
@@ -160,13 +169,14 @@ public class ChatController implements Initializable {
     @FXML
     private void signOut() {
         try {
-            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getName().get());
+            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // TODO : REMOVE SAVED FILE
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
+        CurrentUser.getCurrentUser().clearAll();
     }
 
     @FXML

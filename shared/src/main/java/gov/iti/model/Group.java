@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Group implements Serializable{
     private int groupId;
     private String groupName ;
-    public Group(int groupId,String groupName){
+    public Group(int id, String groupName){
         this.groupName=groupName;
-        this.groupId=groupId;
+        this.groupId=id;
     }
     public int getGroupId() {
         return groupId;

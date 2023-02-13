@@ -1,7 +1,6 @@
 package gov.iti.presistance.dao;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,22 +17,18 @@ import gov.iti.Utilities;
 import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.Group;
-import gov.iti.model.Invitation;
 import gov.iti.model.User;
-import gov.iti.model.UserContact;
 
-public class ServerImpl extends UnicastRemoteObject implements ServerDao {
+public class ServerImpl extends InvitationImp implements ServerDao {
 
-    Map<String, ClientDao> clients = new HashMap<>();
+    protected static Map<String, ClientDao> clients = new HashMap<>();
 
     private Connection connection;
 
-    List <String> invitedContactList;
 
     public ServerImpl() throws RemoteException, SQLException {
         super();
         connection = ConnectionManager.getInstance().getStatement();
-        invitedContactList=new ArrayList<>();
     }
 
     @Override
@@ -138,54 +133,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public boolean sendInvitation(String senderPhoneNumber, String recieverPhoneNumber)
-            throws RemoteException, SQLException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO invitation(senderPhone, receiverPhone) values(?,?)", Statement.RETURN_GENERATED_KEYS)){
-            preparedStatement.setString(1, senderPhoneNumber);
-            preparedStatement.setString(2, recieverPhoneNumber);
-            preparedStatement.executeUpdate();
-
-            if (clients.containsKey(recieverPhoneNumber)) {
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
-                    resultSet.next();
-                    clients.get(recieverPhoneNumber)
-                    .recievedContactInvitation(new Invitation(resultSet.getInt(1), senderPhoneNumber, recieverPhoneNumber));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
     public void signOut(String phoneNumber) throws RemoteException, SQLException {
         clients.remove(phoneNumber);
     }
 
     @Override
-    public List<Invitation> getInvitations(String userPhoneNumber) throws RemoteException, SQLException {
-        List<Invitation> invitations = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection
-                .prepareStatement("select * From invitation where receiverPhone = ?")) {
-            preparedStatement.setString(1, userPhoneNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                invitations.add(new Invitation(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3)));
-            }
-            return invitations;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @Override
     public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
-        invitedContactList.clear();
         /*List <String> contact = new ArrayList<>(); // search if this contact register or not
         contact.add("01111567897");
         contact.add("01111567898");
@@ -244,7 +197,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     public boolean addGroupMember(int groupId, String memberPhoneNumber) {
-        System.out.println(" addGroupMember");
+        System.out.println("addGroupMember");
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement("insert into contactgroup  (group_id ,contact_id) VALUES(?,?)")) {
             preparedStatement.setInt(1, groupId);
@@ -257,18 +210,15 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     }
 
     @Override
-    public List<UserContact> selectUserContacts(String userPhoneNumber) {
-        System.out.println("selectUserContacts");
-        List<UserContact> contactList = new ArrayList<UserContact>();
+    public List<User> selectUserContacts(String userPhoneNumber) {
+        List<User> contactList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement(
-                        "SELECT phoneNumber ,name from user where phonenumber in (SELECT contact_id from usercontacts where user_id=?)")) {
+                        "SELECT user.* FROM user user, usercontacts contact where user.PhoneNumber = contact.contact_id And  contact.user_id = ?")) {
             preparedStatement.setString(1, userPhoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-
-                contactList.add(new UserContact(resultSet.getString(1), resultSet.getString(2)));
-            }
+            contactList.addAll(UserFactory.createUserList(resultSet));
+            System.out.println("selectUserContacts" + contactList.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -279,7 +229,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
         List<Group> GroupList = new ArrayList<Group>();
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement(
-                        "SELECT * from chatgroup where id in (SELECT group_id from contactgroup where contact_id=?)")) {
+                        "select id ,group_name from user,chatgroup ,contactgroup where id = group_id and contact_id=phoneNumber and phoneNumber=?")) {
             preparedStatement.setString(1, userPhoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

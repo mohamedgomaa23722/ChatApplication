@@ -31,12 +31,12 @@
       </Label>
       <HBox spacing="10.0">
          <children>
-            <ImageView fx:id="accept" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView  fitHeight="30.0" fitWidth="30.0" onMouseClicked = "#acceptInvitation" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="accept.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="reject" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked = "#reject" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="reject.png" />
                </image>

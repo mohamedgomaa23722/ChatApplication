@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import gov.iti.model.Invitation;
+import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ModelFactory;
 import gov.iti.presistance.connection.ClientServerConnection;
@@ -31,7 +32,26 @@ public class InvitationService {
     public void receiveInvitation(Invitation invitation) {
         System.out.println("receiveInvitation");
         Platform.runLater(() -> {
-            ModelFactory.getInstance().getReceivedInvitation().setInvitationProp(invitation);
+            CurrentUser.getCurrentUser().addInvitations(invitation);
         });
     } 
+
+    public User acceptInvitation(Invitation invitation) {
+        try {
+            return ClientServerConnection.getConnectionInstance().getServerDao().acceptInvitation(invitation);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void rejectInvitation(int id) {
+        try {
+            ClientServerConnection.getConnectionInstance().getServerDao().rejectInvitation(id);
+        } catch (RemoteException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.iti.dao.ServerDao;
+import gov.iti.model.User;
 import gov.iti.model.UserContact;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
 public class ContactsService {
@@ -23,9 +25,10 @@ public class ContactsService {
         chatReg=ClientServerConnection.getConnectionInstance().getServerDao();
     }
 
-    public List<UserContact> getContacts(String UserPhoneNumber) {
+    public List<User> getContacts() {
         try {
-            return chatReg.selectUserContacts(UserPhoneNumber);
+            List<User> contacList = chatReg.selectUserContacts(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            return contacList;
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -33,7 +36,7 @@ public class ContactsService {
             
             e.printStackTrace();
         }
-        return new ArrayList<UserContact>();
+        return new ArrayList<User>();
     }
     
     

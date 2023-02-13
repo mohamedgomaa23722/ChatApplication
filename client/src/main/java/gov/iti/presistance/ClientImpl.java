@@ -3,10 +3,12 @@ package gov.iti.presistance;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import gov.iti.business.services.ChatService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.dao.ClientDao;
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
+import gov.iti.model.User;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientDao{
 
@@ -26,6 +28,12 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao{
     @Override
     public void recievedContactInvitation(Invitation invitation) throws RemoteException {
         InvitationService.getInstance().receiveInvitation(invitation);
+    }
+
+    @Override
+    public void UpdateOnContact(User user) throws RemoteException {
+        // TODO Auto-generated method stub
+        ChatService.getInstance().UpdateContanctList(user);
     }
     
 }

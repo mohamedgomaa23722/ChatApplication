@@ -9,7 +9,7 @@ import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.model.UserContact;
 
-public interface ServerDao extends SettingInt{
+public interface ServerDao extends SettingInt, InvitationInt{
     
     public User login(ClientDao client, String PhoneNumber, String Password) throws RemoteException, SQLException;
 
@@ -19,11 +19,7 @@ public interface ServerDao extends SettingInt{
 
     public List<Group> getGroup(String userPhoneNumber) throws RemoteException, SQLException;
 
-    public boolean sendInvitation(String senderPhoneNumber, String recieverPhoneNumber) throws RemoteException, SQLException;
-
     public void signOut(String PhoneNumbe) throws RemoteException, SQLException;
-
-    public List<Invitation> getInvitations(String userPhoneNumber) throws RemoteException, SQLException; 
 
     public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException;
 
@@ -33,7 +29,7 @@ public interface ServerDao extends SettingInt{
 
     public boolean addGroupMember(int groupId, String memberPhoneNumber)throws RemoteException, SQLException;
 
-    public List<UserContact> selectUserContacts(String userPhoneNumber) throws RemoteException, SQLException;
+    public List<User> selectUserContacts(String userPhoneNumber) throws RemoteException, SQLException;
 
     public List<Group> selectGroups(String userPhoneNumber) throws RemoteException, SQLException;
 

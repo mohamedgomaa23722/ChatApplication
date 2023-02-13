@@ -37,7 +37,6 @@ public class WindowManger {
 
     public void openAddContactWindow() {
         loadView("AddContactPageFxml");
-
     }
 
     public void openCreatGroupWindow() {
