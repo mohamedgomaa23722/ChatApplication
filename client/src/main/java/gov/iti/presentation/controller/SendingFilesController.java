@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import gov.iti.business.services.SendingFilesService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -23,11 +24,14 @@ public class SendingFilesController implements Initializable {
     Button chooseFileBtn;
 
     @FXML
-    Button chooseContactBtn;
+    Button sendFileBtn;
 
     List<File> filesList;
 
+    //TODO:change reciever number 
     String reciever="01512345678";
+
+    String labelStyle="-fx-border-style: solid; -fx-border-color: blue; -fx-border-radius: 5px; -fx-font-size: 15px; -fx-padding: 2 2 2 2; -fx-marign: 10 10 10 10;"; 
 
     //File[] filesList=null;
 
@@ -65,14 +69,17 @@ public class SendingFilesController implements Initializable {
         // call sending service
         List<Boolean> fileResults=SendingFilesService.getSendingFilesService().sendFiles(filesList,reciever);
         filesList.clear();
-        filesArea.getChildren().clear();
-        //filesArea.getChildren().removeAll(filesArea);
+        //filesArea.getChildren().clear();
+        filesArea.getChildren().removeAll(filesArea.getChildren());
         System.out.println(fileResults);
     }
 
     void display(File file) {
         String fileName=file.getName();
         Label fileNameLbl = new Label(fileName);
+        Insets inset2= new Insets(0, 10, 0, 20);
+        fileNameLbl.setStyle(labelStyle);
+        filesArea.setMargin(fileNameLbl, inset2);
         filesArea.getChildren().add(fileNameLbl);
     }
 

@@ -7,21 +7,24 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
 
-<VBox maxHeight="-Infinity" style="-fx-background-color: #f7f7fa;" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.SendingFilesController" >
+<VBox maxHeight="-Infinity" style="-fx-background-color: #f7f7fa;" stylesheets="newContactStyle.css" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.SendingFilesController" >
    <children>
       <ImageView id="logoImg" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="logo-icon.png" />
+            <Image url="logo.png" />
          </image>
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
       </ImageView>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="324.0" text="Sending Files" textAlignment="CENTER">
-         <VBox.margin>
-            <Insets left="60.0" top="-30.0" />
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="324.0" text="Sending Files" textAlignment="CENTER">
+         
+            <VBox.margin>
+            <Insets left="50.0" top="-30.0" />
          </VBox.margin>
+         
       </Label>
       <ScrollPane prefHeight="271.0" prefWidth="400.0">
          <content>
@@ -35,16 +38,16 @@
             <Insets top="20.0" />
          </VBox.margin>
       </ScrollPane>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" HBox.hgrow="ALWAYS" spacing="10.0">
          <children>
-            <Button fx:id="chooseFileBtn" alignment="CENTER" mnemonicParsing="false" text="Choose File" onAction="#chooseFiles">
+            <Button fx:id="chooseFileBtn" mnemonicParsing="false" text="Choose File" onAction="#chooseFiles">
                <HBox.margin>
-                  <Insets left="60.0" top="30.0" />
+                  <Insets top="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="chooseContactBtn" mnemonicParsing="false" text="Send" onAction="#sendFilesToServer">
+            <Button fx:id="sendFileBtn" mnemonicParsing="false" text="Send Files" onAction="#sendFilesToServer">
                <HBox.margin>
-                  <Insets left="50.0" top="30.0" />
+                  <Insets top="20.0" />
                </HBox.margin>
             </Button>
          </children>

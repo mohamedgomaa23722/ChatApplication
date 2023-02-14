@@ -1,4 +1,4 @@
-#lbl{
+#lbl,#title{
     -fx-font-family: Arial;
     -fx-font-weight: bold;
     -fx-text-fill: #F84D43;
@@ -19,7 +19,7 @@
     -fx-background-color: #ffffff;
 }
 
-#invitationBtn {
+#invitationBtn,#sendFileBtn,#chooseFileBtn {
     
     -fx-font-size: 17px;
     -fx-font-family: "Arial";
@@ -32,7 +32,7 @@
     -fx-background-color: #F84D43;
 }
 
-#invitationBtn:hover{
+#invitationBtn:hover, #sendFileBtn:hover, #chooseFileBtn:hover{
     -fx-min-width:155;
     -fx-min-height:35;
     -fx-background-radius:10px;
