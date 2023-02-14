@@ -1,9 +1,0 @@
-gov\iti\App.class
-gov\iti\Presentation\dto\Contact.class
-gov\iti\Presentation\dto\Message.class
-gov\iti\Presentation\utils\ContactItem.class
-gov\iti\Presentation\utils\MessageItem.class
-gov\iti\Presentation\dto\Chat.class
-gov\iti\business\services\SceneManager.class
-gov\iti\Presentation\dto\Group.class
-gov\iti\Presentation\controller\ChatController.class

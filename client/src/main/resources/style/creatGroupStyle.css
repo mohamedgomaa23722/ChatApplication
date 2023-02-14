@@ -1,0 +1,10 @@
+.list-cell:selected {
+    -fx-background-color: #d46761;
+} 
+.button {
+  -fx-background-radius: 10px;
+  -fx-background-color: #F84D43;
+}
+.button:hover {
+      -fx-effect: dropshadow( three-pass-box , #F84D43 , 5, 0.0 , 0 , 1 );
+  }

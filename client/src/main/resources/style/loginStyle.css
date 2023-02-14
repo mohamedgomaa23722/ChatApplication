@@ -1,0 +1,66 @@
+#nextBtn:hover,#signInBtn:hover { 
+    -fx-min-width:155;
+    -fx-min-height:35;
+    -fx-background-radius:10px;
+    -fx-background-color: #F84D43;
+    -fx-effect: dropshadow( three-pass-box , #F84D43 , 5, 0.0 , 0 , 1 );
+}
+#nextBtn,#signInBtn {
+
+    -fx-font-size: 17px;
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-style: normal;
+    -fx-min-width:155;
+    -fx-min-height:35;
+    -fx-background-radius:10px;
+    -fx-background-color: #F84D43;
+}
+
+#phoneTextField, #passwdTextField {
+    -fx-background-size:30px 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left 10 center;
+    -fx-font-size: 16;
+    -fx-text-fill: rgb(108, 86, 86);
+    -fx-padding: 5 5 5 50;
+    -fx-border-color: #ff79447f ;  
+    -fx-border-width: 3px ; 
+    -fx-border-radius: 8;
+    -fx-background-color: #ffffff;
+
+} 
+
+#phoneTextField {
+    -fx-background-image:url('phone-icon.png"');
+}
+
+#passwdTextField {
+    -fx-background-image:url('"passwd-icon.png"');
+}
+
+#signLbl,#signUpLbl {
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+    -fx-text-fill: #F84D43;
+}
+
+#signLbl {
+    -fx-font-size: 25px;
+}
+
+#signUpLbl {
+    -fx-font-size: 15px;
+}
+
+#logoLbl {
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-font-size: 17px;
+}
+
+#signUpLbl:hover{
+    -fx-effect: dropshadow( three-pass-box , #a7a7a756 , 5, 0.0 , 0 , 1 );
+}

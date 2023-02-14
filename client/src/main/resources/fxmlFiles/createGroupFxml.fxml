@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="371.0" style="-fx-background-color: #f7f7fa;" stylesheets="creatGroupStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.CreateGroupController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+           <ImageView fx:id="imgContainer" fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <image>
+                  <Image url="@group.png" />
+               </image>
+            </ImageView>
+            
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="56.0" prefWidth="404.0">
+         <children>
+            <Label prefHeight="31.0" prefWidth="197.0" text="Group name" textAlignment="RIGHT" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets left="8.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="groupNameField" onMouseClicked="#handelError" prefHeight="31.0" prefWidth="339.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="40.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <Label fx:id="error" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="371.0" text="Label" textAlignment="CENTER" visible="false" VBox.vgrow="ALWAYS" />
+      <VBox fx:id="listOfContactsView" prefHeight="204.0" prefWidth="291.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets left="40.0" right="40.0" />
+         </VBox.margin>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="36.0" prefWidth="315.0">
+         <VBox.margin>
+            <Insets bottom="30.0" left="40.0" right="40.0" top="15.0" />
+         </VBox.margin>
+         <children>
+            <Button fx:id="createGroupButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#creatGroupHandler" prefWidth="324.0" text="Create Group" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
