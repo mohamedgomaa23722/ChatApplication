@@ -2,7 +2,9 @@ package gov.iti;
 
 import gov.iti.presentation.utils.SceneManager;
 import javafx.application.Application;
-
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -17,6 +19,12 @@ public class App extends Application {
         sceneManager.initStage(primaryStage);
         sceneManager.switchToPhoneLoginScreen();
         //sceneManager.switchToaddContactScreen();
+        /* 
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent root=fxmlLoader.load(getClass().getClassLoader().getResource("senderPage.fxml").openStream());
+        Scene loginScene = new Scene(root);
+        primaryStage.setScene(loginScene);
+        */
         primaryStage.show();
     }
 

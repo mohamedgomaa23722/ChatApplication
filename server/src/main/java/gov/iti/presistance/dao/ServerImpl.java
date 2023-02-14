@@ -1,5 +1,6 @@
 package gov.iti.presistance.dao;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
 
-public class ServerImpl extends InvitationImp implements ServerDao {
+public class ServerImpl extends InvitationImp implements ServerDao, Serializable {
 
     protected static Map<String, ClientDao> clients = new HashMap<>();
 
@@ -215,6 +216,17 @@ public class ServerImpl extends InvitationImp implements ServerDao {
             e.printStackTrace();
         }
         return contactList;
+    }
+    @Override
+    public synchronized boolean sendFile(byte[] buffer, int count, String reciever, String fileName) throws RemoteException {
+        // TODO Auto-generated method stub
+        
+        ClientDao recieverClient = clients.get(reciever);
+        System.out.println("sending file name: "+fileName+" count "+count);
+        //for (int i = 0; i < count; i++)
+            //System.out.print((char) buffer[i]);
+        
+        return recieverClient.downLoadFile(buffer, count, fileName);
     }
 
 }

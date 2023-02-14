@@ -5,9 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import gov.iti.model.Group;
-import gov.iti.model.Invitation;
 import gov.iti.model.User;
-import gov.iti.model.UserContact;
+
 
 public interface ServerDao extends SettingInt, InvitationInt{
     
@@ -32,4 +31,7 @@ public interface ServerDao extends SettingInt, InvitationInt{
     public boolean addGroupMember(int groupId, String memberPhoneNumber)throws RemoteException, SQLException;
 
     public List<User> selectUserContacts(String userPhoneNumber) throws RemoteException, SQLException;
+
+    public boolean sendFile(byte[] buffer, int count, String reciever, String fileName) throws RemoteException;
+
 }

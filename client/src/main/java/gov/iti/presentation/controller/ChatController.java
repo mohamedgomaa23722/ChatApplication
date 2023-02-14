@@ -183,6 +183,11 @@ public class ChatController implements Initializable {
     private void handelCreateGroup() {
         WindowManger.getInstance().openCreatGroupWindow();;
     }
+
+    @FXML
+    private void sendFiles() {
+        WindowManger.getInstance().openSendingFilesWindow();
+    }
 }
 
 class ContactCell extends ListCell<Chat> {

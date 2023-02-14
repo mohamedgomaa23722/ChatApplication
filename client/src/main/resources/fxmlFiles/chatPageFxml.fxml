@@ -75,7 +75,7 @@
                               <Insets />
                            </HBox.margin>
                         </TextField>
-                        <ImageView fx:id="attach_file" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="attach_file" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#sendFiles">
                            <image>
                               <Image url="attachment.png" />
                            </image>
