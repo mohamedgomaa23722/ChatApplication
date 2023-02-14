@@ -68,7 +68,6 @@ public class AddingContactController implements Initializable {
             phoneError.setText("");
             String phoneNumber = addNewContactTextField.getText().trim();
             if (validator.validateUserPhoneNumber(phoneNumber)) {
-
                 if (isFirstContact) {
                     isFirstContact = false;
                     userContacts = CurrentUser.getCurrentUser().getContacts();
@@ -135,14 +134,17 @@ public class AddingContactController implements Initializable {
         statusLabels = new ArrayList<>();
         invitationStatus = new ArrayList<>();
         userContactPhones = new ArrayList<>();
+
         isAddingContactPageOpen.addListener((o, oldVal, newVal) -> {
             System.out.println("change");
             if (newVal.toString() == "false") {
                 System.out.println("close adding page");
-                vbox.getChildren().clear();
+                vbox.getChildren().removeAll(vbox.getChildren());
                 invitedContacts.clear();
+                statusLabels.clear();
             }
         });
+
     }
 
     void displayContact(String phoneNumber) {
