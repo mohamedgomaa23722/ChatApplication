@@ -17,4 +17,5 @@ public interface ClientDao extends Remote {
 
     public void recievedContactInvitation(Invitation invitation) throws RemoteException;
     
+    public void notifyUserChanges(User user) throws RemoteException;
 }

@@ -44,8 +44,6 @@ public class ServerImpl extends InvitationImp implements ServerDao {
             clients.put(phoneNumber, client);
             User user = UserFactory.createUser(resultSet);
             UsersInfo.updateList();
-            if (user != null)
-                changeStatus(phoneNumber, 1);
             return user;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,7 +150,6 @@ public class ServerImpl extends InvitationImp implements ServerDao {
     @Override
     public void signOut(String phoneNumber) throws RemoteException, SQLException {
         clients.remove(phoneNumber);
-        changeStatus(phoneNumber, 0);
     }
 
     @Override
@@ -263,6 +260,18 @@ public class ServerImpl extends InvitationImp implements ServerDao {
     public void SendGroupMessage(Message message) throws RemoteException, SQLException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'SendGroupMessage'");
+    }
+
+    @Override
+    public void notifyChanges(User user) {
+        selectUserContacts(user.getPhoneNumber()).forEach((contact) ->{
+            if(clients.containsKey(contact.getPhoneNumber()))
+            try {
+                clients.get(contact.getPhoneNumber()).notifyUserChanges(user);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });     
     }
 
 }

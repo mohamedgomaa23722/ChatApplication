@@ -21,7 +21,9 @@ import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.model.Message;
+import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.Status;
 import gov.iti.presentation.utils.WindowManger;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -108,7 +110,6 @@ public class ChatController<E> implements Initializable {
 
         message_edx.setOnKeyPressed((e) -> {
             if (e.getCode() == KeyCode.ENTER) {
-                System.out.println("client receiver phoneNumber = " + receiverUSer.getPhoneNumber());
                 Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
                         receiverUSer.getPhoneNumber(), message_edx.getText(), null);
                 addMessage(sMessage, false);
@@ -122,16 +123,11 @@ public class ChatController<E> implements Initializable {
         });
 
         CurrentUser.getCurrentUser().getContacts().addListener(new ListChangeListener<User>() {
-
             @Override
             public void onChanged(Change<? extends User> c) {
-                // TODO Auto-generated method stub
                 if (c.getList().size() > 0) {
-                    System.out.println("is not empty");
                     empty_contact.setVisible(false);
-                }
-                else {
-                    System.out.println("is empty");
+                } else {
                     empty_contact.setVisible(true);
                 }
             }
@@ -141,18 +137,20 @@ public class ChatController<E> implements Initializable {
         contact_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                chatBox.getChildren().removeAll(chatBox.getChildren());
                 setChatVisiablity(true);
                 chatMode = 1;
                 receiverUSer = contact_list.getSelectionModel().getSelectedItem();
                 contact_name.setText(receiverUSer.getName());
                 changeStatusbar(receiverUSer.getStatus());
                 contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
+                chatBox.getChildren().add(ChatManager.getInstance().getMessages(receiverUSer.getPhoneNumber()));
             }
         });
 
-        ChatService.getInstance().getMessage().addListener((o, oldV, newV) -> {
-            if (newV != null) {
-                addMessage(newV, true);
+        ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
+            if (newMessage != null) {
+                addMessage(newMessage, true);
             }
         });
 
@@ -168,6 +166,11 @@ public class ChatController<E> implements Initializable {
             chatBox.getChildren().add(v);
             scrollPane.vvalueProperty().bind(chatBox.heightProperty());
             message_edx.clear();
+            if (status)
+                ChatManager.getInstance().addMessage(message.getSenderPhoneNumber(), v);
+            else {
+                ChatManager.getInstance().addMessage(message.getReceiverPhoneNumber(), v);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -190,12 +193,12 @@ public class ChatController<E> implements Initializable {
         try {
             ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // TODO : REMOVE SAVED FILE
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
         CurrentUser.getCurrentUser().clearAll();
+        ChatManager.getInstance().clearMap();
     }
 
     @FXML
@@ -214,16 +217,14 @@ public class ChatController<E> implements Initializable {
     }
 
     private void changeStatusbar(int status) {
-        if (status == 0) {
-            contact_circle_status.setFill(Color.GRAY);
-            contact_status.setText("Offline");
-            contact_status.setTextFill(Color.GRAY);
-        } else {
-            contact_circle_status.setFill(Color.web("#00FF66"));
-            contact_status.setText("Online");
-            contact_status.setTextFill(Color.web("#00FF66"));
-        }
-
+        if (status == 0)
+            changeStatusColors(Status.Offline);
+        else if (status == 1)
+            changeStatusColors(Status.online);
+        else if (status == 2)
+            changeStatusColors(Status.busy);
+        else
+            changeStatusColors(Status.away);
     }
 
     private void setChatVisiablity(boolean isvisible) {
@@ -236,7 +237,16 @@ public class ChatController<E> implements Initializable {
         empty_chat.setVisible(!isvisible);
 
     }
+
+    private void changeStatusColors(Status status) {
+        contact_circle_status.setFill(Color.web(status.color));
+        contact_status.setText(status.text);
+        contact_status.setTextFill(Color.web(status.color));
+    }
+
 }
+
+
 
 class ContactCell extends ListCell<User> {
     @Override
@@ -256,4 +266,5 @@ class ContactCell extends ListCell<User> {
             this.setGraphic(null);
         }
     }
+
 }

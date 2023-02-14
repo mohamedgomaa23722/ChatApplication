@@ -8,6 +8,7 @@ import gov.iti.model.User;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.Contact;
 import gov.iti.presentation.dtos.Group;
+import gov.iti.presentation.utils.Status;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -35,17 +36,25 @@ public class ContactItemController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-            if (user != null) {
-                Item_Image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
-                if (user.getStatus() == 0) {
-                    Item_Image.setStroke(Color.GRAY);
-                    Item_Image.setStrokeWidth(2);
-                } else {
-                    Item_Image.setStroke(Color.web("#00FF66"));
-                    Item_Image.setStrokeWidth(2);
-                }
 
-                Item_Name.setText(user.getName());
-            }
+        if (user != null) {
+            Item_Image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
+            if (user.getStatus() == 0) {
+                changeStatusColors(Status.Offline);
+            } else if (user.getStatus() == 1)
+                changeStatusColors(Status.online);
+            else if (user.getStatus() == 2)
+                changeStatusColors(Status.busy);
+            else
+                changeStatusColors(Status.away);
+
+            Item_Name.setText(user.getName());
         }
+    }
+
+    private void changeStatusColors(Status status) {
+        Item_Image.setStroke(Color.web(status.color));
+        Item_Image.setStrokeWidth(3);
+
+    }
 }

@@ -9,6 +9,7 @@ import gov.iti.dao.ClientDao;
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.User;
+import gov.iti.presentation.dtos.Chat;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientDao{
 
@@ -33,8 +34,13 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao{
 
     @Override
     public void UpdateOnContact(User user) throws RemoteException {
-        // TODO Auto-generated method stub
         ChatService.getInstance().UpdateContanctList(user);
+    }
+
+    @Override
+    public void notifyUserChanges(User user) throws RemoteException {
+        System.out.println("change has been made in " + user.getPhoneNumber());
+        ChatService.getInstance().notifyContactChange(user);
     }
     
 }

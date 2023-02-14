@@ -70,9 +70,9 @@
                               <VBox fx:id="chatBox" prefHeight="200.0" prefWidth="100.0" />
                            </content>
                         </ScrollPane>
-                        <HBox fx:id="message_edx_container" alignment="CENTER">
+                        <HBox fx:id="message_edx_container" alignment="CENTER" maxHeight="40.0" minHeight="40.0">
                            <children>
-                              <TextField fx:id="message_edx" maxHeight="3" promptText="Enter Your Message Here " HBox.hgrow="ALWAYS">
+                              <TextField fx:id="message_edx" maxHeight="3.0" minHeight="40.0" prefHeight="40.0" promptText="Enter Your Message Here " HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
