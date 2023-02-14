@@ -29,6 +29,7 @@ public class ServerImpl extends InvitationImp implements ServerDao {
 
     private Connection connection;
 
+
     public ServerImpl() throws RemoteException, SQLException {
         super();
         connection = ConnectionManager.getInstance().getStatement();
@@ -42,9 +43,10 @@ public class ServerImpl extends InvitationImp implements ServerDao {
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             clients.put(phoneNumber, client);
-            User user = UserFactory.createUser(resultSet);
+
             UsersInfo.updateList();
-            return user;
+
+            return UserFactory.createUser(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,43 +156,29 @@ public class ServerImpl extends InvitationImp implements ServerDao {
 
     @Override
     public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
-        /*
-         * List <String> contact = new ArrayList<>(); // search if this contact register
-         * or not
-         * contact.add("01111567897");
-         * contact.add("01111567898");
-         * contact.add("01512345687");
-         */
-
-        List<Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 2 friend // 3 sucess
-
-        // don't forget handle aleardy send invitation
-        /*
-         * for (String contactNo:contactList) { //String
-         * 
-         * if(!contact.contains(contactNo)) {
-         * invitationStatus.add(0);
-         * System.out.println("not register");
-         * } else if (friends.contains(contactNo)) {
-         * invitationStatus.add(2);
-         * System.out.println("already friend");
-         * } else {
-         * invitationStatus.add(3);
-         * invitedContactList.add(contactNo);
-         * System.out.println("sucessfully");
-         * }
-         * }
-         */
-
-        // resultSet.beforeFirst();
-        // isExist.add(isContactRegisteration(resultSet,contact)); // check this number
-        // exist or not
-        // check if this number friend or not
-        // save in the database invitation
-        for (String contactPhoneNumber : contactList) {
-            sendInvitation(sender, contactPhoneNumber);
+        List <User> users = UsersInfo.getAllUsersfromDB();  // all registration users
+        List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 1 sucess // 2 already invited
+        List <String> contacts=new ArrayList<>();            // all registration users phonenumber
+        for (User user : users) {
+            contacts.add(user.getPhoneNumber());
         }
-        // send invitation to users which is online
+
+        for(String contactPhoneNumber: contactList) {
+
+            if(!contacts.contains(contactPhoneNumber)) {
+                invitationStatus.add(0);
+                System.out.println("not register");
+            } else {
+                boolean isSending=sendInvitation(sender, contactPhoneNumber);
+                if(isSending) {
+                    invitationStatus.add(1); 
+                    System.out.println("invited successfully");
+                } else {
+                    invitationStatus.add(2); 
+                    System.out.println("aleardy sending invitation");
+                }
+            }
+        }
         return invitationStatus;
     }
 

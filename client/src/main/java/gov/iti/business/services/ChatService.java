@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+
 public class ChatService {
     private static final ChatService instance = new ChatService();
 
@@ -31,7 +32,7 @@ public class ChatService {
 
     public void UpdateContanctList(User user) {
         System.out.println("new user contact has added to your list");
-        CurrentUser.getCurrentUser().addContact(user);
+        Platform.runLater(() -> CurrentUser.getCurrentUser().addContact(user));
         ChatManager.getInstance().addContanct(user.getPhoneNumber());
     }
 

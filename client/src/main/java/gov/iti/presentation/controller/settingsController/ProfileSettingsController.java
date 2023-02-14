@@ -81,9 +81,9 @@ public class ProfileSettingsController implements Initializable {
     void updateProfile(ActionEvent event) throws RemoteException {
         User updatedUser = CurrentUser.getCurrentUser().getUser();
         // if (validateAll()) {
-        updatedUser.setName(newName.getText());
-        updatedUser.setEmail(newEmail.getText());
-        updatedUser.setBio(newBio.getText());
+        updatedUser.setName(newName.getText().trim());
+        updatedUser.setEmail(newEmail.getText().trim());
+        updatedUser.setBio(newBio.getText().trim());
         updatedUser.setCountry(comboBoxCountry.getValue());
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
@@ -91,13 +91,13 @@ public class ProfileSettingsController implements Initializable {
     }
 
     public boolean validateAll() {
-        if (!Utilities.validateName(newName.getText())) {
+        if (!Utilities.validateName(newName.getText().trim())) {
             System.out.println("not valid user name ");
             return false;
         } else {
             System.out.println("valid name");
         }
-        if (!Utilities.validateEmail(newEmail.getText())) {
+        if (!Utilities.validateEmail(newEmail.getText().trim())) {
             System.out.println("not valid user name ");
             return false;
         } else {

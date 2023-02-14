@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import gov.iti.presentation.controller.AddingContactController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
@@ -36,6 +37,10 @@ public class WindowManger {
     }
 
     public void openAddContactWindow() {
+        if(!AddingContactController.isAddingPageOpen()) {
+            //close it
+            AddingContactController.setIsAddingContactPageOpen(true);
+        }
         loadView("AddContactPageFxml");
     }
 
@@ -61,6 +66,10 @@ public class WindowManger {
         }
     }
     public void closeWindow() {
+        if(AddingContactController.isAddingPageOpen()) {
+            //close it
+            AddingContactController.setIsAddingContactPageOpen(false);
+        }
         viewContainer.getChildren().removeAll(viewContainer.getChildren());
         parentContainer.setVisible(false);
     }

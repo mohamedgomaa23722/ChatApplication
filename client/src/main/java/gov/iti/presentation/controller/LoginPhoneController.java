@@ -7,6 +7,8 @@ import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -24,6 +26,8 @@ public class LoginPhoneController implements Initializable{
     String ideal = "-fx-border-color: #FF8780 ;";
     String loggedError = "-fx-text-fill: black; -fx-font-size: 15px; -fx-font-family: Arial;";
 
+    static BooleanProperty isFaildLogin = new SimpleBooleanProperty(false);
+
     @FXML
     TextField phoneTextField;
 
@@ -36,13 +40,13 @@ public class LoginPhoneController implements Initializable{
 
         boolean isPhoneValid;
 
-        phoneNumber=phoneTextField.getText();
+        phoneNumber=phoneTextField.getText().trim();
 
         isPhoneValid=userValidator.validateUserPhoneNumber(phoneNumber);
 
          if(isPhoneValid) {
             // go to password sign in
-
+            wrongLogedLbl.setText("");
             CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
             SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
         } else {
@@ -58,6 +62,16 @@ public class LoginPhoneController implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
         userValidator=UserValidator.getUserValidator();
         phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
+        isFaildLogin.addListener((o,oldVal,newVal)->{
+            System.out.println("change");
+                 if(newVal.toString()=="true") {
+                    System.out.println("password incorrect");
+                    displyErrorLogin();
+                 } else {
+                    wrongLogedLbl.setVisible(false);
+                    System.out.println("write");
+                 }
+          });
     }
 
     @FXML
@@ -67,6 +81,7 @@ public class LoginPhoneController implements Initializable{
 
     @FXML
     public void displyErrorLogin() {
+        wrongLogedLbl.setVisible(true);
         wrongLogedLbl.setText("Incorrect UserName or Password");
         System.out.println("Incorrect UserName or Password");
         //wrongPasswdLbl.setBackground(new Image(getClass().getClassLoader().getResource("lock.png")));
@@ -80,6 +95,11 @@ public class LoginPhoneController implements Initializable{
         vBox.setVisible(true);
         vBox.setText(message);
         vBox.setStyle(loggedError);
+    }
+
+    
+    static void setFail(boolean faild) {
+        isFaildLogin.set(faild);
     }
     
 }

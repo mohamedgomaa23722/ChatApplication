@@ -196,6 +196,7 @@ public class ChatController<E> implements Initializable {
             e.printStackTrace();
         }
         // TODO : REMOVE SAVED FILE
+        LoginPhoneController.setFail(false);
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
         CurrentUser.getCurrentUser().clearAll();
         ChatManager.getInstance().clearMap();

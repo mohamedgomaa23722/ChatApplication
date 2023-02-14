@@ -149,7 +149,7 @@ public class SignUpController implements Initializable {
     }
 
     public boolean validatePassword() {
-        if (userValidator.isMatchedPassword(passwordField.getText(),confirmField.getText()) && userValidator.validateUserPassWd(passwordField.getText())) {
+        if (userValidator.isMatchedPassword(passwordField.getText().trim(),confirmField.getText().trim()) && userValidator.validateUserPassWd(passwordField.getText().trim())) {
             return true;
         }
         return false;
@@ -157,7 +157,7 @@ public class SignUpController implements Initializable {
 
     public boolean validateAllFields() {
         boolean isValid = true;
-        if (!userValidator.validateEmail(emailField.getText())) {
+        if (!userValidator.validateEmail(emailField.getText().trim())) {
             isValid = false;
             emailField.setStyle(error);
             System.out.println("emailField error");
@@ -176,7 +176,7 @@ public class SignUpController implements Initializable {
             cPasswordErrorLabel.setVisible(false);
         }
 
-        if (!userValidator.validateName(nameField.getText())) {
+        if (!userValidator.validateName(nameField.getText().trim())) {
             isValid = false;
             nameField.setStyle(error);
             System.out.println("nameField error");

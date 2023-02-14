@@ -8,6 +8,7 @@ import java.util.List;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
+import gov.iti.model.UserContact;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 

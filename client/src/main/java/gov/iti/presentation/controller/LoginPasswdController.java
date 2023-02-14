@@ -40,7 +40,7 @@ public class LoginPasswdController implements Initializable {
 
         boolean isPasswdValid;
 
-        passwd = passwdTextField.getText();
+        passwd = passwdTextField.getText().trim();
 
         isPasswdValid = userValidator.validateUserPassWd(passwd);
 
@@ -49,6 +49,7 @@ public class LoginPasswdController implements Initializable {
             CurrentUser.getCurrentUser().setPassword(passwd);
             User user;
             if ((user = LoginService.getLoginService().loginUser()) != null) {
+                wrongPassLbl.setText("");
                 // go to chat
                 System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
                 System.out.println(user.getCountry());
@@ -62,6 +63,7 @@ public class LoginPasswdController implements Initializable {
 
                 //change status
                 ChatManager.getInstance().addContacts();
+                ChatManager.getInstance().addGroups();
                 try {
                     SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
                 } catch (RemoteException e) {
@@ -74,7 +76,7 @@ public class LoginPasswdController implements Initializable {
                 // show message some thing is wrong phone or password
                 System.out.println("login failed" + passwd);
                 // SceneManager.getSceneManagerInstance().setLoginFaild(true);
-
+                LoginPhoneController.setFail(true);
                 SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
             }
 
@@ -92,7 +94,6 @@ public class LoginPasswdController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        passwdTextField.setText("Aa23722652@");
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
     }

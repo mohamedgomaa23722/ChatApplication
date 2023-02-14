@@ -47,15 +47,14 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
                                     new Invitation(resultSet.getInt(1), senderPhoneNumber, recieverPhoneNumber));
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-
-            }             
-               return true;
-
+                }  
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
+        
     }
 
     @Override

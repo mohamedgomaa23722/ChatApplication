@@ -2,7 +2,6 @@ package gov.iti.business.services;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import gov.iti.dao.ServerDao;
@@ -10,7 +9,6 @@ import gov.iti.presistance.connection.ClientServerConnection;
 
 public class AddingContactService {
 
-    //List <String> contactList;
     ServerDao chatReg;
     private static AddingContactService addingContactservice = new AddingContactService();
 
@@ -20,7 +18,6 @@ public class AddingContactService {
 
     private AddingContactService() {
         chatReg=ClientServerConnection.getConnectionInstance().getServerDao();
-        //contactList = new ArrayList<>();
     }
 
     public List<Integer> addNewContact(String sender, List <String> contactList) {
