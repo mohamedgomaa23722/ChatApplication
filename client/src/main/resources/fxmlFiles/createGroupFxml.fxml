@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="371.0" style="-fx-background-color: #f7f7fa;" xmlns="http://javafx.com/javafx/19" stylesheets="creatGroupStyle.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.CreateGroupController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="371.0" style="-fx-background-color: #f7f7fa;" stylesheets="creatGroupStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.CreateGroupController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-           <ImageView fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
+           <ImageView fx:id="imgContainer" fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
                   <Image url="@group.png" />
                </image>

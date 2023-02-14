@@ -172,11 +172,12 @@ public class ServerImpl extends InvitationImp implements ServerDao {
             // send invitation to users which is online
         return invitationStatus;
     }
-    public boolean creatGroup(String groupName) {
+    public boolean creatGroup(Group group) {
         System.out.println("create group");
         try (PreparedStatement preparedStatement = connection
-                .prepareStatement("insert into chatgroup  (group_name) VALUES(?)")) {
-            preparedStatement.setString(1, groupName);
+                .prepareStatement("insert into chatgroup  (group_name,image) VALUES(?,?)")) {
+            preparedStatement.setString(1, group.getGroupName());
+            preparedStatement.setBytes(2, group.getImage());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -229,12 +230,12 @@ public class ServerImpl extends InvitationImp implements ServerDao {
         List<Group> GroupList = new ArrayList<Group>();
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement(
-                        "select id ,group_name from user,chatgroup ,contactgroup where id = group_id and contact_id=phoneNumber and phoneNumber=?")) {
+                        "select id ,group_name ,chatgroup.image from user,chatgroup ,contactgroup where id = group_id and contact_id=phoneNumber and phoneNumber=?")) {
             preparedStatement.setString(1, userPhoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
-                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2)));
+                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2),resultSet.getBytes(3)));
             }
         } catch (SQLException e) {
             e.printStackTrace();

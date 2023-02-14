@@ -32,9 +32,9 @@ public class GroupService {
         return -1;
     }
    }
-    public int creatGroupService(String GroupName) {
+    public int creatGroupService(Group group) {
         try {
-            chatReg.creatGroup(GroupName);
+            chatReg.creatGroup(group);
             return chatReg.getGroupLastId();
         } catch (RemoteException e) {
             

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -131,7 +132,7 @@ public class ChatController implements Initializable {
             List<Group> groups = new ArrayList<>();
             for (int index = 0; index < ListOfgroups.size(); index++) {
                 groups.add(new Group(String.valueOf(ListOfgroups.get(index).getGroupId()),ListOfgroups.get(index).getGroupName(),
-                        new Image(getClass().getClassLoader().getResource("test.jpg").toExternalForm())));
+                        new Image(new ByteArrayInputStream(ListOfgroups.get(index).getImage()))));
             }
 
             ObservableList<Chat> observableList1 = FXCollections.observableArrayList(groups);

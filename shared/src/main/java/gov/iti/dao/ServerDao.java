@@ -25,7 +25,7 @@ public interface ServerDao extends SettingInt, InvitationInt{
 
     public int getGroupLastId()throws RemoteException, SQLException;
 
-    public boolean creatGroup(String groupName) throws RemoteException, SQLException;
+    public boolean creatGroup(Group group) throws RemoteException, SQLException;
 
     public boolean addGroupMember(int groupId, String memberPhoneNumber)throws RemoteException, SQLException;
 

@@ -4,6 +4,10 @@
  */
 package gov.iti.presentation.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ResourceBundle;
@@ -25,11 +29,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
 public class CreateGroupController implements Initializable {
 
@@ -43,7 +49,9 @@ public class CreateGroupController implements Initializable {
     TextField groupNameField;
     @FXML
     Label error;
-
+    @FXML
+    ImageView imgContainer;
+    File file ;
     public CreateGroupController() {
 
     }
@@ -52,7 +60,7 @@ public class CreateGroupController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // System.out.println("jksdnvjnkdsnv");
         ListView<User> userContactsViewList = new ListView<User>(CurrentUser.getCurrentUser().getContacts());
-
+        imgContainer.setOnMouseClicked(e1 -> handleImageContainer(e1));
         userContactsViewList.setCellFactory(p -> new itemCell());
         userContactsViewList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         userContactsViewList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -64,17 +72,49 @@ public class CreateGroupController implements Initializable {
         });
         userContactsViewList.setOrientation(Orientation.VERTICAL);
         listOfContactsView.getChildren().add(userContactsViewList);
+        
+        
     }
+    public void handleImageContainer(MouseEvent e) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.png"));
 
+        fileChooser.setTitle("open");
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            this.file=file;
+            try {
+                URL url = file.toURI().toURL();
+                imgContainer.setImage(new Image(url.toString()));
+                imgContainer.setOnMouseClicked(e1 -> handleImageContainer(e1));
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
     @FXML
     public void creatGroupHandler() {
         String groupName = groupNameField.getText().trim();
+        byte []imagebytes=null;
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                imagebytes = new byte[(int)file.length()];
+                fileInputStream.read(imagebytes);
+            } catch (IOException e2) {
+                // TODO Auto-generated catch block
+                e2.printStackTrace();
+            }
+        Group group=new Group(groupName,imagebytes);
         if (UserValidator.getUserValidator().validateGroupName(groupName)) {
-            if (selectedItems != null && selectedItems.size() > 1) {
-                int GroupNum = GroupService.getGroupService().creatGroupService(groupName);
+            if (selectedItems != null && selectedItems.size() > 0) {
+                int GroupNum = GroupService.getGroupService().creatGroupService(group);
+                 if(GroupNum!=-1){
                 for (var selected : selectedItems) {
                     GroupService.getGroupService().addGroupMemberService(GroupNum, selected.getPhoneNumber());
                 }
+                GroupService.getGroupService().addGroupMemberService(GroupNum, CurrentUser.getCurrentUser().getPhoneNumber().get());
+                error.setText("Group successfully created");
+                error.setVisible(true);
+            }
             } else {
                 error.setText("Group name have at least 2 members");
                 error.setVisible(true);

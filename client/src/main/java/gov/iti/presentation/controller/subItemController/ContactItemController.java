@@ -35,6 +35,7 @@ public class ContactItemController implements Initializable {
         if (chat instanceof Group) {
             Group group = ((Group) chat);
             Item_Name.setText(group.getGroupName());
+            Item_Image.setFill(new ImagePattern(group.getImage()));
         } else {
             Contact contact = (Contact) chat;
             if (contact != null) {

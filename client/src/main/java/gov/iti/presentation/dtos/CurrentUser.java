@@ -5,7 +5,6 @@ import java.util.List;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.model.Group;
-import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
