@@ -69,6 +69,12 @@
 
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources/fxml</directory>
+            </resource>
+            <resource>
                 <directory>src/main/resources/drawables</directory>
             </resource>
             <resource>

@@ -1,6 +1,6 @@
 package gov.iti.presentation.controller.settingsController;
 
-
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -17,7 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 public class ProfileSettingsController implements Initializable {
@@ -53,8 +55,14 @@ public class ProfileSettingsController implements Initializable {
         newBio.textProperty().bindBidirectional(currentUser.getBio());
         newName.textProperty().bindBidirectional(currentUser.getName());
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
-        System.out.println(currentUser.getCountry().get());
         comboBoxCountry.setValue(currentUser.getCountry().get());
+        // Image img = new Image(new ByteArrayInputStream(currentUser.getImage()));
+        Image img = Utilities.fromBytesToImage(currentUser.getImage());
+        System.out.println("-----------------");
+        System.out.println(currentUser.getImage());
+        System.out.println("-----------------");
+        // circle.setFill(new ImagePattern(img));
+
     }
 
     @FXML
@@ -65,6 +73,7 @@ public class ProfileSettingsController implements Initializable {
         updatedUser.setEmail(newEmail.getText());
         updatedUser.setBio(newBio.getText());
         updatedUser.setCountry(comboBoxCountry.getValue());
+        // }
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
             CurrentUser.getCurrentUser().setUser(updatedUser);

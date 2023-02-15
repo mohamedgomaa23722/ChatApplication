@@ -25,7 +25,6 @@ import gov.iti.presentation.dtos.Message;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.WindowManger;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -161,7 +160,7 @@ public class ChatController implements Initializable {
     @FXML
     private void signOut() {
         try {
-            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getName().get());
+            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

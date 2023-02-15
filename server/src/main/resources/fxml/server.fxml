@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.ServerController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.79998779296875" minWidth="10.0" prefWidth="102.9999984741211" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="819.1999954223633" minWidth="10.0" prefWidth="796.8000015258789" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="170.20001220703125" minHeight="0.0" prefHeight="61.80000228881836" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="266.8" minHeight="0.0" prefHeight="210.39998779296874" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="458.4000183105469" minHeight="10.0" prefHeight="328.8000122070313" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <BarChart fx:id="barChart" prefHeight="349.0" prefWidth="802.0" title="Users Statistics" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <HBox prefHeight="190.0" prefWidth="799.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <VBox prefHeight="166.0" prefWidth="204.0">
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Server State">
+                     <VBox.margin>
+                        <Insets bottom="30.0" left="10.0" right="5.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="onOption" mnemonicParsing="false" onAction="#startServer" selected="true" text="  ON">
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="serverState" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="offOption" mnemonicParsing="false" onAction="#stopServer" text="  OFF" toggleGroup="$serverState">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </VBox>
+            <BarChart fx:id="onlineBarchar" prefHeight="222.0" prefWidth="344.0">
+              <xAxis>
+                <CategoryAxis prefHeight="35.0" prefWidth="287.0" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <PieChart fx:id="pieChart" prefHeight="213.0" prefWidth="230.0">
+               <HBox.margin>
+                  <Insets bottom="30.0" left="13.0" right="10.0" />
+               </HBox.margin>
+            </PieChart>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <children>
+            <Label fx:id="appName" prefHeight="62.0" prefWidth="523.0" text="iGom3a Chatting App" textFill="#d96666" wrapText="true">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="serverIP" prefHeight="56.0" prefWidth="215.0" style="-fx-border-color: #d96666; -fx-border-radius: 20; -fx-border-width: 5;" text="  Server IP :  xxxx.xxxx.xxxx.xxxx" wrapText="true">
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Circle fx:id="appLogo" fill="#efbab7" radius="28.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0">
+         <GridPane.margin>
+            <Insets left="25.0" />
+         </GridPane.margin>
+      </Circle>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <ImageView fitHeight="139.0" fitWidth="117.0" layoutX="-71.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="139.0" fitWidth="117.0" layoutX="-67.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="138.0" fitWidth="146.0" layoutX="-79.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="401.0" fitWidth="289.0" layoutX="-187.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="117.0" layoutX="-65.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="117.0" layoutX="-74.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../drawables/lefticon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>

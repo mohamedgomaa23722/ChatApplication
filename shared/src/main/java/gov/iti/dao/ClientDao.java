@@ -13,5 +13,9 @@ public interface ClientDao extends Remote {
     public void recievedGroupMessage(Message message) throws RemoteException;
 
     public void recievedContactInvitation(Invitation invitation) throws RemoteException;
+
+    public void serverDown() throws RemoteException;
+
+    public void isClientOnline() throws RemoteException;
     
 }

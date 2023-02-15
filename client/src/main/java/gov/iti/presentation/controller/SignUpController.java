@@ -233,7 +233,10 @@ public class SignUpController implements Initializable {
             else{
                 gender="m";
             }
-            System.out.println(combo.getValue().toString());
+            System.out.println("-----------------");
+            System.out.println(buf);
+            System.out.println("-----------------");
+            
             registeredUser = new User(phoneNumber.getText().trim(), nameField.getText().trim(),calculateAge()
             , 0, 0, buf,emailField.getText().trim()
             , combo.getValue().toString(), textArea.getText().trim(),gender);
@@ -245,7 +248,7 @@ public class SignUpController implements Initializable {
             } else {
                 // stay
             }
-            
+
         // } else {
         //     System.out.println("is not valid yet");
         // }

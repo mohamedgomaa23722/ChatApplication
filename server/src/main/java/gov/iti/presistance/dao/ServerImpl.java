@@ -22,7 +22,7 @@ import gov.iti.model.User;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
-    Map<String, ClientDao> clients = new HashMap<>();
+    public static Map<User, ClientDao> clients = new HashMap<>();
 
     private Connection connection;
 
@@ -41,7 +41,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(1, phoneNumber);
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
-            clients.put(phoneNumber, client);
+            clients.put(UsersInfo.getUserByphone(phoneNumber), client);
 
             UsersInfo.updateList();
 
@@ -67,7 +67,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
             preparedStatement.setString(9, user.getCountry());
             preparedStatement.setString(10, user.getBio());
             preparedStatement.setString(11, user.getGender());
-            clients.put(user.getPhoneNumber(), client);
+            clients.put(user, client);
             boolean result = preparedStatement.executeUpdate() > 0 ;
 
             UsersInfo.updateList();
@@ -114,6 +114,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
 
     @Override
     public boolean changePassword(String phoneNumber, String newPassword) {
+
+        UsersInfo.updateList();
+
         return false;
     }
 
@@ -163,6 +166,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerDao {
     @Override
     public void signOut(String phoneNumber) throws RemoteException, SQLException {
         clients.remove(phoneNumber);
+        
+        UsersInfo.updateList();
+
     }
 
     @Override

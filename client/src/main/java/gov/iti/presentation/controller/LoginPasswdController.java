@@ -38,7 +38,7 @@ public class LoginPasswdController implements Initializable {
 
         isPasswdValid = userValidator.validateUserPassWd(passwd);
 
-        if (isPasswdValid) {
+        // if (isPasswdValid) {
             // go to password sign in
             CurrentUser.getCurrentUser().setPassword(passwd);
             User user;
@@ -62,12 +62,12 @@ public class LoginPasswdController implements Initializable {
             // // tranfer this object to server
             // // not null load chat screen
             // // null go to login phone screen
-        } else {
-            // password not valid
-            passwdTextField.setStyle(error);
-            System.out.println("password not valid");
-            showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
-        }
+        // } else {
+        //     // password not valid
+        //     passwdTextField.setStyle(error);
+        //     System.out.println("password not valid");
+        //     showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
+        // }
 
     }
 
