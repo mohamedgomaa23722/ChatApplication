@@ -8,7 +8,6 @@ import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ChatManager;
-import gov.iti.presentation.utils.ModelFactory;
 import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.application.Platform;
 

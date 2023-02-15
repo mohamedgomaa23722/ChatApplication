@@ -36,7 +36,6 @@
                                     <Insets bottom="5.0" left="20.0" top="5.0" />
                                  </HBox.margin>
                               </Circle>
-                              <HBox />
                               <VBox HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="contact_name" text="Mohamed Gomaa" textFill="WHITE">
@@ -127,7 +126,7 @@
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin></TextField>
-                                    <ImageView fx:id="attach_file" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="attach_file" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#sendFiles" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@fileAttachment.png" />
                                        </image>

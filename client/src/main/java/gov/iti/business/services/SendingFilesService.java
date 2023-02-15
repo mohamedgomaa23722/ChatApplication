@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.sound.midi.Receiver;
+
 import gov.iti.dao.ServerDao;
 import gov.iti.presistance.connection.ClientServerConnection;
 
@@ -18,10 +20,6 @@ public class SendingFilesService implements Serializable {
     static SendingFilesService sendingFilesService=new SendingFilesService();
 
     ServerDao chatReg;
-
-    private final ReentrantLock lock = new ReentrantLock();
-
-    //private final ReentrantLock lock2 = new ReentrantLock();
 
     private final ReentrantLock lock3 = new ReentrantLock();
 
@@ -35,41 +33,42 @@ public class SendingFilesService implements Serializable {
 
     public synchronized List<Boolean> sendFiles(List <File> files, String reciever) {
 
-        //lock.lock();
-
         List<Boolean> result = new ArrayList<>();
-
-        for(File file:files) {
-            
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    result.add(sendFile(file,reciever));
+        if(reciever.charAt(0) == '0'){
+            for(File file:files) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result.add(sendFile(file,reciever));
+                    }
+                }).start(); 
+            }
+        }else{
+            List<String> groupContact = GroupService.getGroupService().selectGroupMembers(Integer.valueOf(reciever));
+            groupContact.forEach((receiver) -> {
+                for(File file:files) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            result.add(sendFile(file,receiver));
+                        }
+                    }).start(); 
                 }
-            }).start();
-            
+            });
         }
-        
-        //lock.unlock();
-
         return result;
      }
 
-     public boolean sendFile(File file, String reciever) {
 
-        //final boolean res;
+
+     public boolean sendFile(File file, String reciever) {
 
         String fileName=file.getName(); 
 
         System.out.println("sender file name "+fileName);
 
-        //final byte[] fileNameBytes = fileName.getBytes();
-
         System.out.println("sender file path "+file.toPath());
 
-                // Next, obtain a channel to that file within a try-with-resources block.
         lock3.lock();
         int count=0;
         try (SeekableByteChannel fChan = Files.newByteChannel(file.toPath())) {
@@ -86,13 +85,8 @@ public class SendingFilesService implements Serializable {
                 if (count != -1) {
                 // Rewind the buffer so that it can be read.
                     mBuf.rewind();
-                    
                     // Read bytes from the buffer and show them on the screen as characters.
                     chatReg.sendFile(bytes,count,reciever,fileName);
-                    System.out.println("reading " + fileName+" count "+count);
-                    //if(res==false) break;
-                    //for (int i = 0; i < count; i++)
-                    //System.out.print((char) mBuf.get()); 
                 }   
             } while (count != -1);
 

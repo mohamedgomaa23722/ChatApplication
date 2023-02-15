@@ -5,12 +5,13 @@ import gov.iti.business.services.SettingsService;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
+    String phoneNumber;
+
+    String encryptedPassword;
 
     public static void main(String[] args) {
         launch();

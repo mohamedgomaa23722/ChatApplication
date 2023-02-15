@@ -29,10 +29,12 @@ import java.util.ResourceBundle;
 import javax.annotation.processing.SupportedOptions;
 
 import gov.iti.business.services.ChatService;
+import gov.iti.model.Attachment;
 import gov.iti.model.Group;
+import gov.iti.presentation.controller.subItemController.AttachmentController;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
-import gov.iti.presentation.dtos.Chat;
+import gov.iti.presentation.dtos.CurrentSelectedChat;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
@@ -42,6 +44,7 @@ import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.Status;
+import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.WindowManger;
 import gov.iti.utils.TextStyle;
 import javafx.fxml.Initializable;
@@ -160,7 +163,8 @@ public class ChatController<E> implements Initializable {
     private MessageStyle messageStyle;
 
     private Group currentGroupChat;
-     
+    String home = System.getProperty("user.home");
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
@@ -169,6 +173,33 @@ public class ChatController<E> implements Initializable {
         });
 
         setChatVisiablity(false);
+
+        CurrentSelectedChat.getCurrentselectedchat().getIsSendingFilesProp().addListener((o, old, newFile) -> {
+            if (newFile.booleanValue()) {
+                // send new file
+                System.out.println(SendingFilesController.filesList.size());
+                SendingFilesController.filesList.forEach((file) -> {
+                    String receiver;
+                    if (chatMode == 1) {
+                        receiver = receiverUSer.getPhoneNumber();
+                    } else {
+                        receiver = Integer.toString(currentGroupChat.getGroupId());
+                    }
+
+                    Message fileMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
+                            receiver, null, new Attachment(file.getName(), home + "/Downloads/" + file.getName(),(double) file.length() / 1024 + "  kb"), messageStyle, getCurrentTime());
+
+                    ChatService.getInstance().sendMessage(fileMessage, chatMode);
+
+                    addMessage(fileMessage, false);
+                    if(fileMessage.getAttachment() == null){
+                        System.out.println("Attachment is nullllllllllllllllll");
+                    }
+                    CurrentSelectedChat.getCurrentselectedchat().setIsSendingFilesProp(false);
+                    CurrentSelectedChat.getCurrentselectedchat().clearAttachments();
+                });
+            }
+        });
 
         ChatterBotFactory factory = new ChatterBotFactory();
         ChatterBot bot2 = null;
@@ -189,22 +220,21 @@ public class ChatController<E> implements Initializable {
             }
         });
 
-            contact_list.setItems(CurrentUser.getCurrentUser().getContacts());
-            contact_list.setCellFactory(p -> new ContactCell());
-    
+        contact_list.setItems(CurrentUser.getCurrentUser().getContacts());
+        contact_list.setCellFactory(p -> new ContactCell());
 
         CurrentUser.getCurrentUser().getInvitations().addListener((ListChangeListener<Invitation>) u -> {
             if (u.getList().size() > 0)
                 notification.setImage(
                         new Image(getClass().getClassLoader().getResource("redNotification.png").toExternalForm()));
         });
-         
+
         Platform.runLater(() -> {
             group_list.setItems(CurrentUser.getCurrentUser().getGroups());
             group_list.setCellFactory(p -> new GroupCell());
         });
 
-         group_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        group_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 statusview.setVisible(false);
@@ -213,11 +243,12 @@ public class ChatController<E> implements Initializable {
                 chatMode = 0;
                 currentGroupChat = group_list.getSelectionModel().getSelectedItem();
                 contact_name.setText(currentGroupChat.getGroupName());
-                contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
-                chatBox.getChildren().add(ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
+                contact_image
+                        .setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
+                chatBox.getChildren()
+                        .add(ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
             }
         });
-   
 
         CurrentUser.getCurrentUser().getContacts().addListener(new ListChangeListener<User>() {
             @Override
@@ -231,7 +262,7 @@ public class ChatController<E> implements Initializable {
 
         });
         CurrentUser.getCurrentUser().getGroups().addListener(new ListChangeListener<Group>() {
-           
+
             @Override
             public void onChanged(Change<? extends Group> c) {
                 System.out.println(CurrentUser.getCurrentUser().getGroups());
@@ -262,6 +293,7 @@ public class ChatController<E> implements Initializable {
         ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
             if (newMessage != null) {
                 addMessage(newMessage, true);
+
                 if (botOn) {
                     try {
                         String msg = bot2session.think(newMessage.getMessage());
@@ -283,17 +315,25 @@ public class ChatController<E> implements Initializable {
     private void addMessage(Message message, boolean status) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            MessageItemController messageBox = new MessageItemController(message, status);
-            loader.setController(messageBox);
-            VBox v = loader.load(getClass().getClassLoader().getResource("SendMessageItem.fxml").openStream());
+            VBox v = null;
+            if (message.getAttachment() == null) {
+                System.out.println("noraml message");
+                MessageItemController messageBox = new MessageItemController(message, status);
+                loader.setController(messageBox);
+                v = loader.load(getClass().getClassLoader().getResource("SendMessageItem.fxml").openStream());
+            } else {
+                System.out.println("file message");
+                AttachmentController attachmentBox = new AttachmentController(message, status);
+                loader.setController(attachmentBox);
+                v = loader.load(getClass().getClassLoader().getResource("attachment.fxml").openStream());
+            }
             chatBox.getChildren().add(v);
             scrollPane.vvalueProperty().bind(chatBox.heightProperty());
             message_edx.clear();
             System.out.println(status);
-            if (status&&message.getReceiverPhoneNumber().charAt(0)=='0'){
-                    ChatManager.getInstance().addMessage(message.getSenderPhoneNumber(), v);
-            }
-            else if(!message.getSenderPhoneNumber().equals(CurrentUser.getCurrentUser().getPhoneNumber())){
+            if (status && message.getReceiverPhoneNumber().charAt(0) == '0') {
+                ChatManager.getInstance().addMessage(message.getSenderPhoneNumber(), v);
+            } else if (!message.getSenderPhoneNumber().equals(CurrentUser.getCurrentUser().getPhoneNumber())) {
                 ChatManager.getInstance().addMessage(message.getReceiverPhoneNumber(), v);
             }
 
@@ -315,6 +355,15 @@ public class ChatController<E> implements Initializable {
     @FXML
     private void signOut() {
         setChatVisiablity(false);
+        try {
+            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            UserInfo.getUserInfo().forgetUserPasswd();
+            LoginPasswdController.passwdValue.set("");
+        } catch (RemoteException | SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // TODO : REMOVE SAVED FILE
         LoginPhoneController.setFail(false);
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
         new Thread(() -> {
@@ -353,21 +402,22 @@ public class ChatController<E> implements Initializable {
 
     @FXML
     private void handleSendMessage() {
-        Message sMessage=null;
-        if(chatMode==1){
-        sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
-                receiverUSer.getPhoneNumber(), message_edx.getText(), null,messageStyle, getCurrentTime());
-        }
-        else{
+        Message sMessage = null;
+        if (chatMode == 1) {
             sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
-            Integer.toString(currentGroupChat.getGroupId()), message_edx.getText(), null,messageStyle, getCurrentTime());
+                    receiverUSer.getPhoneNumber(), message_edx.getText(), null, messageStyle, getCurrentTime());
+        } else {
+            sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
+                    Integer.toString(currentGroupChat.getGroupId()), message_edx.getText(), null, messageStyle,
+                    getCurrentTime());
         }
         addMessage(sMessage, false);
         ChatService.getInstance().sendMessage(sMessage, chatMode);
     }
 
     private void setUpInfoBar() {
-        userImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage()))));
+        userImage.setFill(
+                new ImagePattern(new Image(new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage()))));
         UserName.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getName());
         UserPhone.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getPhoneNumber());
     }
@@ -481,6 +531,13 @@ public class ChatController<E> implements Initializable {
 
     @FXML
     private void sendFiles() {
+        if (chatMode == 0) {
+            CurrentSelectedChat.getCurrentselectedchat()
+                    .setReceiverNumber(Integer.toString(currentGroupChat.getGroupId()));
+        } else {
+            CurrentSelectedChat.getCurrentselectedchat().setReceiverNumber(receiverUSer.getPhoneNumber());
+        }
+
         WindowManger.getInstance().openSendingFilesWindow();
     }
 }
@@ -499,29 +556,28 @@ class ContactCell extends ListCell<User> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             this.setGraphic(null);
         }
-    }}
-    class GroupCell extends ListCell<Group> {
-        @Override
-        public void updateItem(Group item, boolean empty) {
-            super.updateItem(item, empty);
-            if (!empty && item != null) {
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    ContactItemController controller = new ContactItemController(item);
-                    loader.setController(controller);
-                    HBox view = loader.load(getClass().getClassLoader().getResource("ChatItem.fxml").openStream());
-                    this.setGraphic(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    }
+}
+
+class GroupCell extends ListCell<Group> {
+    @Override
+    public void updateItem(Group item, boolean empty) {
+        super.updateItem(item, empty);
+        if (!empty && item != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                ContactItemController controller = new ContactItemController(item);
+                loader.setController(controller);
+                HBox view = loader.load(getClass().getClassLoader().getResource("ChatItem.fxml").openStream());
+                this.setGraphic(view);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            else {
-                this.setGraphic(null);
-            }
+        } else {
+            this.setGraphic(null);
         }
     }
-
+}

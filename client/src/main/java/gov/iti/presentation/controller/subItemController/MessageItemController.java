@@ -2,9 +2,7 @@ package gov.iti.presentation.controller.subItemController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
-import java.util.Optional;
+
 import java.util.ResourceBundle;
 
 import gov.iti.model.MessageStyle;
@@ -12,11 +10,7 @@ import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.utils.TextStyle;
 import gov.iti.business.services.ContactsService;
-import gov.iti.business.services.GroupService;
-import gov.iti.model.Group;
-import gov.iti.model.User;
-import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presistance.connection.ClientServerConnection;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -67,36 +61,29 @@ public class MessageItemController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         SetupMessageProperties();
         if (isReceived) {
-            System.out.println(
-                    "Receiver : " + message.getReceiverPhoneNumber() + "\nSender : " + message.getSenderPhoneNumber()
-                            + "\nCurrent User : " + CurrentUser.getCurrentUser().getPhoneNumber().get());
-
             CurrentUser.getCurrentUser().getContacts().forEach((u) -> {
                 if (u.getPhoneNumber().equals(message.getSenderPhoneNumber())) {
                     user = u;
-                    System.out.println("find user");
                 }
-
             });
-            if(user==null){
-             user=ContactsService.getcontactsService().getUser(message.getSenderPhoneNumber());
-             System.out.println(user);
-        }} else {
+            if (user == null) {
+                user = ContactsService.getcontactsService().getUser(message.getSenderPhoneNumber());
+            }
+        } else {
             user = CurrentUser.getCurrentUser().getUser();
-            System.out.println("hbaaaal");
-
         }
 
         messageLabel.setText(message.getMessage());
-        userNameLabel.setText(message.getSenderPhoneNumber());
-        if(user!=null){
+        userNameLabel.setText(user.getName());
+
+        if (user != null) {
             System.out.println("userNuotNull");
         }
         userImageCircle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
 
         if (isReceived) {
             messageBox.setAlignment(Pos.CENTER_LEFT);
-            setMessageStyle( "reciverName", "recivedMessageLabel", "recivedMessageTimeLabel");
+            setMessageStyle("reciverName", "recivedMessageLabel", "recivedMessageTimeLabel");
 
         } else {
             messageBox.setAlignment(Pos.CENTER_RIGHT);
@@ -104,7 +91,7 @@ public class MessageItemController implements Initializable {
         }
     }
 
-    private void setMessageStyle( String nameStle, String messageStyle, String messageTimeStyle) {
+    private void setMessageStyle(String nameStle, String messageStyle, String messageTimeStyle) {
         userNameLabel.getStyleClass().add(nameStle);
         messageTimeLabel.getStyleClass().add(messageTimeStyle);
     }
@@ -112,19 +99,22 @@ public class MessageItemController implements Initializable {
     private void SetupMessageProperties() {
         MessageStyle messageStyle = message.getMessageStyle();
         messageTimeLabel.setText(message.getTime());
-        messageContainer.setBackground(new Background(new BackgroundFill(Color.web(messageStyle.getTextBackColor()), new CornerRadii(8), Insets.EMPTY)));
+        messageContainer.setBackground(new Background(
+                new BackgroundFill(Color.web(messageStyle.getTextBackColor()), new CornerRadii(8), Insets.EMPTY)));
         messageLabel.setTextFill(Color.web(messageStyle.getTextColor()));
         messageLabel.setUnderline(messageStyle.isUnderLine());
 
         if (messageStyle.getTextStyle() == TextStyle.BOLD) {
-            messageLabel.setFont(Font.font(message.getMessageStyle().getFont(), FontWeight.BOLD, messageStyle.getTextSize()));
+            messageLabel.setFont(
+                    Font.font(message.getMessageStyle().getFont(), FontWeight.BOLD, messageStyle.getTextSize()));
         } else if (messageStyle.getTextStyle() == TextStyle.ItALIC) {
             messageLabel
-                    .setFont(Font.font(message.getMessageStyle().getFont(), FontWeight.MEDIUM
-                    , FontPosture.ITALIC, messageStyle.getTextSize()));
+                    .setFont(Font.font(message.getMessageStyle().getFont(), FontWeight.MEDIUM, FontPosture.ITALIC,
+                            messageStyle.getTextSize()));
         } else {
             messageLabel.setFont(
-                    Font.font(message.getMessageStyle().getFont(), FontWeight.NORMAL, FontPosture.REGULAR, messageStyle.getTextSize()));
+                    Font.font(message.getMessageStyle().getFont(), FontWeight.NORMAL, FontPosture.REGULAR,
+                            messageStyle.getTextSize()));
         }
 
     }
@@ -133,6 +123,4 @@ public class MessageItemController implements Initializable {
         System.out.println(backGround);
         return "{-fx-background-color: " + backGround + ";-fx-background-radius: 10; -fx-border-radius: 10;}";
     }
-
-
 }

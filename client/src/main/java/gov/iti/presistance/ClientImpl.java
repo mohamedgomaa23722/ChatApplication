@@ -3,6 +3,7 @@ package gov.iti.presistance;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.rmi.RemoteException;
@@ -16,7 +17,6 @@ import gov.iti.model.Group;
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.User;
-import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.CurrentUser;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientDao {
@@ -46,8 +46,6 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
     @Override
     public void UpdateOnContact(User user) throws RemoteException {
-        // TODO Auto-generated method stub
-        ChatService.getInstance().UpdateContanctList(user);
         ChatService.getInstance().UpdateContanctList(user);
     }
 
@@ -60,27 +58,22 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
     @Override
     public void notifyCreatingGroup(Group group) throws RemoteException {
         ChatService.getInstance().notifyGroupsChange(group);
-        
     }
-    
-
-   
-    
 
     @Override
     public synchronized boolean downLoadFile(byte[] buffer, int count, String fileName) {
         //lock.lock();
+        String home = System.getProperty("user.home");
+
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-            try (FileChannel channel = FileChannel.open(Paths.get(fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            try (FileChannel channel = FileChannel.open(Paths.get(home + "/Downloads/" + fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
                 channel.write(byteBuffer);
             } catch (IOException e ) {
                 e.printStackTrace();
                 return false;
             } 
             System.out.println("download file name: "+fileName+" count"+count);
-            //for (int i = 0; i < count; i++)
-            //System.out.print((char) buffer[i]);
-        //lock.unlock();
+
         return true;
     }
     

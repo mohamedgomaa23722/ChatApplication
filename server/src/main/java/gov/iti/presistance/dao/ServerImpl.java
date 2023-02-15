@@ -31,7 +31,6 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
 
     private Connection connection;
 
-
     public ServerImpl() throws RemoteException, SQLException {
         super();
         connection = ConnectionManager.getInstance().getStatement();
@@ -75,7 +74,7 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             preparedStatement.setString(11, user.getGender());
             clients.put(user.getPhoneNumber(), client);
             boolean result = preparedStatement.executeUpdate() > 0;
-            if(result)
+            if (result)
                 changeStatus(user.getPhoneNumber(), 1);
             UsersInfo.updateList();
             return result;
@@ -119,19 +118,19 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
     }
 
     @Override
-    public boolean changePassword(String phoneNumber,String oldPassword ,  String newPassword) {
+    public boolean changePassword(String phoneNumber, String oldPassword, String newPassword) {
         System.out.println("change password called");
-        try(PreparedStatement preparedStatement = connection.prepareStatement("update user set password = ? where PhoneNumber = ? and password = ?")){
-            preparedStatement.setString(1,Utilities.Hash(newPassword));
-            preparedStatement.setString(2,phoneNumber);
-            preparedStatement.setString(3,Utilities.Hash(oldPassword));
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("update user set password = ? where PhoneNumber = ? and password = ?")) {
+            preparedStatement.setString(1, Utilities.Hash(newPassword));
+            preparedStatement.setString(2, phoneNumber);
+            preparedStatement.setString(3, Utilities.Hash(oldPassword));
             return preparedStatement.executeUpdate() > 0;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
 
     @Override
     public boolean changeStatus(String phoneNumber, int status) {
@@ -158,25 +157,25 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
 
     @Override
     public List<Integer> addNewContact(String sender, List<String> contactList) throws RemoteException, SQLException {
-        List <User> users = UsersInfo.getAllUsersfromDB();  // all registration users
-        List <Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 1 sucess // 2 already invited
-        List <String> contacts=new ArrayList<>();            // all registration users phonenumber
+        List<User> users = UsersInfo.getAllUsersfromDB(); // all registration users
+        List<Integer> invitationStatus = new ArrayList<>(); // 0 not exist // 1 sucess // 2 already invited
+        List<String> contacts = new ArrayList<>(); // all registration users phonenumber
         for (User user : users) {
             contacts.add(user.getPhoneNumber());
         }
 
-        for(String contactPhoneNumber: contactList) {
+        for (String contactPhoneNumber : contactList) {
 
-            if(!contacts.contains(contactPhoneNumber)) {
+            if (!contacts.contains(contactPhoneNumber)) {
                 invitationStatus.add(0);
                 System.out.println("not register");
             } else {
-                boolean isSending=sendInvitation(sender, contactPhoneNumber);
-                if(isSending) {
-                    invitationStatus.add(1); 
+                boolean isSending = sendInvitation(sender, contactPhoneNumber);
+                if (isSending) {
+                    invitationStatus.add(1);
                     System.out.println("invited successfully");
                 } else {
-                    invitationStatus.add(2); 
+                    invitationStatus.add(2);
                     System.out.println("aleardy sending invitation");
                 }
             }
@@ -189,7 +188,7 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement("insert into chatgroup  (group_name,image) VALUES(?,?)")) {
             preparedStatement.setString(1, group.getGroupName());
-            preparedStatement.setBytes(2,group.getImage());
+            preparedStatement.setBytes(2, group.getImage());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,8 +199,8 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
     public int getGroupLastId() {
         System.out.println(" getGroupLastId");
         try (Statement statement = connection.createStatement()) {
-           ResultSet rs=statement.executeQuery("select max(id) from chatGroup");
-           rs.next();
+            ResultSet rs = statement.executeQuery("select max(id) from chatGroup");
+            rs.next();
             return rs.getInt("max(id)");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -237,18 +236,20 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
         }
         return contactList;
     }
+
     @Override
-    public synchronized boolean sendFile(byte[] buffer, int count, String reciever, String fileName) throws RemoteException {
-        // TODO Auto-generated method stub
-        
-        ClientDao recieverClient = clients.get(reciever);
-        System.out.println("sending file name: "+fileName+" count "+count);
-        //for (int i = 0; i < count; i++)
-            //System.out.print((char) buffer[i]);
-        
-        return recieverClient.downLoadFile(buffer, count, fileName);
+    public synchronized boolean sendFile(byte[] buffer, int count, String reciever, String fileName)
+            throws RemoteException {
+        if (clients.containsKey(reciever)) {
+            ClientDao recieverClient = clients.get(reciever);
+            System.out.println("sending file name: " + fileName + " count " + count);
+            return recieverClient.downLoadFile(buffer, count, fileName);
+        } else {
+            return false;
+        }
     }
-    public List<Group> selectGroups(String userPhoneNumber){
+
+    public List<Group> selectGroups(String userPhoneNumber) {
         System.out.println("selectGroups");
         List<Group> GroupList = new ArrayList<Group>();
         try (PreparedStatement preparedStatement = connection
@@ -258,7 +259,7 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
-                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2),resultSet.getBytes(3)));
+                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2), resultSet.getBytes(3)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -266,7 +267,7 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
         return GroupList;
     }
 
-    public List<String> selectGroupMembers(int GroupId){
+    public List<String> selectGroupMembers(int GroupId) {
         System.out.println("selectMembers");
         List<String> groupMemberList = new ArrayList<String>();
         try (PreparedStatement preparedStatement = connection
@@ -286,18 +287,19 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
 
     @Override
     public void tellOthers(Message message, int GroupId) throws RemoteException, SQLException {
-        List<String> groupMemberList= selectGroupMembers(GroupId);
-        for(String memberPhoneNumber:  groupMemberList){
-            if(clients.containsKey(memberPhoneNumber)){
+        List<String> groupMemberList = selectGroupMembers(GroupId);
+        for (String memberPhoneNumber : groupMemberList) {
+            if (clients.containsKey(memberPhoneNumber)) {
                 clients.get(memberPhoneNumber).recievedGroupMessage(message);
             }
         }
-        
+
     }
+
     @Override
     public void SendContactMessage(Message message) throws RemoteException, SQLException {
         System.out.println("private");
-        if(clients.containsKey(message.getReceiverPhoneNumber())){
+        if (clients.containsKey(message.getReceiverPhoneNumber())) {
             clients.get(message.getReceiverPhoneNumber()).recievedContactMessage(message);
         } else {
             System.out.println("client is not register" + message.getReceiverPhoneNumber());
@@ -307,54 +309,56 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
     @Override
     public void SendGroupMessage(Message message) throws RemoteException, SQLException {
         System.out.println("send to group");
-        //message.setSenderPhoneNumber(message.getReceiverPhoneNumber());
-        selectGroupMembers( Integer.parseInt( message.getReceiverPhoneNumber())).forEach((contact) ->{
-            System.out.println("client is "+clients);
-            if(clients.containsKey(contact))
-            try {
-                if(!contact.equals(message.getSenderPhoneNumber()))
-                clients.get(contact).recievedContactMessage(message);
-                //else System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+        // message.setSenderPhoneNumber(message.getReceiverPhoneNumber());
+        selectGroupMembers(Integer.parseInt(message.getReceiverPhoneNumber())).forEach((contact) -> {
+            System.out.println("client is " + clients);
+            if (clients.containsKey(contact))
+                try {
+                    if (!contact.equals(message.getSenderPhoneNumber()))
+                        clients.get(contact).recievedContactMessage(message);
+                    // else System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
         });
-        
+
     }
 
     @Override
     public void notifyChanges(User user) {
-        selectUserContacts(user.getPhoneNumber()).forEach((contact) ->{
-            if(clients.containsKey(contact.getPhoneNumber()))
-            try {
-                clients.get(contact.getPhoneNumber()).notifyUserChanges(user);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }); 
+        selectUserContacts(user.getPhoneNumber()).forEach((contact) -> {
+            if (clients.containsKey(contact.getPhoneNumber()))
+                try {
+                    clients.get(contact.getPhoneNumber()).notifyUserChanges(user);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+        });
     }
-    public User selectUser(String phoneNumber){
-        User user=null;
+
+    public User selectUser(String phoneNumber) {
+        User user = null;
         try (PreparedStatement preparedStatement = connection
-        .prepareStatement(
-                "select * from User where PhoneNumber = ?")) {
-            preparedStatement.setString(1,phoneNumber);
-    ResultSet resultSet = preparedStatement.executeQuery();
-        user=UserFactory.createUser(resultSet);
-} catch (SQLException e) {
-    e.printStackTrace();
-}
-return user;
+                .prepareStatement(
+                        "select * from User where PhoneNumber = ?")) {
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            user = UserFactory.createUser(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
+
     public void notifyCreatingGroup(Group group) {
-        selectGroupMembers(group.getGroupId()).forEach((contact) ->{
-            if(clients.containsKey(contact))
-            try {
-                System.out.println(contact);
-                clients.get(contact).notifyCreatingGroup(group);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });     
+        selectGroupMembers(group.getGroupId()).forEach((contact) -> {
+            if (clients.containsKey(contact))
+                try {
+                    System.out.println(contact);
+                    clients.get(contact).notifyCreatingGroup(group);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+        });
     }
 }

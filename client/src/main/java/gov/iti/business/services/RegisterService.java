@@ -5,13 +5,11 @@ import java.sql.SQLException;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
-import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presistance.ClientImpl;
 import gov.iti.presistance.connection.ClientServerConnection;
 
 public class RegisterService {
 
-    LoggedUser loggedUser;
     ServerDao chatReg;
     static RegisterService registerservice = new RegisterService();
 

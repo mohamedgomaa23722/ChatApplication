@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.UserValidator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,8 +17,6 @@ import javafx.scene.control.TextField;
 public class LoginPhoneController implements Initializable{
 
     UserValidator userValidator;
-
-    LoggedUser user;
 
     String phoneNumber;
 
@@ -73,6 +71,10 @@ public class LoginPhoneController implements Initializable{
                     System.out.println("write");
                  }
           });
+        String phone = UserInfo.getUserInfo().getSavedUserPhoneNumber();
+        if(phone != null ) {
+            phoneTextField.setText(phone);
+        } 
     }
 
     @FXML
@@ -102,5 +104,4 @@ public class LoginPhoneController implements Initializable{
     static void setFail(boolean faild) {
         isFaildLogin.set(faild);
     }
-    
 }

@@ -1,11 +1,8 @@
 package gov.iti.presentation.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import gov.iti.model.Message;
 import gov.iti.presentation.dtos.CurrentUser;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;

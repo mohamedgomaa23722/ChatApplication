@@ -7,11 +7,11 @@ public class Message implements Serializable {
     private String senderPhoneNumber;
     private String ReceiverPhoneNumber;
     private String message;
-    private File attachment;
+    private Attachment attachment;
     private MessageStyle messageStyle;
     private String time;
 
-    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, File attachmen, MessageStyle messageStyle, String time) {
+    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, Attachment attachment, MessageStyle messageStyle, String time) {
         this.senderPhoneNumber = senderPhoneNumber;
         this.ReceiverPhoneNumber = ReceiverPhoneNumber;
         this.message = message;
@@ -28,11 +28,11 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public File getAttachment() {
+    public Attachment getAttachment() {
         return attachment;
     }
 
-    public void setAttachment(File attachment) {
+    public void setAttachment(Attachment attachment) {
         this.attachment = attachment;
     }
 

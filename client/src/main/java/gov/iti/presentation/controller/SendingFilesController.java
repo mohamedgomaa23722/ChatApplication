@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.SendingFilesService;
+import gov.iti.model.Attachment;
+import gov.iti.presentation.dtos.CurrentSelectedChat;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -26,38 +31,24 @@ public class SendingFilesController implements Initializable {
     @FXML
     Button sendFileBtn;
 
-    List<File> filesList;
+    public static List<File> filesList;
 
-    //TODO:change reciever number 
-    String reciever="01512345678";
+    static StringProperty reciever = new SimpleStringProperty(null);
 
     String labelStyle="-fx-border-style: solid; -fx-border-color: blue; -fx-border-radius: 5px; -fx-font-size: 15px; -fx-padding: 2 2 2 2; -fx-marign: 10 10 10 10;"; 
-
-    //File[] filesList=null;
-
-    //List<String> recieversList;
 
     @FXML
     public void chooseFiles() {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose file");
-        //filesList=fileChooser.showOpenMultipleDialog(null);
-        //fileChooser.setMultiSelectionEnabled(true);
-        
-        //fileChooser.showOpenDialog(null);
-        //filesList = fileChooser.getSelectedFiles();
-        
-        
-        //filesList=fileChooser.showOpenDialog(fileChooser)
+
         File file = fileChooser.showOpenDialog(null);
         
         if (file != null) {
             filesList.add(file);
             display(file);
-        }
-         
-        
+        }     
     }
 
     @FXML
@@ -67,11 +58,15 @@ public class SendingFilesController implements Initializable {
         //recieversList.add("01512345678");
         //go to the contact list
         // call sending service
-        List<Boolean> fileResults=SendingFilesService.getSendingFilesService().sendFiles(filesList,reciever);
+
+        CurrentSelectedChat.getCurrentselectedchat().setIsSendingFilesProp(true);
+        List<Boolean> fileResults=SendingFilesService.getSendingFilesService().sendFiles(filesList,CurrentSelectedChat.getCurrentselectedchat().getReceiverNumber());
+        
         filesList.clear();
         //filesArea.getChildren().clear();
         filesArea.getChildren().removeAll(filesArea.getChildren());
         System.out.println(fileResults);
+
     }
 
     void display(File file) {
@@ -85,11 +80,7 @@ public class SendingFilesController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
-
         filesList=new ArrayList<>();
-
-        //recieversList=new ArrayList<>();
     }
     
 }
