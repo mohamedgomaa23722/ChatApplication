@@ -8,12 +8,14 @@ public class Message implements Serializable {
     private String ReceiverPhoneNumber;
     private String message;
     private File attachment;
-    
-    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, File attachment) {
+    private MessageStyle messageStyle;
+
+    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, File attachmen, MessageStyle messageStyle) {
         this.senderPhoneNumber = senderPhoneNumber;
         this.ReceiverPhoneNumber = ReceiverPhoneNumber;
         this.message = message;
         this.attachment = attachment;
+        this.messageStyle = messageStyle;
     }
 
     public String getMessage() {
@@ -46,6 +48,10 @@ public class Message implements Serializable {
 
     public void setReceiverPhoneNumber(String receiverPhoneNumber) {
         ReceiverPhoneNumber = receiverPhoneNumber;
+    }
+
+    public MessageStyle getMessageStyle() {
+        return messageStyle;
     }
 
     

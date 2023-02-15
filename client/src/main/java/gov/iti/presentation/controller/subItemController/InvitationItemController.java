@@ -3,13 +3,12 @@ package gov.iti.presentation.controller.subItemController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.management.Notification;
 
 import gov.iti.business.services.InvitationService;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
-import javafx.application.Platform;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

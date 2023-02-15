@@ -1,6 +1,7 @@
 package gov.iti.presentation.controller;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -8,10 +9,12 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.ChatService;
@@ -21,16 +24,24 @@ import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.model.Message;
+import gov.iti.model.MessageStyle;
 import gov.iti.presentation.utils.ChatManager;
+import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.Status;
 import gov.iti.presentation.utils.WindowManger;
+import gov.iti.utils.TextStyle;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -57,7 +68,7 @@ public class ChatController<E> implements Initializable {
     @FXML
     private ScrollPane scrollBar;
     @FXML
-    private HBox message_edx_container;
+    private VBox message_edx_container;
     @FXML
     private TextField message_edx;
     @FXML
@@ -98,20 +109,42 @@ public class ChatController<E> implements Initializable {
     private ImageView empty_contact;
     @FXML
     private ImageView empty_Group;
+    @FXML
+    ToggleButton bold;
+    @FXML
+    ToggleButton italic;
+    @FXML
+    ToggleButton regular;
+    @FXML
+    ToggleButton underLine;
+    @FXML
+    ColorPicker text_color;
+    @FXML
+    ColorPicker textBackground;
+    @FXML
+    ComboBox textFont;
+    @FXML
+    ComboBox fontsize;
+    @FXML
+    ToggleGroup select;
     /**
      * Initializes the controller class.
      */
     int chatMode = 0;
     User receiverUSer;
+    private MessageStyle messageStyle;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        SetupMessageProperties();
+
         setChatVisiablity(false);
 
         message_edx.setOnKeyPressed((e) -> {
             if (e.getCode() == KeyCode.ENTER) {
                 Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
-                        receiverUSer.getPhoneNumber(), message_edx.getText(), null);
+                        receiverUSer.getPhoneNumber(), message_edx.getText(), null, messageStyle);
                 addMessage(sMessage, false);
                 ChatService.getInstance().sendMessage(sMessage, chatMode);
             }
@@ -151,6 +184,7 @@ public class ChatController<E> implements Initializable {
         ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
             if (newMessage != null) {
                 addMessage(newMessage, true);
+ 
             }
         });
 
@@ -217,6 +251,11 @@ public class ChatController<E> implements Initializable {
         WindowManger.getInstance().openCreatGroupWindow();
     }
 
+    @FXML
+    private void handelUnderLineStyle() {
+        messageStyle.setUnderLine(underLine.isSelected());
+    }
+
     private void changeStatusbar(int status) {
         if (status == 0)
             changeStatusColors(Status.Offline);
@@ -245,9 +284,67 @@ public class ChatController<E> implements Initializable {
         contact_status.setTextFill(Color.web(status.color));
     }
 
+    private void SetupMessageProperties() {
+        messageStyle = new MessageStyle();
+        textFont.setItems(FXCollections.observableArrayList(javafx.scene.text.Font.getFamilies()));
+        textFont.getSelectionModel().select(5);
+
+        List<Integer> fontsizeArray = new ArrayList<>();
+        for (int i = 10; i < 40; i++) {
+            fontsizeArray.add(i+2);
+        }
+        fontsize.setItems(FXCollections.observableArrayList(fontsizeArray));
+        fontsize.getSelectionModel().select(5);
+
+        // Detext change on text Font for messages
+        textFont.getSelectionModel().selectedItemProperty().addListener((o, oldFont, newFont) -> {
+            messageStyle.setFont(newFont.toString());
+        });
+
+        // Detext change on text color for messages
+        text_color.valueProperty().addListener((o, oldColor, newColor) -> {
+            messageStyle.setTextColor(toHexString(newColor));
+        });
+
+        // Detext change on text Size for messages
+        fontsize.getSelectionModel().selectedItemProperty().addListener((o, oldFont, newFont) -> {
+            messageStyle.setTextSize((int)newFont);
+        });
+
+        // Detext change on text background color for messages
+        textBackground.valueProperty().addListener((o, oldColor, newColor) -> {
+            messageStyle.setTextBackColor(toHexString(newColor));
+        });
+
+        // Detext change on text text weight for messages
+        select.selectedToggleProperty().addListener((o, oldToggle, newToggle) -> {
+            if (newToggle == regular) {
+                // regular weight message
+                messageStyle.setTextStyle(TextStyle.REGULAR);
+            } else if (newToggle == bold) {
+                // bold weight message
+                messageStyle.setTextStyle(TextStyle.BOLD);
+            } else if (newToggle == italic) {
+                // italic weight message
+                messageStyle.setTextStyle(TextStyle.ItALIC);
+            } else {
+                // select Regular
+                regular.setSelected(true);
+                messageStyle.setTextStyle(TextStyle.REGULAR);
+            }
+        });
+    }
+
+    public String toHexString(Color value) {
+        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue()) + format(value.getOpacity()))
+                .toUpperCase();
+    }
+
+    private String format(double val) {
+        String in = Integer.toHexString((int) Math.round(val * 255));
+        return in.length() == 1 ? "0" + in : in;
+    }
 }
-
-
 
 class ContactCell extends ListCell<User> {
     @Override

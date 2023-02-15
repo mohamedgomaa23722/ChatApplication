@@ -94,6 +94,7 @@ public class LoginPasswdController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        passwdTextField.setText("Aa23722652@");
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
     }
