@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.dtos.LoggedUser;
+//import gov.iti.presentation.dtos.LoggedUser;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.UserValidator;
@@ -19,7 +19,7 @@ public class LoginPhoneController implements Initializable{
 
     UserValidator userValidator;
 
-    LoggedUser user;
+    //LoggedUser user;
 
     String phoneNumber;
 
@@ -65,7 +65,7 @@ public class LoginPhoneController implements Initializable{
         phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
         isFaildLogin.addListener((o,oldVal,newVal)->{
             System.out.println("change");
-                 if(newVal.toString()=="true") {
+                 if(newVal.toString().equals("true")) {
                     System.out.println("password incorrect");
                     displyErrorLogin();
                  } else {

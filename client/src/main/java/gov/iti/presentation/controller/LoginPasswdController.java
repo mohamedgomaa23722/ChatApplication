@@ -58,12 +58,13 @@ public class LoginPasswdController implements Initializable {
                 CurrentUser.getCurrentUser().setUser(user);
                 System.out.println(CurrentUser.getInstance().getCountry().get());
                 System.out.println(CurrentUser.getInstance().getBio().get());
-                SceneManager.getSceneManagerInstance().switchToChatScreen();
                 if(!saved) {
                     // save phone and passwd
                     saveUserInfo(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
                     LoginPasswdController.passwdValue.set(CurrentUser.getCurrentUser().getPassword());
                 }
+                SceneManager.getSceneManagerInstance().switchToChatScreen();
+
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password
