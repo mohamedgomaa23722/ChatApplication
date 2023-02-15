@@ -14,6 +14,8 @@ import java.sql.SQLException;
 
 import java.util.ResourceBundle;
 
+import gov.iti.business.services.chatbot.*;
+
 import gov.iti.business.services.ChatService;
 import gov.iti.model.User;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
@@ -31,6 +33,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -64,8 +67,13 @@ public class ChatController<E> implements Initializable {
     private ImageView notification;
     @FXML
     private ImageView settings;
+
+    @FXML
+    private ImageView chatbot;
+
     @FXML
     private TextField search_edx;
+
     @FXML
     private Text contact_title;
     @FXML
@@ -96,6 +104,9 @@ public class ChatController<E> implements Initializable {
     private VBox empty_chat;
     @FXML
     private ImageView empty_contact;
+
+    private boolean botOn = false;
+
     @FXML
     private ImageView empty_Group;
     /**
@@ -107,6 +118,18 @@ public class ChatController<E> implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setChatVisiablity(false);
+
+        ChatterBotFactory factory = new ChatterBotFactory();
+        ChatterBot bot2 = null;
+        try {
+            bot2 = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        ChatterBotSession bot2session = bot2.createSession();
+
+        Tooltip.install(chatbot, new Tooltip("Turn me on and take a rest!"));
 
         message_edx.setOnKeyPressed((e) -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -150,7 +173,21 @@ public class ChatController<E> implements Initializable {
 
         ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
             if (newMessage != null) {
+
                 addMessage(newMessage, true);
+
+                if (botOn) {
+                    try {
+                        String msg = bot2session.think(newMessage.getMessage());
+                        Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
+                               newMessage.getSenderPhoneNumber(), msg, null);
+                        addMessage(sMessage, false);
+                        ChatService.getInstance().sendMessage(sMessage, 1);
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -217,6 +254,18 @@ public class ChatController<E> implements Initializable {
         WindowManger.getInstance().openCreatGroupWindow();
     }
 
+    @FXML
+    public void changeChatbotStatus() {
+        botOn = !botOn;
+
+        if (botOn) {
+            chatbot.setImage(new Image("boton.png"));
+        } else {
+            chatbot.setImage(new Image("botoff.png"));
+        }
+       
+    }
+
     private void changeStatusbar(int status) {
         if (status == 0)
             changeStatusColors(Status.Offline);
@@ -246,8 +295,6 @@ public class ChatController<E> implements Initializable {
     }
 
 }
-
-
 
 class ContactCell extends ListCell<User> {
     @Override

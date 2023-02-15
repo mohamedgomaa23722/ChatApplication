@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    
+
     <parent>
         <groupId>gov.iti</groupId>
         <artifactId>chat</artifactId>
@@ -18,11 +18,40 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-<dependencies>
-    <dependency>
-        <groupId>gov.iti</groupId>
-        <artifactId>shared</artifactId>
-        <version>1.0</version>
-    </dependency>
-</dependencies>
+
+    <scm>
+        <connection>scm:svn:https://chatter-bot-api.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://chatter-bot-api.googlecode.com/svn/trunk/</developerConnection>
+        <url>https://chatter-bot-api.googlecode.com/svn/trunk/</url>
+    </scm>
+
+    <url>https://code.google.com/p/chatter-bot-api/</url>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>gov.iti</groupId>
+            <artifactId>shared</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>ca.pjer</groupId>
+            <artifactId>chatter-bot-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+    </dependencies>
 </project>

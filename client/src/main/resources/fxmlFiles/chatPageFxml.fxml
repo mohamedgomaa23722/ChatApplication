@@ -79,7 +79,7 @@
                               </TextField>
                               <ImageView fx:id="attach_file" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="attachment.png" />
+<!--                                    <Image url="attachment.png" />-->
                                  </image>
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
@@ -96,7 +96,7 @@
                      <children>
                         <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@empty_chat.png" />
+<!--                              <Image url="@empty_chat.png" />-->
                            </image>
                         </ImageView>
                         <Label text="Click at Any contact or group to start chat" textFill="#a4a4a4" wrapText="true">
@@ -132,6 +132,16 @@
                            <image>
                               <Image url="settings.png" />
                            </image>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="chatbot" fitHeight="30.0" fitWidth="30.0" layoutX="70.0" onMouseClicked="#changeChatbotStatus" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="botoff.png" />
+                           </image>
+                           
+
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
