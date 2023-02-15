@@ -48,7 +48,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
     public void UpdateOnContact(User user) throws RemoteException {
         // TODO Auto-generated method stub
         ChatService.getInstance().UpdateContanctList(user);
-        ChatService.getInstance().UpdateContanctList(user);
+        //ChatService.getInstance().UpdateContanctList(user);
     }
 
     @Override

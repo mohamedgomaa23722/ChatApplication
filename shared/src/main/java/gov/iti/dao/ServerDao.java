@@ -10,6 +10,7 @@ import gov.iti.model.Message;
 import gov.iti.model.User;
 
 
+
 public interface ServerDao extends SettingInt, InvitationInt{
     
     public User login(ClientDao client, String PhoneNumber, String Password) throws RemoteException, SQLException;
@@ -49,5 +50,7 @@ public interface ServerDao extends SettingInt, InvitationInt{
     public void notifyCreatingGroup(Group group) throws RemoteException;
 
     public User selectUser(String phoneNumber) throws RemoteException, SQLException;
+
+    public boolean leaveGroup(int groupId, String phoneNumber) throws RemoteException, SQLException;
 
 }

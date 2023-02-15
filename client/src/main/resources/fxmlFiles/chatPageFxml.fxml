@@ -69,6 +69,14 @@
                                     <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </VBox>
+                              <ImageView fx:id="deleteImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" onMouseClicked='#leaveGroup'>
+                                 <image>
+                                    <Image url="leave.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                              </ImageView>
                            </children>
                            <opaqueInsets>
                               <Insets />

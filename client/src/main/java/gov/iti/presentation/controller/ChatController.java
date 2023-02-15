@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import javax.annotation.processing.SupportedOptions;
 
 import gov.iti.business.services.ChatService;
+import gov.iti.business.services.GroupService;
 import gov.iti.model.Group;
 import gov.iti.presentation.controller.subItemController.ContactItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
@@ -207,14 +208,18 @@ public class ChatController<E> implements Initializable {
          group_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                
                 statusview.setVisible(false);
                 chatBox.getChildren().removeAll(chatBox.getChildren());
                 setChatVisiablity(true);
                 chatMode = 0;
                 currentGroupChat = group_list.getSelectionModel().getSelectedItem();
-                contact_name.setText(currentGroupChat.getGroupName());
-                contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
-                chatBox.getChildren().add(ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
+                if(currentGroupChat != null) {
+                    contact_name.setText(currentGroupChat.getGroupName());
+                    contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
+                    chatBox.getChildren().add(ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
+                }
+                
             }
         });
    
@@ -252,10 +257,12 @@ public class ChatController<E> implements Initializable {
                 setChatVisiablity(true);
                 chatMode = 1;
                 receiverUSer = contact_list.getSelectionModel().getSelectedItem();
-                contact_name.setText(receiverUSer.getName());
-                changeStatusbar(receiverUSer.getStatus());
-                contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
-                chatBox.getChildren().add(ChatManager.getInstance().getMessages(receiverUSer.getPhoneNumber()));
+                if(receiverUSer!=null) {
+                    contact_name.setText(receiverUSer.getName());
+                    changeStatusbar(receiverUSer.getStatus());
+                    contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
+                    chatBox.getChildren().add(ChatManager.getInstance().getMessages(receiverUSer.getPhoneNumber()));
+                }
             }
         });
 
@@ -482,6 +489,20 @@ public class ChatController<E> implements Initializable {
     @FXML
     private void sendFiles() {
         WindowManger.getInstance().openSendingFilesWindow();
+    }
+
+    @FXML
+    private void leaveGroup() {
+        if (GroupService.getGroupService().leaveGroup(currentGroupChat.getGroupId(),
+            CurrentUser.getCurrentUser().getPhoneNumber().get())) {
+                // delete this group from user group list
+                if(CurrentUser.getCurrentUser().removeGroup(currentGroupChat)) {
+                    ChatManager.getInstance().deleteGroup(Integer.toString(currentGroupChat.getGroupId()));
+                    chatBox.getChildren().removeAll(chatBox.getChildren());
+                    empty_chat.setVisible(true);
+                    System.out.println("removed group sucessfully");
+                }
+        }
     }
 }
 

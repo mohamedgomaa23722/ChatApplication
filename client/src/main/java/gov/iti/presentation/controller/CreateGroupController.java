@@ -107,7 +107,7 @@ public class CreateGroupController implements Initializable {
             }
         Group group=new Group(groupName,imagebytes);
         if (UserValidator.getUserValidator().validateGroupName(groupName)) {
-            if (selectedItems != null && selectedItems.size() > 0) {
+            if (selectedItems != null && selectedItems.size() > 1) {
                 group = GroupService.getGroupService().creatGroupService(group);
                  if(group!=null){
                 for (var selected : selectedItems) {
