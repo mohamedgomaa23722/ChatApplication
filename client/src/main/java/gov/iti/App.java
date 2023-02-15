@@ -1,5 +1,8 @@
 package gov.iti;
 
+import gov.iti.business.services.ChatService;
+import gov.iti.business.services.SettingsService;
+import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.SceneManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,5 +35,6 @@ public class App extends Application {
     public void stop() throws Exception {
         super.stop();
         System.out.println("service unbinded");
+        SettingsService.getInstance().changeStatus(CurrentUser.getCurrentUser().getPhoneNumber().get(),0);
     }
 }

@@ -31,7 +31,7 @@
       </Label>
       <HBox alignment="CENTER">
          <children>
-            <Circle fx:id="circle" fill="#fcc3c0" onMouseClicked="#buttonAddImage" radius="41.0" stroke="#fcc3c0" strokeType="INSIDE" />
+            <Circle fx:id="circle" fill="#fcc3c0" onMouseClicked="#UpdateImage" radius="41.0" stroke="#fcc3c0" strokeType="INSIDE" />
             <VBox alignment="CENTER" spacing="20.0" />
          </children>
          <VBox.margin>

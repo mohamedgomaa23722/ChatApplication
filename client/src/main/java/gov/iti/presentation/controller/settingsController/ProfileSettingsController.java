@@ -27,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
@@ -58,7 +59,6 @@ public class ProfileSettingsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
-
         CurrentUser currentUser = CurrentUser.getCurrentUser();
         circle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentUser.getImage()))));
         newBio.textProperty().bindBidirectional(currentUser.getBio());
@@ -66,20 +66,7 @@ public class ProfileSettingsController implements Initializable {
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
         System.out.println(currentUser.getCountry().get());
         comboBoxCountry.setValue(currentUser.getCountry().get());
-
-        ByteArrayInputStream bis = new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage());
-        Image image = new Image(bis);
-        if (image != null)
-            System.out.println("image is not null");
-        else
-            System.out.println("image is null");
-
-        try {
-            bis.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        setImage();
     }
 
     @FXML
@@ -105,6 +92,7 @@ public class ProfileSettingsController implements Initializable {
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 fileInputStream.read(image);
                 CurrentUser.getCurrentUser().setImage(image);
+                setImage();
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {
@@ -113,6 +101,22 @@ public class ProfileSettingsController implements Initializable {
             }
         }
     }
+
+    private void setImage() {
+        ByteArrayInputStream bis = new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage());
+        Image image = new Image(bis);
+        if (image != null)
+            System.out.println("image is not null");
+        else
+            System.out.println("image is null");
+
+        try {
+            bis.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    } 
 
     public boolean validateAll() {
         if (!Utilities.validateName(newName.getText().trim())) {
@@ -135,4 +139,6 @@ public class ProfileSettingsController implements Initializable {
         }
         return true;
     }
+
+    
 }
