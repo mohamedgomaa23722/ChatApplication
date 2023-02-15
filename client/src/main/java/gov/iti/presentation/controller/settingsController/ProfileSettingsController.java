@@ -2,6 +2,9 @@ package gov.iti.presentation.controller.settingsController;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -25,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 
 public class ProfileSettingsController implements Initializable {
 
@@ -89,6 +93,25 @@ public class ProfileSettingsController implements Initializable {
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
             CurrentUser.getCurrentUser().setUser(updatedUser);
+    }
+
+    @FXML
+    private void UpdateImage() throws FileNotFoundException{
+        FileChooser fileChooser = new  FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+
+        if(file != null){
+            byte[] image = new byte[(int) file.length()];
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                fileInputStream.read(image);
+                CurrentUser.getCurrentUser().setImage(image);
+            } catch (FileNotFoundException e) {
+                throw e;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean validateAll() {

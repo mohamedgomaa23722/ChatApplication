@@ -428,6 +428,11 @@ public class ChatController<E> implements Initializable {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
         return dateFormat.format(new Date()).toString();
     }
+
+    @FXML
+    private void sendFiles() {
+        WindowManger.getInstance().openSendingFilesWindow();
+    }
 }
 
 class ContactCell extends ListCell<User> {

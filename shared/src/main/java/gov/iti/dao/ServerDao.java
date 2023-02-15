@@ -6,10 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import gov.iti.model.Group;
-import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.User;
-import gov.iti.model.UserContact;
+
 
 public interface ServerDao extends SettingInt, InvitationInt{
     
@@ -38,4 +37,7 @@ public interface ServerDao extends SettingInt, InvitationInt{
     public void SendGroupMessage(Message message) throws RemoteException, SQLException;
 
     public void notifyChanges(User user) throws RemoteException;
+
+    public boolean sendFile(byte[] buffer, int count, String reciever, String fileName) throws RemoteException;
+
 }

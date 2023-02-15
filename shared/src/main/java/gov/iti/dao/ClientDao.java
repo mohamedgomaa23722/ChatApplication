@@ -16,6 +16,8 @@ public interface ClientDao extends Remote {
     public void UpdateOnContact(User user) throws RemoteException;
 
     public void recievedContactInvitation(Invitation invitation) throws RemoteException;
+
+    public boolean downLoadFile(byte[] buffer, int count, String fileName) throws RemoteException;
     
     public void notifyUserChanges(User user) throws RemoteException;
 }

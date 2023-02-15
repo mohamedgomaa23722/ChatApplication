@@ -36,6 +36,10 @@ public class WindowManger {
         loadView("notificationPage");
     }
 
+    public void openSendingFilesWindow() {
+        loadView("senderPage");
+    }
+
     public void openAddContactWindow() {
         if(!AddingContactController.isAddingPageOpen()) {
             //close it

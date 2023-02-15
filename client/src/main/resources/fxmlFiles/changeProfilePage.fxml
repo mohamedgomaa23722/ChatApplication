@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -12,7 +19,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="500.0" maxWidth="400.0" minHeight="500.0" minWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.settingsController.ProfileSettingsController">
+<VBox maxHeight="500.0" maxWidth="400.0" minHeight="500.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.settingsController.ProfileSettingsController">
    <children>
       <Label style="-fx-border-color: TRANSPARENT;" text="Profile" textFill="#f84d43">
          <font>
@@ -24,21 +31,8 @@
       </Label>
       <HBox alignment="CENTER">
          <children>
-            <Circle fx:id="circle" fill="#fcc3c0" radius="41.0" stroke="#fcc3c0" strokeType="INSIDE" />
-            <VBox alignment="CENTER" spacing="20.0">
-               <children>
-                  <ImageView fx:id="buttonAddImage" fitHeight="27.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@3032276.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="buttonRemoveImage" fitHeight="27.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@photo-camera.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </VBox>
+            <Circle fx:id="circle" fill="#fcc3c0" onMouseClicked="#buttonAddImage" radius="41.0" stroke="#fcc3c0" strokeType="INSIDE" />
+            <VBox alignment="CENTER" spacing="20.0" />
          </children>
          <VBox.margin>
             <Insets top="10.0" />
