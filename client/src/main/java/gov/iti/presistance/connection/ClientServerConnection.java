@@ -7,8 +7,11 @@ import gov.iti.dao.ServerDao;
 
 public class ClientServerConnection {
 
-    private Registry reg;
-    private ServerDao chatRef;
+    public  static int portNumber = 8889;
+    public  static String ipAddress = "localhost";
+
+    private static Registry reg;
+    private static ServerDao chatRef;
     private final static ClientServerConnection connectionInstance = new ClientServerConnection();
 
     public static ClientServerConnection getConnectionInstance() {
@@ -17,7 +20,7 @@ public class ClientServerConnection {
 
     private ClientServerConnection() {
         try{
-            reg = LocateRegistry.getRegistry("localhost", 8889);
+            reg = LocateRegistry.getRegistry(ipAddress, portNumber);
             chatRef =(ServerDao) reg.lookup("ChatService");
             } catch(Exception ex) { 
                 ex.printStackTrace();
@@ -30,6 +33,17 @@ public class ClientServerConnection {
 
     public Registry getRegistry() {
         return reg;
+    }
+
+    public static boolean reConnect() {
+        try {
+            reg = LocateRegistry.getRegistry(ipAddress, portNumber);
+            chatRef = (ServerDao) reg.lookup("ChatService");
+            return true;
+        } catch (Exception ex) {
+            // ex.printStackTrace();
+            return false;
+        }
     }
     
 }

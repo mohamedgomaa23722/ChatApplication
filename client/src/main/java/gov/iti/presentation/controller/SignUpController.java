@@ -1,9 +1,9 @@
 package gov.iti.presentation.controller;
 
+import gov.iti.Utilities;
 import gov.iti.business.services.RegisterService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 
@@ -97,7 +97,7 @@ public class SignUpController implements Initializable {
     }
 
     public void initialize(URL arg0, ResourceBundle arg1) {
-        combo.setItems(FXCollections.observableArrayList(Constant.country_list));
+        combo.setItems(FXCollections.observableArrayList(Utilities.country_list));
         styleFrame();
         actionHandlingIntialization();
 

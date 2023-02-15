@@ -23,6 +23,9 @@ public interface ClientDao extends Remote {
     public void notifyUserChanges(User user) throws RemoteException;
 
     public void notifyCreatingGroup(Group group) throws RemoteException ;
-    
+
+    public void serverDown() throws RemoteException;
+
+    public void isClientOnline() throws RemoteException;
 
 }

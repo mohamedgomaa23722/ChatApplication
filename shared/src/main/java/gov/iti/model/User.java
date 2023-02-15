@@ -111,6 +111,4 @@ public class User implements Serializable{
     public void setMode(int mode) {
         this.mode = mode;
     }
-
-    
 }

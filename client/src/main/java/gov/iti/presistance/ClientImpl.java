@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 import gov.iti.business.services.ChatService;
@@ -18,6 +19,11 @@ import gov.iti.model.Message;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presistance.connection.ClientServerConnection;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
@@ -48,7 +54,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
     public void UpdateOnContact(User user) throws RemoteException {
         // TODO Auto-generated method stub
         ChatService.getInstance().UpdateContanctList(user);
-        ChatService.getInstance().UpdateContanctList(user);
+        // ChatService.getInstance().UpdateContanctList(user);
     }
 
     @Override
@@ -62,9 +68,6 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
         ChatService.getInstance().notifyGroupsChange(group);
         
     }
-    
-
-   
     
 
     @Override
@@ -82,6 +85,41 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
             //System.out.print((char) buffer[i]);
         //lock.unlock();
         return true;
+    }
+
+    @Override
+    public void serverDown() throws RemoteException {
+        System.out.println("server Down .. ");
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("ops");
+                alert.setHeaderText("Server is Down , Do You want to reconnect");
+                alert.setContentText("OK => RECONNECT\nCancel => Close The Program");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                System.out.println("ater showing the alert");
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    if (!ClientServerConnection.reConnect())
+                        try {
+                            serverDown();
+                        } catch (RemoteException e) {
+                            System.out.println("Error in calling server Down again in Client .... ");
+                            e.printStackTrace();
+                        }
+                } else {
+                    Platform.exit();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void isClientOnline() throws RemoteException {
+        // TODO Auto-generated method stub
     }
     
 }
