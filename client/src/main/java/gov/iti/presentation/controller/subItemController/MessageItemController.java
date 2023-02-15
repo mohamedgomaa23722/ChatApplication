@@ -2,6 +2,8 @@ package gov.iti.presentation.controller.subItemController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -9,6 +11,12 @@ import gov.iti.model.MessageStyle;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.utils.TextStyle;
+import gov.iti.business.services.ContactsService;
+import gov.iti.business.services.GroupService;
+import gov.iti.model.Group;
+import gov.iti.model.User;
+import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -68,12 +76,22 @@ public class MessageItemController implements Initializable {
                     user = u;
                     System.out.println("find user");
                 }
+
             });
-        } else {
+            if(user==null){
+             user=ContactsService.getcontactsService().getUser(message.getSenderPhoneNumber());
+             System.out.println(user);
+        }} else {
             user = CurrentUser.getCurrentUser().getUser();
+            System.out.println("hbaaaal");
+
         }
+
         messageLabel.setText(message.getMessage());
         userNameLabel.setText(message.getSenderPhoneNumber());
+        if(user!=null){
+            System.out.println("userNuotNull");
+        }
         userImageCircle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
 
         if (isReceived) {

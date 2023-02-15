@@ -39,5 +39,18 @@ public class ContactsService {
         return new ArrayList<User>();
     }
     
+    public User getUser(String phoneNumber) {
+        try {
+            User contact = chatReg.selectUser(phoneNumber);
+            return contact;
+        } catch (RemoteException e) {
+            
+            e.printStackTrace();
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+        }
+        return  null;
+    }  
     
 }

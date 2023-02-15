@@ -26,11 +26,17 @@ public interface ServerDao extends SettingInt, InvitationInt{
 
     public int getGroupLastId()throws RemoteException, SQLException;
 
-    public boolean creatGroup(String groupName) throws RemoteException, SQLException;
+    public boolean creatGroup(Group group) throws RemoteException, SQLException;
 
     public boolean addGroupMember(int groupId, String memberPhoneNumber)throws RemoteException, SQLException;
 
     public List<User> selectUserContacts(String userPhoneNumber) throws RemoteException, SQLException;
+
+    public List<Group> selectGroups(String userPhoneNumber) throws RemoteException, SQLException;
+
+    public void tellOthers(Message message,int GroupId) throws RemoteException , SQLException;
+
+    public List<String> selectGroupMembers(int groupId)throws RemoteException, SQLException;
 
     public void SendContactMessage(Message message) throws RemoteException, SQLException;
     
@@ -39,5 +45,9 @@ public interface ServerDao extends SettingInt, InvitationInt{
     public void notifyChanges(User user) throws RemoteException;
 
     public boolean sendFile(byte[] buffer, int count, String reciever, String fileName) throws RemoteException;
+     
+    public void notifyCreatingGroup(Group group) throws RemoteException;
+
+    public User selectUser(String phoneNumber) throws RemoteException, SQLException;
 
 }

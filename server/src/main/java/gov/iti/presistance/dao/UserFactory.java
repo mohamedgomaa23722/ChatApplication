@@ -17,7 +17,7 @@ public class UserFactory {
             byte [] bytes = blob.getBytes(1l, (int)blob.length());
             user = new User(resultSet.getString("PhoneNumber"),
                     resultSet.getString("Name"),
-                    resultSet.getInt("age"),
+                    Integer.parseInt(resultSet.getString("age")),
                     resultSet.getInt("status"),
                     resultSet.getInt("mode"),
                     bytes,

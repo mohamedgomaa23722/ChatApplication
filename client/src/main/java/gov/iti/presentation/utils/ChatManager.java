@@ -29,10 +29,15 @@ public class ChatManager {
     }
 
     public void addGroups(){
-        
+        CurrentUser.getCurrentUser().getGroups().forEach((user) -> {
+            messages.put(Integer.toString(user.getGroupId()), new VBox());
+        });
     }
 
     public void addContanct(String key){
+        messages.put(key, new VBox());
+    }
+    public void addGroup(String key){
         messages.put(key, new VBox());
     }
 

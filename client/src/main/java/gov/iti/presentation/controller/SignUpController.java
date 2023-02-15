@@ -253,6 +253,7 @@ public class SignUpController implements Initializable {
                 //go to chat 
                 CurrentUser.getCurrentUser().setUser(registeredUser);
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+                System.out.println("correct chat page");
             } else {
                 // stay
             }

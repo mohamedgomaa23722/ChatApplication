@@ -12,9 +12,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import gov.iti.business.services.ChatService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.dao.ClientDao;
+import gov.iti.model.Group;
 import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.User;
+import gov.iti.presentation.dtos.Chat;
+import gov.iti.presentation.dtos.CurrentUser;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
@@ -43,6 +46,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
     @Override
     public void UpdateOnContact(User user) throws RemoteException {
+        // TODO Auto-generated method stub
+        ChatService.getInstance().UpdateContanctList(user);
         ChatService.getInstance().UpdateContanctList(user);
     }
 
@@ -51,6 +56,15 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
         System.out.println("change has been made in " + user.getPhoneNumber());
         ChatService.getInstance().notifyContactChange(user);
     }
+
+    @Override
+    public void notifyCreatingGroup(Group group) throws RemoteException {
+        ChatService.getInstance().notifyGroupsChange(group);
+        
+    }
+    
+
+   
     
 
     @Override

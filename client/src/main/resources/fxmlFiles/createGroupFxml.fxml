@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-           <ImageView fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
+           <ImageView fx:id='imgContainer' fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
                   <Image url="@group.png" />
                </image>

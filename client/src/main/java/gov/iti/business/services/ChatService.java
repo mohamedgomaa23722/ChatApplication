@@ -3,6 +3,7 @@ package gov.iti.business.services;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+import gov.iti.model.Group;
 import gov.iti.model.Message;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
@@ -47,7 +48,13 @@ public class ChatService {
                 e.printStackTrace();
             }
         } else {
-            // group chat
+            try {
+                ClientServerConnection.getConnectionInstance().getServerDao().SendGroupMessage(message);
+            } catch (RemoteException | SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+                //SSystem.out.println("Client service Receiver : " + message.getReceiverPhoneNumber());
         }
     }
 
@@ -75,5 +82,10 @@ public class ChatService {
         });
 
     }
+    public void notifyGroupsChange(Group group) {
+        Platform.runLater(() -> {
+            CurrentUser.getCurrentUser().addGroup(group);
+        });
 
+    }
 }

@@ -47,7 +47,7 @@
                                           <Insets left="10.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="210.0">
+                                    <HBox fx:id="statusview" alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="210.0">
                                        <children>
                                           <Circle fx:id="contact_circle_status" fill="#00ff1e" radius="4.0" stroke="#4bfa8e00" strokeType="INSIDE" strokeWidth="0.0">
                                              <HBox.margin>
@@ -319,7 +319,7 @@
                   <StackPane>
                      <children>
                         <ListView fx:id="group_list" style="-fx-background-color: #F7F7FA;" />
-                        <ImageView fx:id="empty_group" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="empty_Group" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@empty_chat.png" />
                            </image></ImageView>

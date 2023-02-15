@@ -20,9 +20,10 @@ import java.util.*;
 import gov.iti.Utilities;
 import gov.iti.dao.ClientDao;
 import gov.iti.dao.ServerDao;
+import gov.iti.model.Group;
 import gov.iti.model.Message;
 import gov.iti.model.User;
-import gov.iti.model.UserContact;
+import gov.iti.presentation.dto.Contact;
 
 public class ServerImpl extends InvitationImp implements ServerDao, Serializable {
 
@@ -183,11 +184,12 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
         return invitationStatus;
     }
 
-    public boolean creatGroup(String groupName) {
+    public boolean creatGroup(Group group) {
         System.out.println("create group");
         try (PreparedStatement preparedStatement = connection
-                .prepareStatement("insert into chatgroup  (group_name) VALUES(?)")) {
-            preparedStatement.setString(1, groupName);
+                .prepareStatement("insert into chatgroup  (group_name,image) VALUES(?,?)")) {
+            preparedStatement.setString(1, group.getGroupName());
+            preparedStatement.setBytes(2,group.getImage());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,8 +200,8 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
     public int getGroupLastId() {
         System.out.println(" getGroupLastId");
         try (Statement statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery("select max(id) from chatGroup");
-            rs.next();
+           ResultSet rs=statement.executeQuery("select max(id) from chatGroup");
+           rs.next();
             return rs.getInt("max(id)");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -208,7 +210,7 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
     }
 
     public boolean addGroupMember(int groupId, String memberPhoneNumber) {
-        System.out.println(" addGroupMember");
+        System.out.println("addGroupMember");
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement("insert into contactgroup  (group_id ,contact_id) VALUES(?,?)")) {
             preparedStatement.setInt(1, groupId);
@@ -246,9 +248,55 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
         
         return recieverClient.downLoadFile(buffer, count, fileName);
     }
+    public List<Group> selectGroups(String userPhoneNumber){
+        System.out.println("selectGroups");
+        List<Group> GroupList = new ArrayList<Group>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "select id ,group_name ,chatgroup.image from user,chatgroup ,contactgroup where id = group_id and contact_id=phoneNumber and phoneNumber=?")) {
+            preparedStatement.setString(1, userPhoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                GroupList.add(new Group(resultSet.getInt(1), resultSet.getString(2),resultSet.getBytes(3)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return GroupList;
+    }
+
+    public List<String> selectGroupMembers(int GroupId){
+        System.out.println("selectMembers");
+        List<String> groupMemberList = new ArrayList<String>();
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(
+                        "select contact_id from contactgroup where group_id = ?")) {
+            preparedStatement.setInt(1, GroupId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                groupMemberList.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groupMemberList;
+    }
 
     @Override
+    public void tellOthers(Message message, int GroupId) throws RemoteException, SQLException {
+        List<String> groupMemberList= selectGroupMembers(GroupId);
+        for(String memberPhoneNumber:  groupMemberList){
+            if(clients.containsKey(memberPhoneNumber)){
+                clients.get(memberPhoneNumber).recievedGroupMessage(message);
+            }
+        }
+        
+    }
+    @Override
     public void SendContactMessage(Message message) throws RemoteException, SQLException {
+        System.out.println("private");
         if(clients.containsKey(message.getReceiverPhoneNumber())){
             clients.get(message.getReceiverPhoneNumber()).recievedContactMessage(message);
         } else {
@@ -258,8 +306,20 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
 
     @Override
     public void SendGroupMessage(Message message) throws RemoteException, SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'SendGroupMessage'");
+        System.out.println("send to group");
+        //message.setSenderPhoneNumber(message.getReceiverPhoneNumber());
+        selectGroupMembers( Integer.parseInt( message.getReceiverPhoneNumber())).forEach((contact) ->{
+            System.out.println("client is "+clients);
+            if(clients.containsKey(contact))
+            try {
+                if(!contact.equals(message.getSenderPhoneNumber()))
+                clients.get(contact).recievedContactMessage(message);
+                //else System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+        
     }
 
     @Override
@@ -271,7 +331,30 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+        }); 
+    }
+    public User selectUser(String phoneNumber){
+        User user=null;
+        try (PreparedStatement preparedStatement = connection
+        .prepareStatement(
+                "select * from User where PhoneNumber = ?")) {
+            preparedStatement.setString(1,phoneNumber);
+    ResultSet resultSet = preparedStatement.executeQuery();
+        user=UserFactory.createUser(resultSet);
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+return user;
+    }
+    public void notifyCreatingGroup(Group group) {
+        selectGroupMembers(group.getGroupId()).forEach((contact) ->{
+            if(clients.containsKey(contact))
+            try {
+                System.out.println(contact);
+                clients.get(contact).notifyCreatingGroup(group);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         });     
     }
-
 }

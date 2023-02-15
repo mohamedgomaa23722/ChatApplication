@@ -4,6 +4,8 @@ import java.util.List;
 
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import gov.iti.model.Group;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -167,7 +169,9 @@ public class CurrentUser {
     public void setContacts(List<User> contacts) {
         this.contacts.addAll(contacts);
     }
-
+    public void setgroups(List<Group> groups) {
+        this.groups.addAll(groups);
+    }
     public void addInvitations(Invitation invitation) {
         this.invitations.add(invitation);
     }
@@ -175,10 +179,14 @@ public class CurrentUser {
     public void addContact(User contact) {
         this.contacts.add(contact);
     }
+    public void addGroup(Group group) {
+        Platform.runLater(()->this.groups.add(group));
+    }
 
     public ObservableList<Invitation> getInvitations() {
         return invitations;
     }
+   
 
     public ObservableList<User> getContacts() {
         return contacts;

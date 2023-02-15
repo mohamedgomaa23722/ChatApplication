@@ -5,9 +5,17 @@ import java.io.Serializable;
 public class Group implements Serializable{
     private int groupId;
     private String groupName ;
-    public Group(String groupName){
-        this.groupName=groupName;
+    private byte []image;
+    public Group(int groupId, String groupName, byte []image) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.image = image;
     }
+    public Group(String groupName, byte[] imge) {
+        this.groupName = groupName;
+        this.image = imge;
+    }
+   
     public int getGroupId() {
         return groupId;
     }
@@ -20,6 +28,13 @@ public class Group implements Serializable{
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-    
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     
 }

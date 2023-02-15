@@ -9,6 +9,7 @@ import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.ContactsService;
+import gov.iti.business.services.GroupService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.business.services.LoginService;
 import gov.iti.business.services.SettingsService;
@@ -57,6 +58,7 @@ public class LoginPasswdController implements Initializable {
                 Platform.runLater(() -> {
                     CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
                     CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
+                    CurrentUser.getCurrentUser().setgroups(GroupService.getGroupService().getContactGroups());
                     ChatManager.getInstance().addContacts();
                     ChatManager.getInstance().addGroups();
                 });
@@ -92,7 +94,6 @@ public class LoginPasswdController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        passwdTextField.setText("Aa23722652@");
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
     }

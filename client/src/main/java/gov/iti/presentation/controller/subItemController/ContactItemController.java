@@ -4,10 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import gov.iti.model.Group;
 import gov.iti.model.User;
-import gov.iti.presentation.dtos.Chat;
-import gov.iti.presentation.dtos.Contact;
-import gov.iti.presentation.dtos.Group;
+
 import gov.iti.presentation.utils.Status;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,9 +28,13 @@ public class ContactItemController implements Initializable {
     private Label Item_LastMessage;
 
     private User user;
-
+    
+    private Group group;
     public ContactItemController(User user) {
         this.user = user;
+    }
+    public ContactItemController(Group group) {
+        this.group = group;
     }
 
     @Override
@@ -49,6 +52,10 @@ public class ContactItemController implements Initializable {
                 changeStatusColors(Status.away);
 
             Item_Name.setText(user.getName());
+        }
+        if (group != null) {
+            Item_Image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(group.getImage()))));
+            Item_Name.setText(group.getGroupName());
         }
     }
 
