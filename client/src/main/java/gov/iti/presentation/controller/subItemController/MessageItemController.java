@@ -2,17 +2,11 @@ package gov.iti.presentation.controller.subItemController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.ContactsService;
-import gov.iti.business.services.GroupService;
-import gov.iti.model.Group;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
