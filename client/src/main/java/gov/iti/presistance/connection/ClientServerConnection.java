@@ -19,12 +19,7 @@ public class ClientServerConnection {
     }
 
     private ClientServerConnection() {
-        try{
-            reg = LocateRegistry.getRegistry(ipAddress, portNumber);
-            chatRef =(ServerDao) reg.lookup("ChatService");
-            } catch(Exception ex) { 
-                ex.printStackTrace();
-            }
+        reConnect();
     }
 
     public ServerDao getServerDao() {
@@ -41,7 +36,7 @@ public class ClientServerConnection {
             chatRef = (ServerDao) reg.lookup("ChatService");
             return true;
         } catch (Exception ex) {
-            // ex.printStackTrace();
+             ex.printStackTrace();
             return false;
         }
     }

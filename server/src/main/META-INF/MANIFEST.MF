@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: gov.iti.App
+Class-Path: C:\Program Files\Java\jdk-17.0.5
+
