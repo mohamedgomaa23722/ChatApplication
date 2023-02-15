@@ -217,16 +217,17 @@ public class ChatController<E> implements Initializable {
             scrollPane.vvalueProperty().bind(chatBox.heightProperty());
             message_edx.clear();
             System.out.println(status);
-            if(message.getReceiverPhoneNumber().charAt(0)!=0){
+            if (status&&message.getReceiverPhoneNumber().charAt(0)=='0'){
+                    ChatManager.getInstance().addMessage(message.getSenderPhoneNumber(), v);
+            }
+            else if(!message.getSenderPhoneNumber().equals(CurrentUser.getCurrentUser().getPhoneNumber())){
                 ChatManager.getInstance().addMessage(message.getReceiverPhoneNumber(), v);
             }
-        else{
-            if (status )
+           /*  if (status)
                 ChatManager.getInstance().addMessage(message.getSenderPhoneNumber(), v);
             else {
                 ChatManager.getInstance().addMessage(message.getReceiverPhoneNumber(), v);
-            }
-        }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -317,6 +318,9 @@ class ContactCell extends ListCell<User> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else {
+            this.setGraphic(null);
         }
     }}
     class GroupCell extends ListCell<Group> {
