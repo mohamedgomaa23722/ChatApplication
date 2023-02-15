@@ -35,6 +35,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
@@ -53,6 +55,8 @@ public class CreateGroupController implements Initializable {
     Label error;
     @FXML
     ImageView imgContainer;
+    @FXML
+    private Circle circa;
     File file ;
     public CreateGroupController() {
 
@@ -87,8 +91,10 @@ public class CreateGroupController implements Initializable {
             this.file=file;
             try {
                 URL url = file.toURI().toURL();
-                imgContainer.setImage(new Image(url.toString()));
-                imgContainer.setOnMouseClicked(e1 -> handleImageContainer(e1));
+                //imgContainer.setImage(new Image(url.toString()));
+                imgContainer.setVisible(false);
+                circa.setFill(new ImagePattern(new Image(url.toString())));
+                circa.setOnMouseClicked(e1 -> handleImageContainer(e1));
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
             }
@@ -107,7 +113,7 @@ public class CreateGroupController implements Initializable {
             }
         Group group=new Group(groupName,imagebytes);
         if (UserValidator.getUserValidator().validateGroupName(groupName)) {
-            if (selectedItems != null && selectedItems.size() > 0) {
+            if (selectedItems != null && selectedItems.size() > 1) {
                 group = GroupService.getGroupService().creatGroupService(group);
                  if(group!=null){
                 for (var selected : selectedItems) {

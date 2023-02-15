@@ -7,24 +7,23 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="371.0" style="-fx-background-color: #f7f7fa;" xmlns="http://javafx.com/javafx/19" stylesheets="creatGroupStyle.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.CreateGroupController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="371.0" style="-fx-background-color: #f7f7fa;" stylesheets="creatGroupStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.presentation.controller.CreateGroupController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <StackPane prefHeight="150.0" prefWidth="200.0">
          <children>
-           <ImageView fx:id='imgContainer' fitHeight="143.0" fitWidth="207.0" preserveRatio="true" HBox.hgrow="ALWAYS">
+            <Circle fx:id="circa" fill="#2197ff00" radius="43.0" stroke="#ff8780" strokeType="INSIDE" />
+            <ImageView fx:id="imgContainer" fitHeight="38.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@group.png" />
+                  <Image url="@image.png" />
                </image>
             </ImageView>
-            
          </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
+      </StackPane>
       <HBox alignment="CENTER" prefHeight="56.0" prefWidth="404.0">
          <children>
             <Label prefHeight="31.0" prefWidth="197.0" text="Group name" textAlignment="RIGHT" HBox.hgrow="NEVER">
