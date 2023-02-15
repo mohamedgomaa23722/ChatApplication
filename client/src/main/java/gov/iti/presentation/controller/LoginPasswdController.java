@@ -4,10 +4,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.Configuration;
 import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.LoginService;
 import gov.iti.model.User;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -18,6 +22,10 @@ public class LoginPasswdController implements Initializable {
     UserValidator userValidator;
 
     String passwd;
+
+    static boolean saved = true;
+
+    public static StringProperty passwdValue = new SimpleStringProperty();   
 
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
@@ -51,6 +59,11 @@ public class LoginPasswdController implements Initializable {
                 System.out.println(CurrentUser.getInstance().getCountry().get());
                 System.out.println(CurrentUser.getInstance().getBio().get());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+                if(!saved) {
+                    // save phone and passwd
+                    saveUserInfo(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
+                    LoginPasswdController.passwdValue.set(CurrentUser.getCurrentUser().getPassword());
+                }
             } else {
                 // go to sign in page
                 // show message some thing is wrong phone or password
@@ -76,6 +89,21 @@ public class LoginPasswdController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
+        String passwd = UserInfo.getUserInfo().getSavedUserPasswd();
+        if(passwd != null ) {
+            passwdTextField.setText(passwd);
+            passwdValue.set(passwd);
+            saved=true;
+        } else {
+            saved=false;
+        }
+
+        passwdValue.addListener((o,oldVal,newVal)->{
+            System.out.println("passwd changing in sign out");
+            if(newVal.toString()=="") {
+                passwdTextField.setText(passwdValue.getValue());
+            }
+          });
     }
 
     @FXML
@@ -87,6 +115,10 @@ public class LoginPasswdController implements Initializable {
         vBox.setVisible(true);
         vBox.setText(message);
         vBox.setStyle(loggedError);
+    }
+
+    void saveUserInfo(String phone, String passwd) {
+        Configuration.createConfFile(phone,passwd);
     }
 
 }

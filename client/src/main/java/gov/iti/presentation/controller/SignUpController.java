@@ -3,6 +3,7 @@ package gov.iti.presentation.controller;
 import gov.iti.business.services.RegisterService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.Configuration;
 import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
@@ -241,6 +242,7 @@ public class SignUpController implements Initializable {
                 //go to chat 
                 CurrentUser.getCurrentUser().setUser(registeredUser);
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+                Configuration.createConfFile(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
                 System.out.println("correct chat page");
             } else {
                 // stay

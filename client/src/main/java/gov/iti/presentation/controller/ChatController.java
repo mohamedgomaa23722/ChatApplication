@@ -23,6 +23,7 @@ import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.dtos.Group;
 import gov.iti.presentation.dtos.Message;
 import gov.iti.presentation.utils.SceneManager;
+import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.WindowManger;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -160,6 +161,8 @@ public class ChatController implements Initializable {
     private void signOut() {
         try {
             ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            UserInfo.getUserInfo().forgetUserPasswd();
+            LoginPasswdController.passwdValue.set("");
         } catch (RemoteException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
