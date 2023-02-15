@@ -49,4 +49,8 @@ public class ChatManager {
     public VBox getMessages(String key) {
         return messages.get(key);
     }
+
+    public void deleteGroup(String groupId){
+        messages.remove(groupId);
+    }
 }

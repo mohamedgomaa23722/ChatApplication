@@ -8,6 +8,7 @@ import java.util.List;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.Group;
+import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
@@ -93,5 +94,15 @@ public class GroupService {
             e.printStackTrace();
         }
    
+    }
+
+    public boolean leaveGroup(int groupId, String phoneNumber) {
+        try {
+            return chatReg.leaveGroup(groupId, phoneNumber);
+        } catch (RemoteException | SQLException e) {
+            
+            e.printStackTrace();
+            return false;
+        }
     }
 }

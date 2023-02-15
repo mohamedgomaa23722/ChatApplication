@@ -370,4 +370,18 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
                 }
         });
     }
+
+    @Override
+    public boolean leaveGroup(int groupId, String phoneNumber) throws RemoteException, SQLException {
+        System.out.println("leave group");
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement("delete from contactgroup  where group_id = ? and contact_id = ?")) {
+            preparedStatement.setInt(1, groupId);
+            preparedStatement.setString(2, phoneNumber);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

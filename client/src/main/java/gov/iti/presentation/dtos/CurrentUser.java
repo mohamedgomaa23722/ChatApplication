@@ -201,4 +201,8 @@ public class CurrentUser {
         groups.clear();
         contacts.clear();
     }
+
+    public boolean removeGroup(Group group) {
+        return groups.remove(group);
+    }
 }
