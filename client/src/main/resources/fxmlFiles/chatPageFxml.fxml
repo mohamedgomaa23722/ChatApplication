@@ -135,7 +135,7 @@
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ImageView fx:id="sendMessage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="sendMessage" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#handleSendMessage" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@send.png" />
                                        </image>
@@ -156,7 +156,7 @@
                      <children>
                         <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@empty_chat.png" />
+                                <Image url="@empty_chat.png" />
                            </image>
                         </ImageView>
                         <Label text="Click at Any contact or group to start chat" textFill="#a4a4a4" wrapText="true">
@@ -196,6 +196,14 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </ImageView>
+                        <ImageView fx:id="chatbot" fitHeight="30.0" fitWidth="30.0" layoutX="70.0" onMouseClicked="#changeChatbotStatus" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="botoff.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </ImageView>
                         <ImageView fx:id="signout" fitHeight="25.0" fitWidth="25.0" layoutX="23.0" layoutY="70.0" nodeOrientation="INHERIT" onMouseClicked="#signOut" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="signout.png" />
@@ -218,14 +226,38 @@
             </StackPane>
             <VBox alignment="TOP_CENTER" style="-fx-background-color: #F7F7FA;" GridPane.columnIndex="1">
                <children>
-                  <TextField fx:id="search_edx" promptText="Search for Contact">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Circle fx:id="userImage" fill="#1f93ff00" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Circle>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="UserName" text="Mohamed Gomaa">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Dubai Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="UserPhone" text="01068053092" textFill="#bfbfbf">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
                      <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="10.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
-                  </TextField>
+                  </HBox>
                   <StackPane>
                      <children>
                         <Text fx:id="contact_title" fill="#4d4d4d" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" StackPane.alignment="CENTER_LEFT">

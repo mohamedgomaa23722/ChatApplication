@@ -9,13 +9,15 @@ public class Message implements Serializable {
     private String message;
     private File attachment;
     private MessageStyle messageStyle;
+    private String time;
 
-    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, File attachmen, MessageStyle messageStyle) {
+    public Message( String senderPhoneNumber, String ReceiverPhoneNumber, String message, File attachmen, MessageStyle messageStyle, String time) {
         this.senderPhoneNumber = senderPhoneNumber;
         this.ReceiverPhoneNumber = ReceiverPhoneNumber;
         this.message = message;
         this.attachment = attachment;
         this.messageStyle = messageStyle;
+        this.time = time;
     }
 
     public String getMessage() {
@@ -52,6 +54,18 @@ public class Message implements Serializable {
 
     public MessageStyle getMessageStyle() {
         return messageStyle;
+    }
+
+    public void setMessageStyle(MessageStyle messageStyle) {
+        this.messageStyle = messageStyle;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     

@@ -93,6 +93,7 @@ public class MessageItemController implements Initializable {
 
     private void SetupMessageProperties() {
         MessageStyle messageStyle = message.getMessageStyle();
+        messageTimeLabel.setText(message.getTime());
         messageContainer.setBackground(new Background(new BackgroundFill(Color.web(messageStyle.getTextBackColor()), new CornerRadii(8), Insets.EMPTY)));
         messageLabel.setTextFill(Color.web(messageStyle.getTextColor()));
         messageLabel.setUnderline(messageStyle.isUnderLine());

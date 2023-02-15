@@ -56,6 +56,7 @@ public class ProfileSettingsController implements Initializable {
         comboBoxCountry.setItems(FXCollections.observableArrayList(Utilities.country_list));
 
         CurrentUser currentUser = CurrentUser.getCurrentUser();
+        circle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentUser.getImage()))));
         newBio.textProperty().bindBidirectional(currentUser.getBio());
         newName.textProperty().bindBidirectional(currentUser.getName());
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());

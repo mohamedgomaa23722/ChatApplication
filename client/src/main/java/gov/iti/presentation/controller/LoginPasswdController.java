@@ -12,8 +12,8 @@ import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.business.services.LoginService;
 import gov.iti.business.services.SettingsService;
-import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -52,24 +52,22 @@ public class LoginPasswdController implements Initializable {
                 wrongPassLbl.setText("");
                 // go to chat
                 System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
-                System.out.println(user.getCountry());
                 CurrentUser.getCurrentUser().setUser(user);
-                System.out.println(CurrentUser.getInstance().getCountry().get());
-                System.out.println(CurrentUser.getInstance().getBio().get());
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+                Platform.runLater(() -> {
+                    CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
+                    CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
+                    ChatManager.getInstance().addContacts();
+                    ChatManager.getInstance().addGroups();
+                });
+                new Thread(() ->{
+                    try {
 
-                CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
-                CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
-
-                //change status
-                ChatManager.getInstance().addContacts();
-                ChatManager.getInstance().addGroups();
-                try {
-                    SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
-                } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                        SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
 
             } else {
                 // go to sign in page

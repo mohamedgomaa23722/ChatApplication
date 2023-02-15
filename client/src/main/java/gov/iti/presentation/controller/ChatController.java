@@ -13,9 +13,14 @@ import java.lang.reflect.Array;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import gov.iti.business.services.chatbot.*;
 
 import gov.iti.business.services.ChatService;
 import gov.iti.model.User;
@@ -23,6 +28,7 @@ import gov.iti.presentation.controller.subItemController.ContactItemController;
 import gov.iti.presentation.controller.subItemController.MessageItemController;
 import gov.iti.presentation.dtos.Chat;
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.model.Invitation;
 import gov.iti.model.Message;
 import gov.iti.model.MessageStyle;
 import gov.iti.presentation.utils.ChatManager;
@@ -42,6 +48,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -75,8 +82,10 @@ public class ChatController<E> implements Initializable {
     private ImageView notification;
     @FXML
     private ImageView settings;
+
     @FXML
-    private TextField search_edx;
+    private ImageView chatbot;
+
     @FXML
     private Text contact_title;
     @FXML
@@ -108,6 +117,15 @@ public class ChatController<E> implements Initializable {
     @FXML
     private ImageView empty_contact;
     @FXML
+    private Circle userImage;
+    @FXML
+    private Label UserName;
+    @FXML
+    private Label UserPhone;
+
+    private boolean botOn = false;
+
+    @FXML
     private ImageView empty_Group;
     @FXML
     ToggleButton bold;
@@ -136,23 +154,39 @@ public class ChatController<E> implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        SetupMessageProperties();
+        Platform.runLater(() -> {
+            setUpInfoBar();
+            SetupMessageProperties();
+        });
 
         setChatVisiablity(false);
 
+        ChatterBotFactory factory = new ChatterBotFactory();
+        ChatterBot bot2 = null;
+        try {
+            bot2 = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        ChatterBotSession bot2session = bot2.createSession();
+
+        Tooltip.install(chatbot, new Tooltip("Turn me on and take a rest!"));
+
         message_edx.setOnKeyPressed((e) -> {
             if (e.getCode() == KeyCode.ENTER) {
-                Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
-                        receiverUSer.getPhoneNumber(), message_edx.getText(), null, messageStyle);
-                addMessage(sMessage, false);
-                ChatService.getInstance().sendMessage(sMessage, chatMode);
+                handleSendMessage();
             }
         });
 
-        Platform.runLater(() -> {
             contact_list.setItems(CurrentUser.getCurrentUser().getContacts());
             contact_list.setCellFactory(p -> new ContactCell());
+    
+
+        CurrentUser.getCurrentUser().getInvitations().addListener((ListChangeListener<Invitation>) u -> {
+            if (u.getList().size() > 0)
+                notification.setImage(
+                        new Image(getClass().getClassLoader().getResource("redNotification.png").toExternalForm()));
         });
 
         CurrentUser.getCurrentUser().getContacts().addListener(new ListChangeListener<User>() {
@@ -183,8 +217,21 @@ public class ChatController<E> implements Initializable {
 
         ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
             if (newMessage != null) {
+
                 addMessage(newMessage, true);
- 
+
+                if (botOn) {
+                    try {
+                        String msg = bot2session.think(newMessage.getMessage());
+                        Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
+                                newMessage.getSenderPhoneNumber(), msg, null, messageStyle, getCurrentTime());
+                        addMessage(sMessage, false);
+                        ChatService.getInstance().sendMessage(sMessage, 1);
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -224,20 +271,24 @@ public class ChatController<E> implements Initializable {
     @FXML
     private void signOut() {
         setChatVisiablity(false);
-        try {
-            ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
-        } catch (RemoteException | SQLException e) {
-            e.printStackTrace();
-        }
-        // TODO : REMOVE SAVED FILE
         LoginPhoneController.setFail(false);
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
-        CurrentUser.getCurrentUser().clearAll();
-        ChatManager.getInstance().clearMap();
+        new Thread(() -> {
+            try {
+                ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            } catch (RemoteException | SQLException e) {
+                e.printStackTrace();
+            }
+            ChatManager.getInstance().clearMap();
+        }).start();
+        Platform.runLater(() -> {
+            CurrentUser.getCurrentUser().clearAll();
+        });
     }
 
     @FXML
     private void openNotification() throws RemoteException, SQLException {
+        notification.setImage(new Image(getClass().getClassLoader().getResource("notification.png").toExternalForm()));
         WindowManger.getInstance().openNotificationWindow();
     }
 
@@ -254,6 +305,33 @@ public class ChatController<E> implements Initializable {
     @FXML
     private void handelUnderLineStyle() {
         messageStyle.setUnderLine(underLine.isSelected());
+    }
+
+    @FXML
+    private void handleSendMessage() {
+        Message sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
+                receiverUSer.getPhoneNumber(), message_edx.getText(), null, messageStyle, getCurrentTime());
+        addMessage(sMessage, false);
+        ChatService.getInstance().sendMessage(sMessage, chatMode);
+    }
+
+    private void setUpInfoBar() {
+        userImage.setFill(
+                new ImagePattern(new Image(new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage()))));
+        UserName.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getName());
+        UserPhone.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getPhoneNumber());
+    }
+
+    public void changeChatbotStatus() {
+        botOn = !botOn;
+        message_edx_container.setDisable(botOn);
+
+        if (botOn) {
+            chatbot.setImage(new Image("boton.png"));
+        } else {
+            chatbot.setImage(new Image("botoff.png"));
+        }
+
     }
 
     private void changeStatusbar(int status) {
@@ -291,7 +369,7 @@ public class ChatController<E> implements Initializable {
 
         List<Integer> fontsizeArray = new ArrayList<>();
         for (int i = 10; i < 40; i++) {
-            fontsizeArray.add(i+2);
+            fontsizeArray.add(i + 2);
         }
         fontsize.setItems(FXCollections.observableArrayList(fontsizeArray));
         fontsize.getSelectionModel().select(5);
@@ -308,7 +386,7 @@ public class ChatController<E> implements Initializable {
 
         // Detext change on text Size for messages
         fontsize.getSelectionModel().selectedItemProperty().addListener((o, oldFont, newFont) -> {
-            messageStyle.setTextSize((int)newFont);
+            messageStyle.setTextSize((int) newFont);
         });
 
         // Detext change on text background color for messages
@@ -336,13 +414,19 @@ public class ChatController<E> implements Initializable {
     }
 
     public String toHexString(Color value) {
-        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue()) + format(value.getOpacity()))
+        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue())
+                + format(value.getOpacity()))
                 .toUpperCase();
     }
 
     private String format(double val) {
         String in = Integer.toHexString((int) Math.round(val * 255));
         return in.length() == 1 ? "0" + in : in;
+    }
+
+    private String getCurrentTime() {
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+        return dateFormat.format(new Date()).toString();
     }
 }
 
