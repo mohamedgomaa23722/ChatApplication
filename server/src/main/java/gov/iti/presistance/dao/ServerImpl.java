@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
 import javax.sql.rowset.serial.SerialBlob;
 
 import gov.iti.presistance.UsersInfo;
@@ -27,7 +28,7 @@ import gov.iti.presentation.dto.Contact;
 
 public class ServerImpl extends InvitationImp implements ServerDao, Serializable {
 
-    protected static Map<String, ClientDao> clients = new HashMap<>();
+    public static Map<String, ClientDao> clients = new HashMap<>();
 
     private Connection connection;
 
@@ -43,11 +44,17 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             preparedStatement.setString(1, phoneNumber);
             preparedStatement.setString(2, Utilities.Hash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
-            clients.put(phoneNumber, client);
 
-            UsersInfo.updateList();
+            User user = UserFactory.createUser(resultSet);
 
-            return UserFactory.createUser(resultSet);
+            if (!(user == null)){
+                clients.put(phoneNumber, client);
+                UsersInfo.updateList();
+            }
+
+           
+
+            return user;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,16 +79,23 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             preparedStatement.setString(9, user.getCountry());
             preparedStatement.setString(10, user.getBio());
             preparedStatement.setString(11, user.getGender());
-            clients.put(user.getPhoneNumber(), client);
+
             boolean result = preparedStatement.executeUpdate() > 0;
-            if (result)
+            if (result) {
                 changeStatus(user.getPhoneNumber(), 1);
+                clients.put(user.getPhoneNumber(), client);
+            }
             UsersInfo.updateList();
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void signOut(String phoneNumber) throws RemoteException, SQLException {
+        clients.remove(phoneNumber);
     }
 
     @Override
@@ -148,11 +162,6 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             e.printStackTrace();
             return false;
         }
-    }
-
-    @Override
-    public void signOut(String phoneNumber) throws RemoteException, SQLException {
-        clients.remove(phoneNumber);
     }
 
     @Override

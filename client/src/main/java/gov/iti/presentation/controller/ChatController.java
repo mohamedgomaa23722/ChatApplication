@@ -41,7 +41,6 @@ import gov.iti.model.Message;
 import gov.iti.model.MessageStyle;
 import gov.iti.model.User;
 import gov.iti.presentation.utils.ChatManager;
-import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.Status;
 import gov.iti.presentation.utils.UserInfo;

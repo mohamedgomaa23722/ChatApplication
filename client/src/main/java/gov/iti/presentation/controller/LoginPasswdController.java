@@ -53,7 +53,7 @@ public class LoginPasswdController implements Initializable {
 
         isPasswdValid = userValidator.validateUserPassWd(passwd);
 
-        if (isPasswdValid) {
+        // if (isPasswdValid) {
             // go to password sign in
             CurrentUser.getCurrentUser().setPassword(passwd);
             User user;
@@ -70,7 +70,7 @@ public class LoginPasswdController implements Initializable {
                     ChatManager.getInstance().addContacts();
                     ChatManager.getInstance().addGroups();
                 });
-                new Thread(() ->{
+                new Thread(() -> {
                     try {
                         SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
                     } catch (RemoteException e) {
@@ -83,7 +83,7 @@ public class LoginPasswdController implements Initializable {
                     saveUserInfo(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
                     LoginPasswdController.passwdValue.set(CurrentUser.getCurrentUser().getPassword());
                 }
-            } else {
+            }  else {
                 // go to sign in page
                 // show message some thing is wrong phone or password
                 System.out.println("login failed" + passwd);
@@ -94,14 +94,15 @@ public class LoginPasswdController implements Initializable {
             // // tranfer this object to server
             // // not null load chat screen
             // // null go to login phone screen
-        } else {
-            // password not valid
-            passwdTextField.setStyle(error);
-            System.out.println("password not valid");
-            showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
-        }
+        } 
+        // else {
+        //     // password not valid
+        //     passwdTextField.setStyle(error);
+        //     System.out.println("password not valid");
+        //     showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
+        // }
 
-    }
+    // }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
