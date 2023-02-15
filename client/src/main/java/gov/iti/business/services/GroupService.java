@@ -1,6 +1,6 @@
-
 package gov.iti.business.services;
 
+import java.nio.channels.SelectableChannel;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,10 +32,11 @@ public class GroupService {
         return -1;
     }
    }
-    public int creatGroupService(Group group) {
+    public Group creatGroupService(Group group) {
         try {
             chatReg.creatGroup(group);
-            return chatReg.getGroupLastId();
+            group.setGroupId(chatReg.getGroupLastId());
+            return group;
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -43,7 +44,7 @@ public class GroupService {
             
             e.printStackTrace();
         }
-        return -1;
+        return null;
     }
     public boolean addGroupMemberService(int groupId,String MemberPhoneNumber) {
         try {
@@ -69,5 +70,28 @@ public class GroupService {
         }
         return new ArrayList<Group>();
     }
+    public List<String> selectGroupMembers(int groupId){
+        try {
+            return chatReg.selectGroupMembers(groupId);
+        } catch (RemoteException e) {
+            
+            e.printStackTrace();
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+        }
+        return new ArrayList<String>();
+
+    }
     
+    public void addGroup(Group group){
+        try {
+            ClientServerConnection.getConnectionInstance().getServerDao()
+            .notifyCreatingGroup(group);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+   
+    }
 }

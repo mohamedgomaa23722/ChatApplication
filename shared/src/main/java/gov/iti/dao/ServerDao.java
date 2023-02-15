@@ -2,6 +2,7 @@ package gov.iti.dao;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import gov.iti.model.Group;
@@ -34,7 +35,18 @@ public interface ServerDao extends SettingInt, InvitationInt{
 
     public List<Group> selectGroups(String userPhoneNumber) throws RemoteException, SQLException;
 
-    void tellOthers(Message message,int GroupId) throws RemoteException , SQLException;
+    public void tellOthers(Message message,int GroupId) throws RemoteException , SQLException;
 
+    public List<String> selectGroupMembers(int groupId)throws RemoteException, SQLException;
+
+    public void SendContactMessage(Message message) throws RemoteException, SQLException;
+    
+    public void SendGroupMessage(Message message) throws RemoteException, SQLException;
+
+    public void notifyChanges(User user) throws RemoteException;
+     
+    public void notifyCreatingGroup(Group group) throws RemoteException;
+
+    public User selectUser(String phoneNumber) throws RemoteException, SQLException;
 
 }

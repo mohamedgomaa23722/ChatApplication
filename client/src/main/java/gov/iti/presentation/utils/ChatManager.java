@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.iti.model.Message;
 import gov.iti.presentation.dtos.CurrentUser;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
@@ -28,10 +29,15 @@ public class ChatManager {
     }
 
     public void addGroups(){
-        
+        CurrentUser.getCurrentUser().getGroups().forEach((user) -> {
+            messages.put(Integer.toString(user.getGroupId()), new VBox());
+        });
     }
 
     public void addContanct(String key){
+        messages.put(key, new VBox());
+    }
+    public void addGroup(String key){
         messages.put(key, new VBox());
     }
 

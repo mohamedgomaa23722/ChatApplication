@@ -1,18 +1,20 @@
 package gov.iti.presentation.controller;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.GroupService;
 import gov.iti.business.services.InvitationService;
 import gov.iti.business.services.LoginService;
+import gov.iti.business.services.SettingsService;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
-import gov.iti.model.Group;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -60,6 +62,16 @@ public class LoginPasswdController implements Initializable {
                 CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
                 CurrentUser.getCurrentUser().setgroups(GroupService.getGroupService().getContactGroups());
 
+
+                //change status
+                ChatManager.getInstance().addContacts();
+                ChatManager.getInstance().addGroups();
+                try {
+                    SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             } else {
                 // go to sign in page

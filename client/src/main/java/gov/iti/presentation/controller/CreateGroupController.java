@@ -16,8 +16,9 @@ import gov.iti.business.services.GroupService;
 import gov.iti.model.Group;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.UserValidator;
-
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,6 +37,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+
 
 public class CreateGroupController implements Initializable {
 
@@ -106,14 +108,16 @@ public class CreateGroupController implements Initializable {
         Group group=new Group(groupName,imagebytes);
         if (UserValidator.getUserValidator().validateGroupName(groupName)) {
             if (selectedItems != null && selectedItems.size() > 0) {
-                int GroupNum = GroupService.getGroupService().creatGroupService(group);
-                 if(GroupNum!=-1){
+                group = GroupService.getGroupService().creatGroupService(group);
+                 if(group!=null){
                 for (var selected : selectedItems) {
-                    GroupService.getGroupService().addGroupMemberService(GroupNum, selected.getPhoneNumber());
+                    GroupService.getGroupService().addGroupMemberService(group.getGroupId(), selected.getPhoneNumber());
                 }
-                GroupService.getGroupService().addGroupMemberService(GroupNum, CurrentUser.getCurrentUser().getPhoneNumber().get());
+                GroupService.getGroupService().addGroupMemberService(group.getGroupId(), CurrentUser.getCurrentUser().getPhoneNumber().get());
                 error.setText("Group successfully created");
-                error.setVisible(true);
+                ChatManager.getInstance().addGroup(Integer.toString(group.getGroupId()));
+                GroupService.getGroupService().addGroup(group);
+                error.setVisible(true); 
             }
             } else {
                 error.setText("Group name have at least 2 members");

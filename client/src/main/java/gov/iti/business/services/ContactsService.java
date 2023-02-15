@@ -8,6 +8,7 @@ import java.util.List;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
+import gov.iti.model.UserContact;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
@@ -38,5 +39,18 @@ public class ContactsService {
         return new ArrayList<User>();
     }
     
+    public User getUser(String phoneNumber) {
+        try {
+            User contact = chatReg.selectUser(phoneNumber);
+            return contact;
+        } catch (RemoteException e) {
+            
+            e.printStackTrace();
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+        }
+        return  null;
+    }  
     
 }

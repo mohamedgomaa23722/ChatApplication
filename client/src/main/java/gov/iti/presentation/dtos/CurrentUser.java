@@ -5,6 +5,8 @@ import java.util.List;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.model.Group;
+import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -176,6 +178,9 @@ public class CurrentUser {
 
     public void addContact(User contact) {
         this.contacts.add(contact);
+    }
+    public void addGroup(Group group) {
+        Platform.runLater(()->this.groups.add(group));
     }
 
     public ObservableList<Invitation> getInvitations() {

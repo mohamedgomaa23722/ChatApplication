@@ -7,8 +7,10 @@ import gov.iti.presentation.utils.Constant;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserValidator;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javafx.collections.FXCollections;
@@ -82,6 +84,8 @@ public class SignUpController implements Initializable {
     private Label nameErrorLabel;
     @FXML
     private Label emailErrorLabel;
+
+    byte[] imagebytes;
     
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
@@ -108,7 +112,14 @@ public class SignUpController implements Initializable {
         fileChooser.setTitle("open");
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            try {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                imagebytes = new byte[(int)file.length()];
+                fileInputStream.read(imagebytes);
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+
+            try {                
                 URL url = file.toURI().toURL();
                 circa.setFill(new ImagePattern(new Image(url.toString())));
                 imgContainer.setVisible(false);
@@ -225,6 +236,7 @@ public class SignUpController implements Initializable {
             int w=(int)image.getWidth();
             int h=(int)image.getHeight();
             byte[] buf = new byte[w*h*4];
+            System.out.println("image size = " + buf.length);
             String gender;
             image.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buf, 0, w * 4); 
             if(female.isSelected()){
@@ -235,7 +247,7 @@ public class SignUpController implements Initializable {
             }
             System.out.println(combo.getValue().toString());
             registeredUser = new User(phoneNumber.getText().trim(), nameField.getText().trim(),calculateAge()
-            , 0, 0, buf,emailField.getText().trim()
+            , 0, 0, imagebytes,emailField.getText().trim()
             , combo.getValue().toString(), textArea.getText().trim(),gender);
             if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
                 //go to chat 

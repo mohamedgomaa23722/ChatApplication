@@ -76,6 +76,7 @@ public class StatusSettingController implements Initializable{
             status = 3;
         }
         String phoneNumber = CurrentUser.getCurrentUser().getUser().getPhoneNumber();
+        
         SettingsService.getInstance().changeStatus(phoneNumber, status);
     }
 }

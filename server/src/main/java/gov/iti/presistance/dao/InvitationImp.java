@@ -49,8 +49,9 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
                     e.printStackTrace();
                 }
 
-                return true;
-            }
+            }             
+               return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

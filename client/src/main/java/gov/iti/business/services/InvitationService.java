@@ -7,6 +7,8 @@ import java.util.List;
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
+import gov.iti.presentation.utils.ChatManager;
+import gov.iti.presentation.utils.ModelFactory;
 import gov.iti.presistance.connection.ClientServerConnection;
 import javafx.application.Platform;
 
@@ -37,6 +39,7 @@ public class InvitationService {
 
     public User acceptInvitation(Invitation invitation) {
         try {
+            ChatManager.getInstance().addContanct(invitation.getSenderPhoneNumber());
             return ClientServerConnection.getConnectionInstance().getServerDao().acceptInvitation(invitation);
         } catch (RemoteException e) {
             e.printStackTrace();

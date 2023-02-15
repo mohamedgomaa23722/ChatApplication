@@ -19,7 +19,6 @@
 
  #message_edx {
     -fx-min-width:30;
-    -fx-min-height:30;
     -fx-background-radius: 10; 
     -fx-background-color: transparent;
 }
