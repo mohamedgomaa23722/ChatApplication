@@ -71,6 +71,7 @@ public class GroupService {
         }
         return new ArrayList<Group>();
     }
+
     public List<String> selectGroupMembers(int groupId){
         try {
             return chatReg.selectGroupMembers(groupId);
@@ -90,7 +91,6 @@ public class GroupService {
             ClientServerConnection.getConnectionInstance().getServerDao()
             .notifyCreatingGroup(group);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
    

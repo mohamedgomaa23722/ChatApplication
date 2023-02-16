@@ -134,7 +134,7 @@ public class CurrentUser {
 
     public void setImage(byte[] image) {
         this.image = image;
-        isChangeImageProp.set(true);
+        isChangeImageProp.set(false);
     }
 
     public StringProperty getEmail() {

@@ -30,6 +30,10 @@ public class ContactItemController implements Initializable {
     private User user;
     
     private Group group;
+
+    @FXML
+    private Circle newMessageIcon;
+
     public ContactItemController(User user) {
         this.user = user;
     }
@@ -39,7 +43,6 @@ public class ContactItemController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         if (user != null) {
             Item_Image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getImage()))));
             if (user.getStatus() == 0) {
@@ -52,11 +55,15 @@ public class ContactItemController implements Initializable {
                 changeStatusColors(Status.away);
 
             Item_Name.setText(user.getName());
+            newMessageIcon.setVisible(user.isHasNewMessage());
+
         }
         if (group != null) {
             Item_Image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(group.getImage()))));
             Item_Name.setText(group.getGroupName());
+            newMessageIcon.setVisible(group.isHasNewMessage());
         }
+
     }
 
     private void changeStatusColors(Status status) {

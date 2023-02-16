@@ -41,7 +41,6 @@ public class MainSettingsController implements Initializable {
         Parent p = FXMLLoader.load(getClass().getClassLoader().getResource("changeStatusPage.fxml"));
         settingContainer.getChildren().removeAll(settingContainer.getChildren());
         settingContainer.getChildren().add(p);
-        System.out.println("show Status Setting");
     }
 
     @FXML

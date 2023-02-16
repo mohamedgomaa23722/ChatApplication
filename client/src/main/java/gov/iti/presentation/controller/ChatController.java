@@ -188,12 +188,16 @@ public class ChatController<E> implements Initializable {
                     }
 
                     Message fileMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
-                            receiver, null, new Attachment(file.getName(), home + "/Downloads/" + file.getName(),(double) file.length() / 1024 + "  kb"), messageStyle, getCurrentTime());
-
+                            receiver, null, new Attachment(file.getName(), home + "/Downloads/" + file.getName(),
+                                    (double) file.length() / 1024 + "  kb"),
+                            messageStyle, getCurrentTime());
+                    if (chatMode != 0) {
+                        fileMessage.setGroup_id(currentGroupChat.getGroupId());
+                    }
                     ChatService.getInstance().sendMessage(fileMessage, chatMode);
 
                     addMessage(fileMessage, false);
-                    if(fileMessage.getAttachment() == null){
+                    if (fileMessage.getAttachment() == null) {
                         System.out.println("Attachment is nullllllllllllllllll");
                     }
                     CurrentSelectedChat.getCurrentselectedchat().setIsSendingFilesProp(false);
@@ -244,12 +248,16 @@ public class ChatController<E> implements Initializable {
                 setChatVisiablity(true);
                 chatMode = 0;
                 currentGroupChat = group_list.getSelectionModel().getSelectedItem();
-                if(currentGroupChat != null) {
+                if (currentGroupChat != null) {
                     contact_name.setText(currentGroupChat.getGroupName());
-                    contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
-                    chatBox.getChildren().add(ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
+                    contact_image.setFill(
+                            new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
+                    chatBox.getChildren().add(
+                            ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
+                    group_list.getSelectionModel().getSelectedItem().setHasNewMessage(false);
+
                 }
-                
+
             }
         });
 
@@ -287,19 +295,44 @@ public class ChatController<E> implements Initializable {
                 setChatVisiablity(true);
                 chatMode = 1;
                 receiverUSer = contact_list.getSelectionModel().getSelectedItem();
-                if(receiverUSer!=null) {
+                if (receiverUSer != null) {
                     contact_name.setText(receiverUSer.getName());
                     changeStatusbar(receiverUSer.getStatus());
-                    contact_image.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
+                    contact_image
+                            .setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
                     chatBox.getChildren().add(ChatManager.getInstance().getMessages(receiverUSer.getPhoneNumber()));
+                    contact_list.getSelectionModel().getSelectedItem().setHasNewMessage(false);
                 }
             }
         });
 
         ChatService.getInstance().getMessage().addListener((o, oldMessage, newMessage) -> {
             if (newMessage != null) {
+                System.out.println("Phone number = " + newMessage.getSenderPhoneNumber());
                 addMessage(newMessage, true);
-
+                if (newMessage.getReceiverPhoneNumber().charAt(0) == '0') {
+                    // Contact
+                    int index = 0;
+                    for (User contact : CurrentUser.getInstance().getContacts()) {
+                        if (contact.getPhoneNumber().equals(newMessage.getSenderPhoneNumber())) {
+                            contact.setHasNewMessage(true);
+                            CurrentUser.getInstance().getContacts().set(index, contact);
+                            break;
+                        }
+                        index++;
+                    }
+                } else {
+                    // Group
+                    int index = 0;
+                    for (Group group : CurrentUser.getInstance().getGroups()) {
+                        if (group.getGroupId() == Integer.parseInt(newMessage.getReceiverPhoneNumber())) {
+                            group.setHasNewMessage(true);
+                            CurrentUser.getInstance().getGroups().set(index, group);
+                            break;
+                        }
+                        index++;
+                    }
+                }
                 if (botOn) {
                     try {
                         String msg = bot2session.think(newMessage.getMessage());
@@ -416,13 +449,13 @@ public class ChatController<E> implements Initializable {
             sMessage = new Message(CurrentUser.getCurrentUser().getPhoneNumber().get(),
                     Integer.toString(currentGroupChat.getGroupId()), message_edx.getText(), null, messageStyle,
                     getCurrentTime());
+            sMessage.setGroup_id(currentGroupChat.getGroupId());
         }
         addMessage(sMessage, false);
         ChatService.getInstance().sendMessage(sMessage, chatMode);
     }
 
     private void setUpInfoBar() {
-
         UserName.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getName());
         UserPhone.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getPhoneNumber());
     }
@@ -549,14 +582,14 @@ public class ChatController<E> implements Initializable {
     @FXML
     private void leaveGroup() {
         if (GroupService.getGroupService().leaveGroup(currentGroupChat.getGroupId(),
-            CurrentUser.getCurrentUser().getPhoneNumber().get())) {
-                // delete this group from user group list
-                if(CurrentUser.getCurrentUser().removeGroup(currentGroupChat)) {
-                    ChatManager.getInstance().deleteGroup(Integer.toString(currentGroupChat.getGroupId()));
-                    chatBox.getChildren().removeAll(chatBox.getChildren());
-                    empty_chat.setVisible(true);
-                    System.out.println("removed group sucessfully");
-                }
+                CurrentUser.getCurrentUser().getPhoneNumber().get())) {
+            // delete this group from user group list
+            if (CurrentUser.getCurrentUser().removeGroup(currentGroupChat)) {
+                ChatManager.getInstance().deleteGroup(Integer.toString(currentGroupChat.getGroupId()));
+                chatBox.getChildren().removeAll(chatBox.getChildren());
+                empty_chat.setVisible(true);
+                System.out.println("removed group sucessfully");
+            }
         }
     }
 }

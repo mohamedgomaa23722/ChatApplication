@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class Message implements Serializable {
+    private int group_id;
     private String senderPhoneNumber;
     private String ReceiverPhoneNumber;
     private String message;
@@ -66,6 +67,14 @@ public class Message implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public int getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(int group_id) {
+        this.group_id = group_id;
     }
 
     

@@ -1,6 +1,8 @@
 package gov.iti.presentation.controller;
 
 import gov.iti.Utilities;
+import gov.iti.business.services.AddingContactService;
+import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.RegisterService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
@@ -24,6 +26,8 @@ import javafx.scene.image.PixelFormat;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
@@ -100,8 +104,6 @@ public class SignUpController implements Initializable {
         combo.setItems(FXCollections.observableArrayList(Utilities.country_list));
         styleFrame();
         actionHandlingIntialization();
-
-        
     }
 
     @FXML
@@ -255,6 +257,9 @@ public class SignUpController implements Initializable {
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
                 Configuration.createConfFile(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
                 System.out.println("correct chat page");
+                List<String> s = new ArrayList<>();
+                s.add("012345");
+                AddingContactService.getAddingNewContactService().addNewContact(registeredUser.getPhoneNumber(), s);
             } else {
                 // stay
             }

@@ -21,8 +21,6 @@ public class AddingContactService {
     }
 
     public List<Integer> addNewContact(String sender, List <String> contactList) {
-        System.out.println("service sending invitation");
-        System.out.println(contactList);
         // call  server
         try {
             return chatReg.addNewContact(sender,contactList);

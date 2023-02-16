@@ -6,6 +6,7 @@ public class Group implements Serializable{
     private int groupId;
     private String groupName ;
     private byte []image;
+    private boolean hasNewMessage = false;
     public Group(int groupId, String groupName, byte []image) {
         this.groupId = groupId;
         this.groupName = groupName;
@@ -34,6 +35,12 @@ public class Group implements Serializable{
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+    public boolean isHasNewMessage() {
+        return hasNewMessage;
+    }
+    public void setHasNewMessage(boolean hasNewMessage) {
+        this.hasNewMessage = hasNewMessage;
     }
 
     

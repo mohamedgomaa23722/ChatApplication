@@ -15,9 +15,18 @@ public class User implements Serializable{
     private String country;
     private int status;
     private int mode;
+    private boolean hasNewMessage = false;
 
     public User(){}
     
+    public boolean isHasNewMessage() {
+        return hasNewMessage;
+    }
+
+    public void setHasNewMessage(boolean hasNewMessage) {
+        this.hasNewMessage = hasNewMessage;
+    }
+
     public User(String phoneNumber, String name, int age, int status, int mode, byte[] image, String email, String country ,
      String bio, String gender) {
         PhoneNumber = phoneNumber;
