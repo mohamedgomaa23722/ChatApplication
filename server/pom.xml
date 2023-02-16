@@ -17,6 +17,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <db.properties>src/main/resources/db.properties</db.properties>
     </properties>
 
     <dependencies>
@@ -57,5 +58,6 @@
                 </executions>
             </plugin>
         </plugins>
+
     </build>
 </project>

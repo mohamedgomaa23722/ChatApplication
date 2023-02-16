@@ -83,6 +83,9 @@
             <resource>
                 <directory>src/main/resources/style</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
         </resources>
     </build>
 </project>

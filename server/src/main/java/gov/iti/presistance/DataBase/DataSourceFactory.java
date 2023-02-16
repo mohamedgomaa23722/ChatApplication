@@ -9,15 +9,17 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 public class DataSourceFactory {
+    /**
+     * @return
+     */
     public static DataSource getDataSource() {
         Properties properties = new Properties();
         FileInputStream fileInputStream = null;
         MysqlDataSource mysqlDataSource = null;
 
         try {
-            
-            fileInputStream = new FileInputStream("db.properties");
-            properties.load(fileInputStream);
+             properties = new Properties();
+             properties.load(DataSourceFactory.class.getResourceAsStream("/db.properties"));
             mysqlDataSource = new MysqlDataSource();
 
             mysqlDataSource.setURL(properties.getProperty("MYSQL_DB_URL"));
