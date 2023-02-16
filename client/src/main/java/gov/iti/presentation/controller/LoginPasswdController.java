@@ -10,6 +10,7 @@ import gov.iti.presentation.utils.Configuration;
 import gov.iti.presentation.utils.SceneManager;
 import gov.iti.presentation.utils.UserInfo;
 import gov.iti.presentation.utils.UserValidator;
+import gov.iti.presistance.connection.ClientServerConnection;
 import gov.iti.business.services.ContactsService;
 import gov.iti.business.services.GroupService;
 import gov.iti.business.services.InvitationService;
@@ -56,13 +57,15 @@ public class LoginPasswdController implements Initializable {
         // if (isPasswdValid) {
             // go to password sign in
             CurrentUser.getCurrentUser().setPassword(passwd);
+            
             User user;
-            if ((user = LoginService.getLoginService().loginUser()) != null) {
+            if (ClientServerConnection.reConnect() && (user = LoginService.getLoginService().loginUser()) != null) {
                 wrongPassLbl.setText("");
                 // go to chat
                 System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
                 CurrentUser.getCurrentUser().setUser(user);
                 SceneManager.getSceneManagerInstance().switchToChatScreen();
+                
                 Platform.runLater(() -> {
                     CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
                     CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());

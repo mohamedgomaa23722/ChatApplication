@@ -55,7 +55,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -155,6 +154,8 @@ public class ChatController<E> implements Initializable {
     ComboBox fontsize;
     @FXML
     ToggleGroup select;
+    @FXML
+    ImageView deleteImage;
     /**
      * Initializes the controller class.
      */
@@ -237,7 +238,7 @@ public class ChatController<E> implements Initializable {
         group_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                
+                deleteImage.setVisible(true);
                 statusview.setVisible(false);
                 chatBox.getChildren().removeAll(chatBox.getChildren());
                 setChatVisiablity(true);
@@ -280,6 +281,7 @@ public class ChatController<E> implements Initializable {
         contact_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                deleteImage.setVisible(false);
                 statusview.setVisible(true);
                 chatBox.getChildren().removeAll(chatBox.getChildren());
                 setChatVisiablity(true);
@@ -420,8 +422,7 @@ public class ChatController<E> implements Initializable {
     }
 
     private void setUpInfoBar() {
-        userImage.setFill(
-                new ImagePattern(new Image(new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage()))));
+
         UserName.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getName());
         UserPhone.textProperty().bindBidirectional(CurrentUser.getCurrentUser().getPhoneNumber());
     }

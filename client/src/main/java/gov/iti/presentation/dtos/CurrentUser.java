@@ -6,8 +6,9 @@ import gov.iti.model.Invitation;
 import gov.iti.model.User;
 import gov.iti.model.Group;
 import javafx.application.Platform;
-import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -25,6 +26,7 @@ public class CurrentUser {
     private StringProperty country;
     private IntegerProperty status;
     private IntegerProperty age;
+    private BooleanProperty isChangeImageProp;
     private String password;
 
     private ObservableList<Invitation> invitations;
@@ -41,6 +43,7 @@ public class CurrentUser {
         email = new SimpleStringProperty();
         bio = new SimpleStringProperty();
         country = new SimpleStringProperty();
+        isChangeImageProp = new SimpleBooleanProperty(true);
         invitations = FXCollections.observableArrayList();
         contacts = FXCollections.observableArrayList();
         groups = FXCollections.observableArrayList();
@@ -59,6 +62,7 @@ public class CurrentUser {
     }
 
     public void setUser(User user) {
+        System.out.println("Updated User");
         PhoneNumber.set(user.getPhoneNumber());
         name.set(user.getName());
         age.set(user.getAge());
@@ -68,8 +72,10 @@ public class CurrentUser {
         bio.set(user.getBio());
         status.set(user.getStatus());
         country.set(user.getCountry());
-        System.out.println("Updates");
-
+        if (image != user.getImage()) {
+            System.out.println("Image Updated");
+            isChangeImageProp.set(true);
+        }
     }
 
     public User getUser() {
@@ -128,6 +134,7 @@ public class CurrentUser {
 
     public void setImage(byte[] image) {
         this.image = image;
+        isChangeImageProp.set(true);
     }
 
     public StringProperty getEmail() {
@@ -162,6 +169,14 @@ public class CurrentUser {
         this.status.set(status);
     }
 
+    public BooleanProperty getImageProp() {
+        return isChangeImageProp;
+    }
+
+    public void setImageProp(Boolean status) {
+        this.isChangeImageProp.set(status);
+    }
+
     public void setInvitations(List<Invitation> invitations) {
         this.invitations.addAll(invitations);
     }
@@ -169,9 +184,11 @@ public class CurrentUser {
     public void setContacts(List<User> contacts) {
         this.contacts.addAll(contacts);
     }
+
     public void setgroups(List<Group> groups) {
         this.groups.addAll(groups);
     }
+
     public void addInvitations(Invitation invitation) {
         this.invitations.add(invitation);
     }
@@ -179,14 +196,14 @@ public class CurrentUser {
     public void addContact(User contact) {
         this.contacts.add(contact);
     }
+
     public void addGroup(Group group) {
-        Platform.runLater(()->this.groups.add(group));
+        Platform.runLater(() -> this.groups.add(group));
     }
 
     public ObservableList<Invitation> getInvitations() {
         return invitations;
     }
-   
 
     public ObservableList<User> getContacts() {
         return contacts;

@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.io.FileInputStream;
 import java.util.Properties;
 
 public class DataSourceFactory {
@@ -14,7 +13,6 @@ public class DataSourceFactory {
      */
     public static DataSource getDataSource() {
         Properties properties = new Properties();
-        FileInputStream fileInputStream = null;
         MysqlDataSource mysqlDataSource = null;
 
         try {

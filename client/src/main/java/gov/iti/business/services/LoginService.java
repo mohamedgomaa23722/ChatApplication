@@ -11,7 +11,6 @@ import gov.iti.presistance.connection.ClientServerConnection;
 
 public class LoginService {
 
-    ServerDao chatReg;
     static LoginService loginservice = new LoginService();
 
     public static LoginService getLoginService() {
@@ -19,7 +18,6 @@ public class LoginService {
     }
 
     private LoginService() {
-        chatReg=ClientServerConnection.getConnectionInstance().getServerDao();
     }
 
     public User loginUser() {
@@ -27,7 +25,7 @@ public class LoginService {
         String phoneNumber = CurrentUser.getCurrentUser().getPhoneNumber().get();
         System.out.println(phoneNumber + " : " + Password);
         try {
-            return chatReg.login(new ClientImpl(),phoneNumber, Password);
+            return ClientServerConnection.getConnectionInstance().getServerDao().login(new ClientImpl(),phoneNumber, Password);
         } catch (RemoteException e) {
             
             e.printStackTrace();

@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,6 +50,8 @@ public class ProfileSettingsController implements Initializable {
     private TextField newBio;
     @FXML
     private Button buttonUpdate;
+    @FXML
+    private Label successfullMessage;
 
     @FXML
     private ComboBox<String> comboBoxCountry;
@@ -66,7 +69,7 @@ public class ProfileSettingsController implements Initializable {
         newEmail.textProperty().bindBidirectional(currentUser.getEmail());
         System.out.println(currentUser.getCountry().get());
         comboBoxCountry.setValue(currentUser.getCountry().get());
-        setImage();
+        setImage(currentUser.getImage());
     }
 
     @FXML
@@ -80,6 +83,8 @@ public class ProfileSettingsController implements Initializable {
 
         if (SettingsService.getInstance().updateProfile(updatedUser))
             CurrentUser.getCurrentUser().setUser(updatedUser);
+
+        successfullMessage.setText("Updated Successfully");           
     }
 
     @FXML
@@ -92,21 +97,21 @@ public class ProfileSettingsController implements Initializable {
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 fileInputStream.read(image);
                 CurrentUser.getCurrentUser().setImage(image);
-                setImage();
+                setImage(image);
+                
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
-    private void setImage() {
-        ByteArrayInputStream bis = new ByteArrayInputStream(CurrentUser.getCurrentUser().getImage());
+    private void setImage(byte[] imageBytes) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
         Image image = new Image(bis);
         if (image != null)
-            System.out.println("image is not null");
+            circle.setFill(new ImagePattern(image));
         else
             System.out.println("image is null");
 
