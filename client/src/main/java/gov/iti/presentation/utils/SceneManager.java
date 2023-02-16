@@ -31,6 +31,12 @@ public class SceneManager {
         primaryStage = stage;
     }
 
+    public void switchToConnectionScreen() {
+        sceneName = "Connection";
+        primaryStage.setTitle(sceneName);
+        loadView(sceneName);
+    }
+
     public void switchToPhoneLoginScreen() {
         sceneName = "LoginPhone";
         primaryStage.setTitle(sceneName);

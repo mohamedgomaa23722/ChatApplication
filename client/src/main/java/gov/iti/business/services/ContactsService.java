@@ -27,7 +27,7 @@ public class ContactsService {
 
     public List<User> getContacts() {
         try {
-            List<User> contacList = chatReg.selectUserContacts(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            List<User> contacList = ClientServerConnection.getConnectionInstance().getServerDao().selectUserContacts(CurrentUser.getCurrentUser().getPhoneNumber().get());
             return contacList;
         } catch (RemoteException e) {
             
@@ -41,7 +41,7 @@ public class ContactsService {
     
     public User getUser(String phoneNumber) {
         try {
-            User contact = chatReg.selectUser(phoneNumber);
+            User contact = ClientServerConnection.getConnectionInstance().getServerDao().selectUser(phoneNumber);
             return contact;
         } catch (RemoteException e) {
             

@@ -8,7 +8,7 @@ import gov.iti.dao.ServerDao;
 public class ClientServerConnection {
 
     public  static int portNumber = 8889;
-    public  static String ipAddress = "localhost";
+    public  static String ipAddress;
 
     private static Registry reg;
     private static ServerDao chatRef;

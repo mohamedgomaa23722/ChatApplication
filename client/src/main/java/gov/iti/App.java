@@ -21,7 +21,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         SceneManager sceneManager = SceneManager.getSceneManagerInstance();
         sceneManager.initStage(primaryStage);
-        sceneManager.switchToPhoneLoginScreen();
+        sceneManager.switchToConnectionScreen();
         //sceneManager.switchToaddContactScreen();
         /* 
         FXMLLoader fxmlLoader = new FXMLLoader();

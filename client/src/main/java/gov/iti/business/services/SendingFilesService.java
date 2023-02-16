@@ -86,7 +86,7 @@ public class SendingFilesService implements Serializable {
                 // Rewind the buffer so that it can be read.
                     mBuf.rewind();
                     // Read bytes from the buffer and show them on the screen as characters.
-                    chatReg.sendFile(bytes,count,reciever,fileName);
+                    ClientServerConnection.getConnectionInstance().getServerDao().sendFile(bytes,count,reciever,fileName);
                 }   
             } while (count != -1);
 

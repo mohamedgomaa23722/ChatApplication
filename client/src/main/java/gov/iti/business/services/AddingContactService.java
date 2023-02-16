@@ -25,7 +25,7 @@ public class AddingContactService {
         System.out.println(contactList);
         // call  server
         try {
-            return chatReg.addNewContact(sender,contactList);
+            return ClientServerConnection.getConnectionInstance().getServerDao().addNewContact(sender,contactList);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

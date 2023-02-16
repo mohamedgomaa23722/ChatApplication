@@ -23,7 +23,7 @@ public class RegisterService {
 
     public boolean registerNewUser(User user, String Password) {
         try {
-            return chatReg.register(new ClientImpl(), user, Password);
+            return ClientServerConnection.getConnectionInstance().getServerDao().register(new ClientImpl(), user, Password);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (SQLException e) {
