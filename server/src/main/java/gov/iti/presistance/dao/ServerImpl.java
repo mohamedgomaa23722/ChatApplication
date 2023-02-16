@@ -39,6 +39,12 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
 
     @Override
     public User login(ClientDao client, String phoneNumber, String password) throws RemoteException {
+
+        if(clients.keySet().contains(phoneNumber)){
+            System.out.println("herrreee");
+            return null ;
+        }
+
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement("select * from user where phoneNumber = ? AND password = ?")) {
             preparedStatement.setString(1, phoneNumber);
@@ -383,5 +389,34 @@ public class ServerImpl extends InvitationImp implements ServerDao, Serializable
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static void filterOnlineUsers() {
+
+        Thread thread = new Thread() {
+            public void run() {
+                while (true) {
+                    System.out.println("Thread Running");
+                    for (ClientDao client : clients.values()) {
+                        try {
+                            client.isClientOnline();
+                        } catch (RemoteException e) {
+                            Iterator<Map.Entry<String, ClientDao>> iterator = clients.entrySet().iterator();
+                            // Iterate over the HashMap
+                            while (iterator.hasNext()) {
+                                // Get the entry at this iteration
+                                Map.Entry<String, ClientDao> entry = iterator.next();
+                                // Check if this value is the required value
+                                if (client.equals(entry.getValue())) {
+                                    // Remove this entry from HashMap
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        thread.start();
     }
 }

@@ -23,7 +23,7 @@ public class AddingContactService {
     public List<Integer> addNewContact(String sender, List <String> contactList) {
         // call  server
         try {
-            return chatReg.addNewContact(sender,contactList);
+            return ClientServerConnection.getConnectionInstance().getServerDao().addNewContact(sender,contactList);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -26,7 +26,7 @@ public class GroupService {
     }
    public int getGroupLastId(){
     try {
-        return chatReg.getGroupLastId();
+        return ClientServerConnection.getConnectionInstance().getServerDao().getGroupLastId();
     } catch (RemoteException | SQLException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -35,8 +35,8 @@ public class GroupService {
    }
     public Group creatGroupService(Group group) {
         try {
-            chatReg.creatGroup(group);
-            group.setGroupId(chatReg.getGroupLastId());
+            ClientServerConnection.getConnectionInstance().getServerDao().creatGroup(group);
+            group.setGroupId(ClientServerConnection.getConnectionInstance().getServerDao().getGroupLastId());
             return group;
         } catch (RemoteException e) {
             
@@ -49,7 +49,7 @@ public class GroupService {
     }
     public boolean addGroupMemberService(int groupId,String MemberPhoneNumber) {
         try {
-            return chatReg.addGroupMember(groupId, MemberPhoneNumber);
+            return ClientServerConnection.getConnectionInstance().getServerDao().addGroupMember(groupId, MemberPhoneNumber);
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class GroupService {
     }
     public List<Group> getContactGroups () {
         try {
-            return chatReg.selectGroups(CurrentUser.getCurrentUser().getPhoneNumber().get());
+            return ClientServerConnection.getConnectionInstance().getServerDao().selectGroups(CurrentUser.getCurrentUser().getPhoneNumber().get());
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class GroupService {
 
     public List<String> selectGroupMembers(int groupId){
         try {
-            return chatReg.selectGroupMembers(groupId);
+            return ClientServerConnection.getConnectionInstance().getServerDao().selectGroupMembers(groupId);
         } catch (RemoteException e) {
             
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class GroupService {
 
     public boolean leaveGroup(int groupId, String phoneNumber) {
         try {
-            return chatReg.leaveGroup(groupId, phoneNumber);
+            return ClientServerConnection.getConnectionInstance().getServerDao().leaveGroup(groupId, phoneNumber);
         } catch (RemoteException | SQLException e) {
             
             e.printStackTrace();
