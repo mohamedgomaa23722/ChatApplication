@@ -34,6 +34,7 @@ public class LoginPhoneController implements Initializable {
 
     @FXML
     public void getUserPhone() {
+        phoneNumber = phoneTextField.getText();
         wrongLogedLbl.setText("");
         CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
         SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();

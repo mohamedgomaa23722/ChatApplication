@@ -48,7 +48,7 @@ public class LoginPasswdController implements Initializable {
     @FXML
     public void getUserPasswd() {
 
-        CurrentUser.getCurrentUser().setPassword(passwd);
+        CurrentUser.getCurrentUser().setPassword(passwdTextField.getText());
 
         User user;
         if (ClientServerConnection.reConnect() && (user = LoginService.getLoginService().loginUser()) != null) {
