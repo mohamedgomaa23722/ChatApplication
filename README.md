@@ -14,7 +14,7 @@ https://user-images.githubusercontent.com/62193989/219803179-ece3bb49-6a16-43fc-
 - Contact invitation
 - Update Profile and status (away, active, busy)
 - realtime messages and status changes
-- chat bot
+- chatbot
 
 ## Server side
 - Start/stop server
