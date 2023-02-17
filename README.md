@@ -24,6 +24,7 @@ https://user-images.githubusercontent.com/62193989/219803179-ece3bb49-6a16-43fc-
 ## Implementation Tools
 - javaFX
 - RMI
+- JDBC
 - Sockets
 - Design pattern (singleton, mvc, observer, factory)
 
