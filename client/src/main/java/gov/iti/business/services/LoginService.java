@@ -3,7 +3,6 @@ package gov.iti.business.services;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-import gov.iti.dao.ServerDao;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.ClientImpl;

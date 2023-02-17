@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class LoginPhoneController implements Initializable{
+public class LoginPhoneController implements Initializable {
 
     UserValidator userValidator;
 
@@ -32,53 +32,35 @@ public class LoginPhoneController implements Initializable{
     @FXML
     Label wrongLogedLbl;
 
-
     @FXML
     public void getUserPhone() {
-
-        boolean isPhoneValid;
-
-        phoneNumber=phoneTextField.getText().trim();
-
-        isPhoneValid=userValidator.validateUserPhoneNumber(phoneNumber);
-
-        //  if(isPhoneValid) {
-            // go to password sign in
-            wrongLogedLbl.setText("");
-            CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
-            SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
-        // } else {
-        //     // show error message
-        //     // stay in this page
-        //     showError("Enter Valid Phone Number",wrongLogedLbl);
-        //     phoneTextField.setStyle(error);
-        // }
-
+        wrongLogedLbl.setText("");
+        CurrentUser.getCurrentUser().setPhoneNumber(phoneNumber);
+        SceneManager.getSceneManagerInstance().switchToPasswdLoginScreen();
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // phoneTextField.setText("01111111113");
-        userValidator=UserValidator.getUserValidator();
-        phoneTextField.setOnMouseClicked(e->phoneTextField.setStyle(ideal));
-        isFaildLogin.addListener((o,oldVal,newVal)->{
+        userValidator = UserValidator.getUserValidator();
+        phoneTextField.setOnMouseClicked(e -> phoneTextField.setStyle(ideal));
+        isFaildLogin.addListener((o, oldVal, newVal) -> {
             System.out.println("change");
-                 if(newVal.toString().equals("true")) {
-                    System.out.println("password incorrect");
-                    displyErrorLogin();
-                 } else {
-                    wrongLogedLbl.setVisible(false);
-                    System.out.println("write");
-                 }
-          });
+            if (newVal.toString().equals("true")) {
+                System.out.println("password incorrect");
+                displyErrorLogin();
+            } else {
+                wrongLogedLbl.setVisible(false);
+                System.out.println("write");
+            }
+        });
         String phone = UserInfo.getUserInfo().getSavedUserPhoneNumber();
-        if(phone != null ) {
+        if (phone != null) {
             phoneTextField.setText(phone);
-        } 
+        }
     }
 
     @FXML
-    public void handelSignUp(){
+    public void handelSignUp() {
         SceneManager.getSceneManagerInstance().switchToSignUpScreen();
     }
 
@@ -87,20 +69,20 @@ public class LoginPhoneController implements Initializable{
         wrongLogedLbl.setVisible(true);
         wrongLogedLbl.setText("Incorrect UserName or Password");
         System.out.println("Incorrect UserName or Password");
-        //wrongPasswdLbl.setBackground(new Image(getClass().getClassLoader().getResource("lock.png")));
+        // wrongPasswdLbl.setBackground(new
+        // Image(getClass().getClassLoader().getResource("lock.png")));
         wrongLogedLbl.setStyle(loggedError);
-        //visible="false"
+        // visible="false"
         wrongLogedLbl.setVisible(true);
     }
-    
+
     @FXML
-    public void showError(String message, Label vBox){
+    public void showError(String message, Label vBox) {
         vBox.setVisible(true);
         vBox.setText(message);
         vBox.setStyle(loggedError);
     }
 
-    
     static void setFail(boolean faild) {
         isFaildLogin.set(faild);
     }

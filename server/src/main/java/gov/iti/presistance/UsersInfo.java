@@ -11,7 +11,6 @@ import gov.iti.presentation.controller.ServerController;
 
 import java.sql.Statement;
 
-import gov.iti.dao.ClientDao;
 import gov.iti.model.User;
 import gov.iti.presistance.DataBase.ConnectionManager;
 import javafx.application.Platform;

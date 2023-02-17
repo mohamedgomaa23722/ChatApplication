@@ -1,6 +1,5 @@
 package gov.iti.presentation.controller.settingsController;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,9 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
-
 import gov.iti.business.services.SettingsService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
@@ -28,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
@@ -112,13 +107,10 @@ public class ProfileSettingsController implements Initializable {
         Image image = new Image(bis);
         if (image != null)
             circle.setFill(new ImagePattern(image));
-        else
-            System.out.println("image is null");
 
         try {
             bis.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     } 

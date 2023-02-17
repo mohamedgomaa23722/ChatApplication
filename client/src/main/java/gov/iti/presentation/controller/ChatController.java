@@ -2,7 +2,6 @@ package gov.iti.presentation.controller;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -22,11 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.chatbot.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.annotation.processing.SupportedOptions;
 
 import gov.iti.business.services.ChatService;
 import gov.iti.model.Attachment;
@@ -254,8 +247,11 @@ public class ChatController<E> implements Initializable {
                             new ImagePattern(new Image(new ByteArrayInputStream(currentGroupChat.getImage()))));
                     chatBox.getChildren().add(
                             ChatManager.getInstance().getMessages(Integer.toString(currentGroupChat.getGroupId())));
-                    group_list.getSelectionModel().getSelectedItem().setHasNewMessage(false);
-
+                    if (currentGroupChat.isHasNewMessage()) {
+                        currentGroupChat.setHasNewMessage(false);
+                        CurrentUser.getCurrentUser().getGroups().set(group_list.getSelectionModel().getSelectedIndex(),
+                                currentGroupChat);
+                    }
                 }
 
             }
@@ -301,7 +297,11 @@ public class ChatController<E> implements Initializable {
                     contact_image
                             .setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverUSer.getImage()))));
                     chatBox.getChildren().add(ChatManager.getInstance().getMessages(receiverUSer.getPhoneNumber()));
-                    contact_list.getSelectionModel().getSelectedItem().setHasNewMessage(false);
+                }
+                if (receiverUSer.isHasNewMessage()) {
+                    receiverUSer.setHasNewMessage(false);
+                    CurrentUser.getCurrentUser().getContacts().set(contact_list.getSelectionModel().getSelectedIndex(),
+                            receiverUSer);
                 }
             }
         });
@@ -311,26 +311,32 @@ public class ChatController<E> implements Initializable {
                 System.out.println("Phone number = " + newMessage.getSenderPhoneNumber());
                 addMessage(newMessage, true);
                 if (newMessage.getReceiverPhoneNumber().charAt(0) == '0') {
-                    // Contact
                     int index = 0;
-                    for (User contact : CurrentUser.getInstance().getContacts()) {
-                        if (contact.getPhoneNumber().equals(newMessage.getSenderPhoneNumber())) {
-                            contact.setHasNewMessage(true);
-                            CurrentUser.getInstance().getContacts().set(index, contact);
-                            break;
+                    if (receiverUSer == null
+                            || !newMessage.getSenderPhoneNumber().equals(receiverUSer.getPhoneNumber())) {
+                        for (User contact : CurrentUser.getInstance().getContacts()) {
+                            if (contact.getPhoneNumber().equals(newMessage.getSenderPhoneNumber())) {
+                                CurrentUser.getCurrentUser().getContacts().remove(index);
+                                contact.setHasNewMessage(true);
+                                CurrentUser.getInstance().getContacts().add(0, contact);
+                                break;
+                            }
+                            index++;
                         }
-                        index++;
                     }
                 } else {
-                    // Group
                     int index = 0;
-                    for (Group group : CurrentUser.getInstance().getGroups()) {
-                        if (group.getGroupId() == Integer.parseInt(newMessage.getReceiverPhoneNumber())) {
-                            group.setHasNewMessage(true);
-                            CurrentUser.getInstance().getGroups().set(index, group);
-                            break;
+                    if (currentGroupChat == null || !newMessage.getReceiverPhoneNumber()
+                            .equals(Integer.toString(currentGroupChat.getGroupId()))) {
+                        for (Group group : CurrentUser.getInstance().getGroups()) {
+                            if (group.getGroupId() == Integer.parseInt(newMessage.getReceiverPhoneNumber())) {
+                                CurrentUser.getCurrentUser().getGroups().remove(index);
+                                group.setHasNewMessage(true);
+                                CurrentUser.getInstance().getGroups().add(0, group);
+                                break;
+                            }
+                            index++;
                         }
-                        index++;
                     }
                 }
                 if (botOn) {
@@ -341,7 +347,6 @@ public class ChatController<E> implements Initializable {
                         addMessage(sMessage, false);
                         ChatService.getInstance().sendMessage(sMessage, 1);
                     } catch (Exception e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -399,10 +404,8 @@ public class ChatController<E> implements Initializable {
             UserInfo.getUserInfo().forgetUserPasswd();
             LoginPasswdController.passwdValue.set("");
         } catch (RemoteException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // TODO : REMOVE SAVED FILE
         LoginPhoneController.setFail(false);
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
         new Thread(() -> {

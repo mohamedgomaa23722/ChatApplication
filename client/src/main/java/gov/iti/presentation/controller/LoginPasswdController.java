@@ -33,7 +33,7 @@ public class LoginPasswdController implements Initializable {
 
     static boolean saved = true;
 
-    public static StringProperty passwdValue = new SimpleStringProperty();   
+    public static StringProperty passwdValue = new SimpleStringProperty();
 
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
@@ -48,84 +48,66 @@ public class LoginPasswdController implements Initializable {
     @FXML
     public void getUserPasswd() {
 
-        boolean isPasswdValid;
+        CurrentUser.getCurrentUser().setPassword(passwd);
 
-        passwd = passwdTextField.getText().trim();
+        User user;
+        if (ClientServerConnection.reConnect() && (user = LoginService.getLoginService().loginUser()) != null) {
+            wrongPassLbl.setText("");
+            // go to chat
+            System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
+            CurrentUser.getCurrentUser().setUser(user);
+            SceneManager.getSceneManagerInstance().switchToChatScreen();
 
-        isPasswdValid = userValidator.validateUserPassWd(passwd);
-
-        // if (isPasswdValid) {
-            // go to password sign in
-            CurrentUser.getCurrentUser().setPassword(passwd);
-            
-            User user;
-            if (ClientServerConnection.reConnect() && (user = LoginService.getLoginService().loginUser()) != null) {
-                wrongPassLbl.setText("");
-                // go to chat
-                System.out.println("login sucessful  : " + user.getStatus() + " : " + user.getPhoneNumber());
-                CurrentUser.getCurrentUser().setUser(user);
-                SceneManager.getSceneManagerInstance().switchToChatScreen();
-                
-                Platform.runLater(() -> {
-                    CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
-                    CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
-                    CurrentUser.getCurrentUser().setgroups(GroupService.getGroupService().getContactGroups());
-                    ChatManager.getInstance().addContacts();
-                    ChatManager.getInstance().addGroups();
-                });
-                new Thread(() -> {
-                    try {
-                        SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-
-                if(!saved) {
-                    // save phone and passwd
-                    saveUserInfo(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
-                    LoginPasswdController.passwdValue.set(CurrentUser.getCurrentUser().getPassword());
+            Platform.runLater(() -> {
+                CurrentUser.getCurrentUser().setInvitations(InvitationService.getInstance().getInvitations());
+                CurrentUser.getCurrentUser().setContacts(ContactsService.getcontactsService().getContacts());
+                CurrentUser.getCurrentUser().setgroups(GroupService.getGroupService().getContactGroups());
+                ChatManager.getInstance().addContacts();
+                ChatManager.getInstance().addGroups();
+            });
+            new Thread(() -> {
+                try {
+                    SettingsService.getInstance().changeStatus(user.getPhoneNumber(), 1);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
-            }  else {
-                // go to sign in page
-                // show message some thing is wrong phone or password
-                System.out.println("login failed" + passwd);
-                LoginPhoneController.setFail(true);
-                SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
+            }).start();
+
+            if (!saved) {
+                // save phone and passwd
+                saveUserInfo(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),
+                        CurrentUser.getCurrentUser().getPassword());
+                LoginPasswdController.passwdValue.set(CurrentUser.getCurrentUser().getPassword());
             }
+        } else {
+            // go to sign in page
+            // show message some thing is wrong phone or password
+            System.out.println("login failed" + passwd);
+            LoginPhoneController.setFail(true);
+            SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
+        }
 
-            // // tranfer this object to server
-            // // not null load chat screen
-            // // null go to login phone screen
-        } 
-        // else {
-        //     // password not valid
-        //     passwdTextField.setStyle(error);
-        //     System.out.println("password not valid");
-        //     showError("Enter Valid Password 8-10 characters \n characters,numbers and special character", wrongPassLbl);
-        // }
-
-    // }
+    }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         userValidator = UserValidator.getUserValidator();
         passwdTextField.setOnMouseClicked(e -> passwdTextField.setStyle(ideal));
         String passwd = UserInfo.getUserInfo().getSavedUserPasswd();
-        if(passwd != null ) {
+        if (passwd != null) {
             passwdTextField.setText(passwd);
             passwdValue.set(passwd);
-            saved=true;
+            saved = true;
         } else {
-            saved=false;
+            saved = false;
         }
 
-        passwdValue.addListener((o,oldVal,newVal)->{
+        passwdValue.addListener((o, oldVal, newVal) -> {
             System.out.println("passwd changing in sign out");
-            if(newVal.toString()=="") {
+            if (newVal.toString() == "") {
                 passwdTextField.setText(passwdValue.getValue());
             }
-          });
+        });
     }
 
     @FXML
@@ -140,7 +122,7 @@ public class LoginPasswdController implements Initializable {
     }
 
     void saveUserInfo(String phone, String passwd) {
-        Configuration.createConfFile(phone,passwd);
+        Configuration.createConfFile(phone, passwd);
     }
 
 }

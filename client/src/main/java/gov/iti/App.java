@@ -1,7 +1,6 @@
 package gov.iti;
 
 import gov.iti.business.services.ChatService;
-import gov.iti.business.services.SettingsService;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.SceneManager;
 import javafx.application.Application;
@@ -35,7 +34,6 @@ public class App extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        System.out.println("service unbinded");
-        SettingsService.getInstance().changeStatus(CurrentUser.getCurrentUser().getPhoneNumber().get(),0);
+        ChatService.getInstance().SignOut(CurrentUser.getCurrentUser().getPhoneNumber().get());
     }
 }

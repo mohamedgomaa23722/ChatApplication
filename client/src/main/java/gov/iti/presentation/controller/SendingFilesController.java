@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gov.iti.business.services.SendingFilesService;
-import gov.iti.model.Attachment;
 import gov.iti.presentation.dtos.CurrentSelectedChat;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;

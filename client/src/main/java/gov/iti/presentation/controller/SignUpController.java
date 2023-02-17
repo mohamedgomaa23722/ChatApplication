@@ -1,8 +1,7 @@
 package gov.iti.presentation.controller;
 
 import gov.iti.Utilities;
-import gov.iti.business.services.AddingContactService;
-import gov.iti.business.services.ContactsService;
+
 import gov.iti.business.services.RegisterService;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
@@ -26,8 +25,6 @@ import javafx.scene.image.PixelFormat;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
@@ -90,7 +87,7 @@ public class SignUpController implements Initializable {
     private Label emailErrorLabel;
 
     byte[] imagebytes;
-    
+
     String error = "-fx-border-color: red ;";
     String ideal = "-fx-border-color: #FF8780 ;";
     UserValidator userValidator;
@@ -115,13 +112,13 @@ public class SignUpController implements Initializable {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
-                imagebytes = new byte[(int)file.length()];
+                imagebytes = new byte[(int) file.length()];
                 fileInputStream.read(imagebytes);
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
 
-            try {                
+            try {
                 URL url = file.toURI().toURL();
                 circa.setFill(new ImagePattern(new Image(url.toString())));
                 imgContainer.setVisible(false);
@@ -151,7 +148,8 @@ public class SignUpController implements Initializable {
     }
 
     public boolean validatePassword() {
-        if (userValidator.isMatchedPassword(passwordField.getText().trim(),confirmField.getText().trim()) && userValidator.validateUserPassWd(passwordField.getText().trim())) {
+        if (userValidator.isMatchedPassword(passwordField.getText().trim(), confirmField.getText().trim())
+                && userValidator.validateUserPassWd(passwordField.getText().trim())) {
             return true;
         }
         return false;
@@ -164,7 +162,8 @@ public class SignUpController implements Initializable {
             emailField.setStyle(error);
             System.out.println("emailField error");
             showError("Please Enter Valid Email", emailErrorLabel);
-        } else emailErrorLabel.setVisible(false);
+        } else
+            emailErrorLabel.setVisible(false);
 
         if (!validatePassword()) {
             isValid = false;
@@ -183,18 +182,22 @@ public class SignUpController implements Initializable {
             nameField.setStyle(error);
             System.out.println("nameField error");
             showError("Please Enter name without spaces", nameErrorLabel);
-        } else nameErrorLabel.setVisible(false);
+        } else
+            nameErrorLabel.setVisible(false);
 
         if (!isValid)
-           // JOptionPane.showMessageDialog(null,
-                //    "your input formate wrong\n password must contain atleast 8 charchter with  \natleast one special charcter and atleast one uper-case litter\n Name must be english litters only");
-        if (phoneNumber.getText().trim().isEmpty()) {
-            isValid = false;
-            phoneNumber.setStyle(error);
-            
-            System.out.println("phoneNumber error");
-            showError("Please Enter phoneNumber", phoneErrorLabel);
-        } else phoneErrorLabel.setVisible(false);
+            // JOptionPane.showMessageDialog(null,
+            // "your input formate wrong\n password must contain atleast 8 charchter with
+            // \natleast one special charcter and atleast one uper-case litter\n Name must
+            // be english litters only");
+            if (phoneNumber.getText().trim().isEmpty()) {
+                isValid = false;
+                phoneNumber.setStyle(error);
+
+                System.out.println("phoneNumber error");
+                showError("Please Enter phoneNumber", phoneErrorLabel);
+            } else
+                phoneErrorLabel.setVisible(false);
 
         if (passwordField.getText().trim().isEmpty()) {
             isValid = false;
@@ -234,53 +237,45 @@ public class SignUpController implements Initializable {
     private void signUpAction() {
         System.out.println("check play");
         // if(validateAllFields()) {
-            Image image= imgContainer.getImage();
-            int w=(int)image.getWidth();
-            int h=(int)image.getHeight();
-            byte[] buf = new byte[w*h*4];
-            System.out.println("image size = " + buf.length);
-            String gender;
-            image.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buf, 0, w * 4); 
-            if(female.isSelected()){
-                gender="f";
-            }
-            else{
-                gender="m";
-            }
-            System.out.println(combo.getValue().toString());
-            registeredUser = new User(phoneNumber.getText().trim(), nameField.getText().trim(),calculateAge()
-            , 0, 0, imagebytes,emailField.getText().trim()
-            , combo.getValue().toString(), textArea.getText().trim(),gender);
-            if(RegisterService.getRegisterService().registerNewUser(registeredUser,passwordField.getText())) {
-                //go to chat 
-                CurrentUser.getCurrentUser().setUser(registeredUser);
-                SceneManager.getSceneManagerInstance().switchToChatScreen();
-                Configuration.createConfFile(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),CurrentUser.getCurrentUser().getPassword());
-                System.out.println("correct chat page");
-                List<String> s = new ArrayList<>();
-                s.add("012345");
-                AddingContactService.getAddingNewContactService().addNewContact(registeredUser.getPhoneNumber(), s);
-            } else {
-                // stay
-            }
-            
-        // } else {
-        //     System.out.println("is not valid yet");
-        // }
-        
+        Image image = imgContainer.getImage();
+        int w = (int) image.getWidth();
+        int h = (int) image.getHeight();
+        byte[] buf = new byte[w * h * 4];
+        System.out.println("image size = " + buf.length);
+        String gender;
+        image.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buf, 0, w * 4);
+        if (female.isSelected()) {
+            gender = "f";
+        } else {
+            gender = "m";
+        }
+        System.out.println(combo.getValue().toString());
+        registeredUser = new User(phoneNumber.getText().trim(), nameField.getText().trim(), calculateAge(), 0, 0,
+                imagebytes, emailField.getText().trim(), combo.getValue().toString(), textArea.getText().trim(),
+                gender);
+        if (RegisterService.getRegisterService().registerNewUser(registeredUser, passwordField.getText())) {
+            // go to chat
+            CurrentUser.getCurrentUser().setUser(registeredUser);
+            SceneManager.getSceneManagerInstance().switchToChatScreen();
+            Configuration.createConfFile(CurrentUser.getCurrentUser().getPhoneNumber().getValue(),
+                    CurrentUser.getCurrentUser().getPassword());
+        } else {
+            // stay
+        }
+
     }
 
-    private int calculateAge(){
+    private int calculateAge() {
         LocalDate currentDate = LocalDate.now();
-       return Period.between(birthDayField.getValue(), currentDate).getYears(); 
+        return Period.between(birthDayField.getValue(), currentDate).getYears();
     }
-    
+
     @FXML
-    private void handelBack(){
+    private void handelBack() {
         SceneManager.getSceneManagerInstance().switchToPhoneLoginScreen();
     }
 
-    public void showError(String message, Label vBox){
+    public void showError(String message, Label vBox) {
         vBox.setVisible(true);
         vBox.setText(message);
     }

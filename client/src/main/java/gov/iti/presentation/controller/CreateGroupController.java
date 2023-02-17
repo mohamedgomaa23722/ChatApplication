@@ -18,7 +18,6 @@ import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presentation.utils.ChatManager;
 import gov.iti.presentation.utils.UserValidator;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -108,7 +107,6 @@ public class CreateGroupController implements Initializable {
                 imagebytes = new byte[(int)file.length()];
                 fileInputStream.read(imagebytes);
             } catch (IOException e2) {
-                // TODO Auto-generated catch block
                 e2.printStackTrace();
             }
         Group group=new Group(groupName,imagebytes);

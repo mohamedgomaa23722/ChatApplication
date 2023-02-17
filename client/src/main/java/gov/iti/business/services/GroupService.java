@@ -1,6 +1,5 @@
 package gov.iti.business.services;
 
-import java.nio.channels.SelectableChannel;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.List;
 
 import gov.iti.dao.ServerDao;
 import gov.iti.model.Group;
-import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;
 import gov.iti.presistance.connection.ClientServerConnection;
 
@@ -28,7 +26,6 @@ public class GroupService {
     try {
         return ClientServerConnection.getConnectionInstance().getServerDao().getGroupLastId();
     } catch (RemoteException | SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
         return -1;
     }

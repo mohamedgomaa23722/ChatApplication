@@ -34,7 +34,6 @@ public class SettingsService implements SettingInt {
             return ClientServerConnection.getConnectionInstance().getServerDao().changePassword(phoneNumber,
                     oldPassword, newPassword);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;
@@ -53,7 +52,6 @@ public class SettingsService implements SettingInt {
              ClientServerConnection.getConnectionInstance().getServerDao()
                     .notifyChanges(currentUser.getUser());
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

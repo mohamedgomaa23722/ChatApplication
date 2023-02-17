@@ -1,6 +1,5 @@
 package gov.iti.presistance.dao;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.print.attribute.standard.PDLOverrideSupported;
 import javax.sql.rowset.serial.SerialBlob;
 
 import gov.iti.presistance.UsersInfo;
@@ -24,9 +22,8 @@ import gov.iti.dao.ServerDao;
 import gov.iti.model.Group;
 import gov.iti.model.Message;
 import gov.iti.model.User;
-import gov.iti.presentation.dto.Contact;
 
-public class ServerImpl extends InvitationImp implements ServerDao, Serializable {
+public class ServerImpl extends InvitationImp implements ServerDao {
 
     public static Map<String, ClientDao> clients = new HashMap<>();
 

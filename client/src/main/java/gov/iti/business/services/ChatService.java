@@ -44,14 +44,12 @@ public class ChatService {
                 ClientServerConnection.getConnectionInstance().getServerDao().SendContactMessage(message);
                 System.out.println("Client service Receiver : " + message.getReceiverPhoneNumber());
             } catch (RemoteException | SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else {
             try {
                 ClientServerConnection.getConnectionInstance().getServerDao().SendGroupMessage(message);
             } catch (RemoteException | SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
                 //SSystem.out.println("Client service Receiver : " + message.getReceiverPhoneNumber());
@@ -83,6 +81,7 @@ public class ChatService {
 
     }
     public void notifyGroupsChange(Group group) {
+        
         Platform.runLater(() -> {
             CurrentUser.getCurrentUser().addGroup(group);
         });

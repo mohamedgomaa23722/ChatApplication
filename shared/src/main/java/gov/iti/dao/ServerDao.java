@@ -2,7 +2,6 @@ package gov.iti.dao;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 
 import gov.iti.model.Group;

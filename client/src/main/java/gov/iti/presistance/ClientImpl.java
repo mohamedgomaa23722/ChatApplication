@@ -8,7 +8,6 @@ import java.nio.file.StandardOpenOption;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
 
 import gov.iti.business.services.ChatService;
 import gov.iti.business.services.InvitationService;
@@ -26,8 +25,6 @@ import javafx.scene.control.Alert.AlertType;
 public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
     String fileName;
-
-    private final ReentrantLock lock = new ReentrantLock();
 
     public ClientImpl() throws RemoteException {
     }
@@ -114,7 +111,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientDao {
 
     @Override
     public void isClientOnline() throws RemoteException {
-        // TODO Auto-generated method stub
+
     }
     
 }

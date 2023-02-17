@@ -29,13 +29,10 @@ public class UserInfo {
             properties.load(inputStream);
             return properties.getProperty("PhoneNumber");
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             
-            //e.printStackTrace();
             System.out.println("no configuration file");
             return null;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             //e.printStackTrace();
             System.out.println("no configuration file");
             return null;

@@ -7,13 +7,10 @@ import java.util.ResourceBundle;
 import gov.iti.Utilities;
 import gov.iti.business.services.SettingsService;
 import gov.iti.presentation.dtos.CurrentUser;
-import gov.iti.presentation.utils.UserValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.print.PrintColor;
 
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 
 public class passwordSettingsController implements Initializable {
 

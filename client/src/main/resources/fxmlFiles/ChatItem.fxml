@@ -24,29 +24,29 @@
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </StackPane>
-      <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="Item_Name" text="Mohamed gomaa" textFill="#616161">
+            <Label fx:id="Item_Name" maxWidth="1.7976931348623157E308" text="Mohamed gomaa" textFill="#616161" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="Dubai Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="20.0" right="10.0" />
+                  <Insets left="20.0" />
                </VBox.margin>
                <opaqueInsets>
                   <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                </opaqueInsets>
             </Label>
-            <Label fx:id="Item_LastMessage" text="How Are You" textFill="#a4a4a4" textOverrun="CLIP">
+            <Label fx:id="Item_LastMessage" maxWidth="1.7976931348623157E308" text="How Are You" textFill="#a4a4a4" textOverrun="CLIP" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="20.0" />
                </VBox.margin>
             </Label>
          </children>
       </VBox>
-      <Circle fx:id="newMessageIcon" fill="#09ff00" radius="8.0" stroke="TRANSPARENT" strokeType="INSIDE">
+      <Circle fx:id="newMessageIcon" fill="#09ff00" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" visible="false" HBox.hgrow="NEVER">
          <HBox.margin>
-            <Insets right="10.0" />
+            <Insets left="20.0" right="10.0" />
          </HBox.margin>
       </Circle>
    </children>

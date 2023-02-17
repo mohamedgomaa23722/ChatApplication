@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import gov.iti.presistance.connection.ClientServerConnection;
-import gov.iti.presistance.dao.ServerImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

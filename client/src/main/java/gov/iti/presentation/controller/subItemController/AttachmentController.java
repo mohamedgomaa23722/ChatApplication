@@ -5,11 +5,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+
 
 import gov.iti.business.services.ContactsService;
-import gov.iti.model.Attachment;
 import gov.iti.model.Message;
 import gov.iti.model.User;
 import gov.iti.presentation.dtos.CurrentUser;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import gov.iti.model.Invitation;
 import gov.iti.model.User;
+import gov.iti.presentation.utils.ChatManager;
 import gov.iti.model.Group;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -198,6 +199,7 @@ public class CurrentUser {
     }
 
     public void addGroup(Group group) {
+        ChatManager.getInstance().addGroup(Integer.toString(group.getGroupId()));
         Platform.runLater(() -> this.groups.add(group));
     }
 

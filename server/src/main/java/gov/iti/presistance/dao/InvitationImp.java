@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.xdevapi.Client;
 
 import gov.iti.dao.InvitationInt;
 import gov.iti.model.Invitation;
@@ -76,7 +75,6 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
 
     @Override
     public User acceptInvitation(Invitation invitation) throws RemoteException, SQLException {
-        // TODO : add contact to database
         addToContact(invitation.getSenderPhoneNumber(), invitation.getReceiverPhoneNumber());
         rejectInvitation(invitation.getId());
         User receiver =getUserByID(invitation.getReceiverPhoneNumber());
@@ -100,7 +98,6 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
     @Override
     public boolean isExistInvitaiton(String senderPhoneNumber, String recieverPhoneNumber)
             throws RemoteException, SQLException {
-        // TODO Auto-generated method stub
         try (PreparedStatement preparedStatement = connection
                 .prepareStatement("Select id from invitation where senderPhone = ? AND receiverPhone = ?")) {
             preparedStatement.setString(1, senderPhoneNumber);
@@ -123,7 +120,6 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
             statement.setString(2, FirstUserPhone);
             return statement.executeUpdate() > 0;
         } catch (Exception e) {
-            // TODO: handle exception
             return false;
         }
     }
@@ -134,7 +130,6 @@ public class InvitationImp extends UnicastRemoteObject implements InvitationInt 
             ResultSet resultSet = statement.executeQuery();
             return UserFactory.createUser(resultSet);
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             return null;
         }

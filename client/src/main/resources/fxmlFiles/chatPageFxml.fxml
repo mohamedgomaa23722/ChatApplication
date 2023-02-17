@@ -283,7 +283,7 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </StackPane>
-                  <StackPane>
+                  <StackPane maxWidth="1.7976931348623157E308">
                      <children>
                         <ListView fx:id="contact_list" style="-fx-background-color: #F7F7FA;" />
                         <ImageView fx:id="empty_contact" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">

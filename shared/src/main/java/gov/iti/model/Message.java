@@ -1,6 +1,5 @@
 package gov.iti.model;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Message implements Serializable {

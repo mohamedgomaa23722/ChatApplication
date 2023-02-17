@@ -25,10 +25,8 @@ public class AddingContactService {
         try {
             return ClientServerConnection.getConnectionInstance().getServerDao().addNewContact(sender,contactList);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

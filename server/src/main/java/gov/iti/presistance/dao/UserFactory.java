@@ -38,7 +38,6 @@ public class UserFactory {
             try {
                 blob.getBinaryStream().read(bytes);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
