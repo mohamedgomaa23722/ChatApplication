@@ -1,5 +1,8 @@
 # ChatApplication by ITI Team
-Simple chat application 
+
+
+https://user-images.githubusercontent.com/62193989/219803179-ece3bb49-6a16-43fc-8ce8-ea1f352a0911.mp4
+
 # Features
 
 ## Client side
@@ -17,3 +20,11 @@ Simple chat application
 - Start/stop server
 - Statistics (country, gender, online/offline)
 - All functionality which related to client side with callbacks 
+
+
+
+
+
+
+
+
